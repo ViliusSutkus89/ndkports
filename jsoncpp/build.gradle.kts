@@ -1,6 +1,5 @@
-
+import com.android.ndkports.AndroidExecutableTestTask
 import com.android.ndkports.CMakeCompatibleVersion
-import com.android.ndkports.PackageBuilderTask
 import com.android.ndkports.MesonPortTask
 
 val portVersion = "1.8.4"
@@ -16,6 +15,7 @@ plugins {
 ndkPorts {
     ndkPath.set(File(project.findProperty("ndkPath") as String))
     source.set(project.file("src.tar.gz"))
+    minSdkVersion.set(16)
 }
 
 tasks.extractSrc {
@@ -27,13 +27,41 @@ tasks.extractSrc {
     }
 }
 
-tasks.register<MesonPortTask>("buildPort")
+val buildTask = tasks.register<MesonPortTask>("buildPort")
 
 tasks.prefabPackage {
     version.set(CMakeCompatibleVersion.parse(portVersion))
 
     modules {
         create("jsoncpp")
+    }
+}
+
+tasks.register<AndroidExecutableTestTask>("test") {
+    push {
+        push(
+            buildTask.get().buildDirectoryFor(abi).resolve("jsoncpp_test"),
+            File("jsoncpp_test")
+        )
+        push(
+            buildTask.get().installDirectoryFor(abi)
+                .resolve("lib/libjsoncpp.so"), File("libjsoncpp.so")
+        )
+        push(
+            toolchain.sysrootLibs.resolve("libc++_shared.so"),
+            File("libc++_shared.so")
+        )
+    }
+
+    run {
+        // JsonCpp has other tests, but they require running Python on the
+        // device.
+        shellTest(
+            "jsoncpp_test", listOf(
+                "LD_LIBRARY_PATH=$deviceDirectory",
+                deviceDirectory.resolve("jsoncpp_test").toString()
+            )
+        )
     }
 }
 

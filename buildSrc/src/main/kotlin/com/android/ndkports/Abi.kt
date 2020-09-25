@@ -16,9 +16,23 @@
 
 package com.android.ndkports
 
-enum class Abi(val archName: String, val abiName: String, val triple: String) {
-    Arm("arm", "armeabi-v7a", "arm-linux-androideabi"),
-    Arm64("arm64", "arm64-v8a", "aarch64-linux-android"),
-    X86("x86", "x86", "i686-linux-android"),
-    X86_64("x86_64", "x86_64", "x86_64-linux-android"),
+import java.util.Collections.max
+
+enum class Abi(
+    val archName: String,
+    val abiName: String,
+    val triple: String,
+    val minSupportedVersion: Int
+) {
+    Arm("arm", "armeabi-v7a", "arm-linux-androideabi", 16),
+    Arm64("arm64", "arm64-v8a", "aarch64-linux-android", 21),
+    X86("x86", "x86", "i686-linux-android", 16),
+    X86_64("x86_64", "x86_64", "x86_64-linux-android", 21);
+
+    fun adjustMinSdkVersion(minSdkVersion: Int) =
+        max(listOf(minSdkVersion, minSupportedVersion))
+
+    companion object {
+        fun fromAbiName(name: String) = values().find { it.abiName == name }
+    }
 }

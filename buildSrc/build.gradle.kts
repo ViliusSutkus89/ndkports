@@ -17,6 +17,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib", kotlinVersion))
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1")
 
     implementation("com.google.prefab:api:1.1.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.0")

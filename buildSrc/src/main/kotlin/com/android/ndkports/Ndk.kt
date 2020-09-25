@@ -17,7 +17,6 @@
 package com.android.ndkports
 
 import java.io.File
-import java.lang.RuntimeException
 
 class Ndk(val path: File) {
     val version = NdkVersion.fromNdk(path)
@@ -36,4 +35,5 @@ class Ndk(val path: File) {
 
     private val toolchainDirectory = llvmBaseDir.resolve(hostTag)
     val toolchainBinDirectory = toolchainDirectory.resolve("bin")
+    val sysrootDirectory = toolchainDirectory.resolve("sysroot")
 }

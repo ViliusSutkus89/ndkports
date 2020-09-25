@@ -29,6 +29,7 @@ data class PackageData(
     val name: String,
     val mavenVersion: String,
     val prefabVersion: CMakeCompatibleVersion,
+    val minSdkVersion: Int,
     val licensePath: String,
     val modules: List<ModuleDescription>,
     val dependencies: Map<String, String>,
@@ -63,7 +64,6 @@ class PrefabPackageBuilder(
     private val directory: File,
     private val sourceDirectory: File,
     private val ndk: Ndk,
-    private val abiToApiMap: Map<Abi, Int>,
 ) {
     private val prefabDirectory = packageDirectory.resolve("prefab")
     private val modulesDirectory = prefabDirectory.resolve("modules")
@@ -110,17 +110,11 @@ class PrefabPackageBuilder(
         directory.resolve("$abi/lib/$libName")
             .copyTo(installDirectory.resolve(libName))
 
-        val api = abiToApiMap.getOrElse(abi) {
-            throw RuntimeException(
-                "No API level specified for ${abi.abiName}"
-            )
-        }
-
         installDirectory.resolve("abi.json").writeText(
             Json.encodeToString(
                 AndroidAbiMetadata(
                     abi = abi.abiName,
-                    api = api,
+                    api = abi.adjustMinSdkVersion(packageData.minSdkVersion),
                     ndk = ndk.version.major,
                     stl = "c++_shared"
                 )
@@ -147,7 +141,7 @@ class PrefabPackageBuilder(
 
                 "uses-sdk" {
                     attributes(
-                        "android:minSdkVersion" to 16,
+                        "android:minSdkVersion" to packageData.minSdkVersion,
                         "android:targetSdkVersion" to 29
                     )
                 }

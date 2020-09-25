@@ -24,7 +24,7 @@ import javax.inject.Inject
 
 @Suppress("UnstableApiUsage")
 abstract class MesonPortTask @Inject constructor(objects: ObjectFactory) :
-    NdkPortsTask() {
+    PortTask() {
     enum class DefaultLibraryType(val argument: String) {
         Both("both"), Shared("shared"), Static("static")
     }

@@ -1,6 +1,6 @@
 import com.android.ndkports.AutoconfPortTask
 import com.android.ndkports.CMakeCompatibleVersion
-import com.android.ndkports.PrefabTask
+import com.android.ndkports.PrefabSysrootPlugin
 
 val portVersion = "7.69.1"
 
@@ -16,44 +16,34 @@ dependencies {
     implementation(project(":openssl"))
 }
 
-abstract class CurlPortTask : AutoconfPortTask() {
-    @get:InputDirectory
-    abstract val sysroot: DirectoryProperty
+ndkPorts {
+    ndkPath.set(File(project.findProperty("ndkPath") as String))
+    source.set(project.file("src.tar.gz"))
+    minSdkVersion.set(16)
+}
 
-    override fun configureArgs(
-        workingDirectory: File,
-        toolchain: com.android.ndkports.Toolchain
-    ): List<String> {
-        return listOf(
+tasks.prefab {
+    generator.set(PrefabSysrootPlugin::class.java)
+}
+
+tasks.register<AutoconfPortTask>("buildPort") {
+    autoconf {
+        args(
             "--disable-ntlm-wb",
             "--enable-ipv6",
             "--with-zlib",
             "--with-ca-path=/system/etc/security/cacerts",
-            "--with-ssl=${sysroot.get().asFile.resolve(toolchain.abi.triple)}"
+            "--with-ssl=$sysroot"
         )
-    }
 
-    override fun configureEnv(
-        workingDirectory: File,
-        toolchain: com.android.ndkports.Toolchain
-    ): Map<String, String> = mapOf(
         // aarch64 still defaults to bfd which transitively checks libraries.
         // When curl is linking one of its own libraries which depends on
         // openssl, it doesn't pass -rpath-link to be able to find the SSL
         // libraries and fails to build because of it.
         //
         // TODO: Switch to lld once we're using r21.
-        "LDFLAGS" to "-fuse-ld=gold"
-    )
-}
-
-ndkPorts {
-    ndkPath.set(File(project.findProperty("ndkPath") as String))
-    source.set(project.file("src.tar.gz"))
-}
-
-tasks.register<CurlPortTask>("buildPort") {
-    sysroot.set(tasks.getByName<PrefabTask>("prefab").sysrootDirectory)
+        env("LDFLAGS", "-fuse-ld=gold")
+    }
 }
 
 tasks.prefabPackage {
@@ -61,17 +51,19 @@ tasks.prefabPackage {
 
     licensePath.set("COPYING")
 
-    @Suppress("UnstableApiUsage")
-    dependencies.set(mapOf(
-        "openssl" to "1.1.1g"
-    ))
+    @Suppress("UnstableApiUsage") dependencies.set(
+        mapOf(
+            "openssl" to "1.1.1g"
+        )
+    )
 
     modules {
         create("curl") {
-            dependencies.set(listOf(
-                "//openssl:crypto",
-                "//openssl:ssl"
-            ))
+            dependencies.set(
+                listOf(
+                    "//openssl:crypto", "//openssl:ssl"
+                )
+            )
         }
     }
 }

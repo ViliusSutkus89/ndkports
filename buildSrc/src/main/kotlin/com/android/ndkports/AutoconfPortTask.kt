@@ -16,18 +16,18 @@
 
 package com.android.ndkports
 
+import org.gradle.api.provider.Property
+import org.gradle.api.tasks.Input
 import java.io.File
 
-abstract class AutoconfPortTask : NdkPortsTask() {
-    open fun configureArgs(
-        workingDirectory: File,
-        toolchain: Toolchain,
-    ): List<String> = emptyList()
+class AutoconfBuilder(val toolchain: Toolchain, val sysroot: File) :
+    RunBuilder()
 
-    open fun configureEnv(
-        workingDirectory: File,
-        toolchain: Toolchain,
-    ): Map<String, String> = emptyMap()
+abstract class AutoconfPortTask : PortTask() {
+    @get:Input
+    abstract val autoconf: Property<AutoconfBuilder.() -> Unit>
+
+    fun autoconf(block: AutoconfBuilder.() -> Unit) = autoconf.set(block)
 
     override fun buildForAbi(
         toolchain: Toolchain,
@@ -36,11 +36,19 @@ abstract class AutoconfPortTask : NdkPortsTask() {
         installDirectory: File
     ) {
         buildDirectory.mkdirs()
+
+        val autoconfBlock = autoconf.get()
+        val builder = AutoconfBuilder(
+            toolchain,
+            prefabGenerated.get().asFile.resolve(toolchain.abi.triple)
+        )
+        builder.autoconfBlock()
+
         executeSubprocess(listOf(
             "${sourceDirectory.get().asFile.absolutePath}/configure",
             "--host=${toolchain.binutilsTriple}",
             "--prefix=${installDirectory.absolutePath}"
-        ) + configureArgs(workingDirectory, toolchain),
+        ) + builder.cmd,
             buildDirectory,
             additionalEnvironment = mutableMapOf(
                 "AR" to toolchain.ar.absolutePath,
@@ -49,7 +57,7 @@ abstract class AutoconfPortTask : NdkPortsTask() {
                 "RANLIB" to toolchain.ranlib.absolutePath,
                 "STRIP" to toolchain.strip.absolutePath,
                 "PATH" to "${toolchain.binDir}:${System.getenv("PATH")}"
-            ).apply { putAll(configureEnv(workingDirectory, toolchain)) })
+            ).apply { putAll(builder.env) })
 
         executeSubprocess(listOf("make", "-j$ncpus"), buildDirectory)
 

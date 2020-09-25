@@ -10,6 +10,7 @@ import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.plugins.BasePlugin
+import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.bundling.Zip
 import javax.inject.Inject
@@ -18,12 +19,14 @@ abstract class NdkPortsExtension {
     abstract val source: RegularFileProperty
 
     abstract val ndkPath: DirectoryProperty
+
+    abstract val minSdkVersion: Property<Int>
 }
 
 class NdkPortsPluginImpl(
     private val project: Project,
-    private val objects: ObjectFactory,
     private val softwareComponentFactory: SoftwareComponentFactory,
+    objects: ObjectFactory,
 ) {
     private val topBuildDir = project.buildDir.resolve("port")
 
@@ -31,7 +34,7 @@ class NdkPortsPluginImpl(
         project.extensions.create("ndkPorts", NdkPortsExtension::class.java)
 
     private var portTaskAdded: Boolean = false
-    private val portTask = objects.property(NdkPortsTask::class.java)
+    private val portTask = objects.property(PortTask::class.java)
     private lateinit var prefabTask: Provider<PrefabTask>
     private lateinit var extractTask: Provider<SourceExtractTask>
     private lateinit var packageTask: Provider<PackageBuilderTask>
@@ -78,8 +81,7 @@ class NdkPortsPluginImpl(
                 aars = consumedAars.incoming.artifacts.artifactFiles
                 outputDirectory.set(topBuildDir.resolve("dependencies"))
                 ndkPath.set(extension.ndkPath)
-                // TODO: Set from extension.
-                minSdkVersion.set(16)
+                minSdkVersion.set(extension.minSdkVersion)
             }
         }
 
@@ -107,6 +109,7 @@ class NdkPortsPluginImpl(
                 outDir.set(topBuildDir)
                 ndkPath.set(extension.ndkPath)
                 installDirectory.set(portTask.get().installDir)
+                minSdkVersion.set(extension.minSdkVersion)
             }
         }
 
@@ -118,7 +121,7 @@ class NdkPortsPluginImpl(
 
         project.artifacts.add(exportedAars.name, aarTask)
 
-        val portTasks = project.tasks.withType(NdkPortsTask::class.java)
+        val portTasks = project.tasks.withType(PortTask::class.java)
         portTasks.whenTaskAdded { portTask ->
             if (portTaskAdded) {
                 throw InvalidUserDataException(
@@ -132,6 +135,18 @@ class NdkPortsPluginImpl(
                 sourceDirectory.set(extractTask.get().outDir)
                 ndkPath.set(extension.ndkPath)
                 buildDir.set(topBuildDir)
+                minSdkVersion.set(extension.minSdkVersion)
+                prefabGenerated.set(prefabTask.get().generatedDirectory)
+            }
+        }
+
+        val testTasks =
+            project.tasks.withType(AndroidExecutableTestTask::class.java)
+        testTasks.whenTaskAdded { testTask ->
+            with (testTask) {
+                dependsOn(aarTask)
+                minSdkVersion.set(extension.minSdkVersion)
+                ndkPath.set(extension.ndkPath)
             }
         }
     }
@@ -158,6 +173,6 @@ class NdkPortsPlugin @Inject constructor(
     private val softwareComponentFactory: SoftwareComponentFactory,
 ) : Plugin<Project> {
     override fun apply(project: Project) {
-        NdkPortsPluginImpl(project, objects, softwareComponentFactory).apply()
+        NdkPortsPluginImpl(project, softwareComponentFactory, objects).apply()
     }
 }

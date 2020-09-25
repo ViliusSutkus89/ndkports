@@ -29,6 +29,8 @@ class Toolchain(val ndk: Ndk, val abi: Abi, val api: Int) {
         else -> "$binutilsTriple$api"
     }
 
+    val sysrootLibs = ndk.sysrootDirectory.resolve("usr/lib/$binutilsTriple")
+
     val binDir = ndk.toolchainBinDirectory
     val ar = binDir.resolve("$binutilsTriple-ar")
     val clang = binDir.resolve("$clangTriple-clang")
