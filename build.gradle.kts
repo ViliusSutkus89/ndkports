@@ -1,7 +1,9 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+val kotlinVersion = "1.4.20"
+
 plugins {
-    kotlin("jvm") version "1.3.72"
+    kotlin("jvm") version "1.4.20"
     application
 }
 
@@ -16,13 +18,20 @@ repositories {
 }
 
 dependencies {
-    implementation(kotlin("stdlib", "1.3.72"))
-    implementation(kotlin("reflect", "1.3.72"))
+    implementation(kotlin("stdlib", kotlinVersion))
+    implementation(kotlin("reflect", kotlinVersion))
+
+    // JSR223 support.
+    implementation(kotlin("script-runtime", kotlinVersion))
+    implementation(kotlin("script-util", kotlinVersion))
+    implementation(kotlin("compiler-embeddable", kotlinVersion))
+    implementation(kotlin("scripting-compiler-embeddable", kotlinVersion))
+    implementation("net.java.dev.jna:jna:5.6.0")
+    runtime(kotlin("scripting-compiler-embeddable", kotlinVersion))
 
     implementation("com.google.prefab:api:1.0.0")
 
     implementation("com.github.ajalt:clikt:2.2.0")
-    implementation("de.swirtz:ktsRunner:0.0.7")
     implementation("org.apache.maven:maven-core:3.6.2")
     implementation("org.redundent:kotlin-xml-builder:1.5.3")
 

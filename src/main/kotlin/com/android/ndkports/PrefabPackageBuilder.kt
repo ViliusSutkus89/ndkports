@@ -20,6 +20,7 @@ import com.google.prefab.api.AndroidAbiMetadata
 import com.google.prefab.api.ModuleMetadataV1
 import com.google.prefab.api.PackageMetadataV1
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonConfiguration
 import kotlinx.serialization.stringify
 import org.apache.maven.model.Dependency
 import org.apache.maven.model.Developer
@@ -110,7 +111,7 @@ class PrefabPackageBuilder(
 
     private fun makePackageMetadata() {
         prefabDirectory.resolve("prefab.json").writeText(
-            Json.stringify(
+            Json(JsonConfiguration.Stable).stringify(
                 PackageMetadataV1(
                     port.name,
                     schemaVersion = 1,
@@ -123,7 +124,7 @@ class PrefabPackageBuilder(
 
     private fun makeModuleMetadata(module: Module, moduleDirectory: File) {
         moduleDirectory.resolve("module.json").writeText(
-            Json.stringify(
+            Json(JsonConfiguration.Stable).stringify(
                 ModuleMetadataV1(
                     exportLibraries = module.dependencies
                 )
@@ -147,7 +148,7 @@ class PrefabPackageBuilder(
         }
 
         installDirectory.resolve("abi.json").writeText(
-            Json.stringify(
+            Json(JsonConfiguration.Stable).stringify(
                 AndroidAbiMetadata(
                     abi = abi.abiName,
                     api = api,

@@ -26,10 +26,10 @@ import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.file
-import de.swirtz.ktsrunner.objectloader.KtsObjectLoader
 import java.io.File
 import java.io.FileNotFoundException
 import java.lang.RuntimeException
+import javax.script.ScriptEngineManager
 import kotlin.system.exitProcess
 
 class Cli : CliktCommand(help = "ndkports") {
@@ -67,7 +67,9 @@ class Cli : CliktCommand(help = "ndkports") {
             }
         }
 
-        return KtsObjectLoader().load(portFile.reader())
+        val engine = ScriptEngineManager().getEngineByExtension("kts")
+            ?: throw RuntimeException("Could not get kts scripting engine")
+        return engine.eval(portFile.readText()) as Port
     }
 
     override fun run() {
