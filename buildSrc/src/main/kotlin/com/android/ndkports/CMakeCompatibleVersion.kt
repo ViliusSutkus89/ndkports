@@ -16,7 +16,7 @@
 
 package com.android.ndkports
 
-import java.io.File
+import java.io.Serializable
 
 /**
  * A version number that is compatible with CMake's package version format.
@@ -31,7 +31,7 @@ data class CMakeCompatibleVersion(
     val minor: Int?,
     val patch: Int?,
     val tweak: Int?
-) {
+) : Serializable {
     init {
         if (tweak != null) {
             require(patch != null)

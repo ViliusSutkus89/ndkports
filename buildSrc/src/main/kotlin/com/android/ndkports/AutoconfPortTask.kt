@@ -18,31 +18,29 @@ package com.android.ndkports
 
 import java.io.File
 
-abstract class AutoconfPort : Port() {
+abstract class AutoconfPortTask : NdkPortsTask() {
     open fun configureArgs(
         workingDirectory: File,
-        toolchain: Toolchain
+        toolchain: Toolchain,
     ): List<String> = emptyList()
 
     open fun configureEnv(
         workingDirectory: File,
-        toolchain: Toolchain
+        toolchain: Toolchain,
     ): Map<String, String> = emptyMap()
 
-    override fun configure(
+    override fun buildForAbi(
         toolchain: Toolchain,
-        sourceDirectory: File,
+        workingDirectory: File,
         buildDirectory: File,
-        installDirectory: File,
-        workingDirectory: File
-    ): Result<Unit, String> {
+        installDirectory: File
+    ) {
         buildDirectory.mkdirs()
-        return executeProcessStep(
-            listOf(
-                "${sourceDirectory.absolutePath}/configure",
-                "--host=${toolchain.binutilsTriple}",
-                "--prefix=${installDirectory.absolutePath}"
-            ) + configureArgs(workingDirectory, toolchain),
+        executeSubprocess(listOf(
+            "${sourceDirectory.get().asFile.absolutePath}/configure",
+            "--host=${toolchain.binutilsTriple}",
+            "--prefix=${installDirectory.absolutePath}"
+        ) + configureArgs(workingDirectory, toolchain),
             buildDirectory,
             additionalEnvironment = mutableMapOf(
                 "AR" to toolchain.ar.absolutePath,
@@ -51,24 +49,12 @@ abstract class AutoconfPort : Port() {
                 "RANLIB" to toolchain.ranlib.absolutePath,
                 "STRIP" to toolchain.strip.absolutePath,
                 "PATH" to "${toolchain.binDir}:${System.getenv("PATH")}"
-            ).apply { putAll(configureEnv(workingDirectory, toolchain)) }
-        )
-    }
+            ).apply { putAll(configureEnv(workingDirectory, toolchain)) })
 
-    override fun build(
-        toolchain: Toolchain,
-        buildDirectory: File
-    ): Result<Unit, String> =
-        executeProcessStep(
-            listOf("make", "-j$ncpus"), buildDirectory
-        )
+        executeSubprocess(listOf("make", "-j$ncpus"), buildDirectory)
 
-    override fun install(
-        toolchain: Toolchain,
-        buildDirectory: File,
-        installDirectory: File
-    ): Result<Unit, String> =
-        executeProcessStep(
+        executeSubprocess(
             listOf("make", "-j$ncpus", "install"), buildDirectory
         )
+    }
 }

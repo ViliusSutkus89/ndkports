@@ -16,21 +16,6 @@
 
 package com.android.ndkports
 
-sealed class Result<out T, out E> {
-    data class Ok<T>(val value: T) : Result<T, Nothing>()
-    data class Error<E>(val error: E) : Result<Nothing, E>()
+import java.io.Serializable
 
-    inline fun onSuccess(block: (T) -> Unit): Result<T, E> {
-        if (this is Ok<T>) {
-            block(value)
-        }
-        return this
-    }
-
-    inline fun onFailure(block: (E) -> Unit): Result<T, E> {
-        if (this is Error<E>) {
-            block(error)
-        }
-        return this
-    }
-}
+data class License(val name: String, val url: String) : Serializable

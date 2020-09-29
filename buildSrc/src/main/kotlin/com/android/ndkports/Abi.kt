@@ -16,9 +16,9 @@
 
 package com.android.ndkports
 
-enum class Abi(val archName: String, val abiName: String) {
-    Arm("arm", "armeabi-v7a"),
-    Arm64("arm64", "arm64-v8a"),
-    X86("x86", "x86"),
-    X86_64("x86_64", "x86_64"),
+enum class Abi(val archName: String, val abiName: String, val triple: String) {
+    Arm("arm", "armeabi-v7a", "arm-linux-androideabi"),
+    Arm64("arm64", "arm64-v8a", "aarch64-linux-android"),
+    X86("x86", "x86", "i686-linux-android"),
+    X86_64("x86_64", "x86_64", "x86_64-linux-android"),
 }

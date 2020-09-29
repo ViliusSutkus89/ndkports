@@ -16,24 +16,41 @@
 
 package com.android.ndkports
 
+import org.gradle.api.model.ObjectFactory
+import org.gradle.api.provider.Property
+import org.gradle.api.tasks.Input
 import java.io.File
+import javax.inject.Inject
 
-abstract class MesonPort : Port() {
+@Suppress("UnstableApiUsage")
+abstract class MesonPortTask @Inject constructor(objects: ObjectFactory) :
+    NdkPortsTask() {
     enum class DefaultLibraryType(val argument: String) {
-        Both("both"),
-        Shared("shared"),
-        Static("static")
+        Both("both"), Shared("shared"), Static("static")
     }
 
-    open val defaultLibraryType: DefaultLibraryType = DefaultLibraryType.Shared
+    @get:Input
+    val defaultLibraryType: Property<DefaultLibraryType> =
+        objects.property(DefaultLibraryType::class.java)
+            .convention(DefaultLibraryType.Shared)
 
-    override fun configure(
+    override fun buildForAbi(
         toolchain: Toolchain,
-        sourceDirectory: File,
+        workingDirectory: File,
         buildDirectory: File,
-        installDirectory: File,
-        workingDirectory: File
-    ): Result<Unit, String> {
+        installDirectory: File
+    ) {
+        configure(toolchain, workingDirectory, buildDirectory, installDirectory)
+        build(buildDirectory)
+        install(buildDirectory)
+    }
+
+    private fun configure(
+        toolchain: Toolchain,
+        workingDirectory: File,
+        buildDirectory: File,
+        installDirectory: File
+    ) {
         val cpuFamily = when (toolchain.abi) {
             Abi.Arm -> "arm"
             Abi.Arm64 -> "aarch64"
@@ -49,7 +66,8 @@ abstract class MesonPort : Port() {
         }
 
         val crossFile = workingDirectory.resolve("cross_file.txt").apply {
-            writeText("""
+            writeText(
+                """
             [binaries]
             ar = '${toolchain.ar}'
             c = '${toolchain.clang}'
@@ -61,10 +79,11 @@ abstract class MesonPort : Port() {
             cpu_family = '$cpuFamily'
             cpu = '$cpu'
             endian = 'little'
-            """.trimIndent())
+            """.trimIndent()
+            )
         }
 
-        return executeProcessStep(
+        executeSubprocess(
             listOf(
                 "meson",
                 "--cross-file",
@@ -74,23 +93,16 @@ abstract class MesonPort : Port() {
                 "--prefix",
                 installDirectory.absolutePath,
                 "--default-library",
-                defaultLibraryType.argument,
-                sourceDirectory.absolutePath,
+                defaultLibraryType.get().argument,
+                sourceDirectory.get().asFile.absolutePath,
                 buildDirectory.absolutePath
             ), workingDirectory
         )
     }
 
-    override fun build(
-        toolchain: Toolchain,
-        buildDirectory: File
-    ): Result<Unit, String> =
-        executeProcessStep(listOf("ninja", "-v"), buildDirectory)
+    private fun build(buildDirectory: File) =
+        executeSubprocess(listOf("ninja", "-v"), buildDirectory)
 
-    override fun install(
-        toolchain: Toolchain,
-        buildDirectory: File,
-        installDirectory: File
-    ): Result<Unit, String> =
-        executeProcessStep(listOf("ninja", "-v", "install"), buildDirectory)
+    private fun install(buildDirectory: File) =
+        executeSubprocess(listOf("ninja", "-v", "install"), buildDirectory)
 }
