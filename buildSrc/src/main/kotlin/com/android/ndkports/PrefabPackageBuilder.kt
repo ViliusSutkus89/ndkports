@@ -52,8 +52,9 @@ data class PackageData(
  */
 data class ModuleDescription(
     val name: String,
-    val includesPerAbi: Boolean = false,
-    val dependencies: List<String> = emptyList()
+    val headerOnly: Boolean,
+    val includesPerAbi: Boolean,
+    val dependencies: List<String>
 ) : Serializable
 
 class PrefabPackageBuilder(
@@ -171,9 +172,11 @@ class PrefabPackageBuilder(
                     .copyRecursively(moduleDirectory.resolve("include"))
             }
 
-            val libsDir = moduleDirectory.resolve("libs").apply { mkdirs() }
-            for (abi in Abi.values()) {
-                installLibForAbi(module, abi, libsDir)
+            if (!module.headerOnly) {
+                val libsDir = moduleDirectory.resolve("libs").apply { mkdirs() }
+                for (abi in Abi.values()) {
+                    installLibForAbi(module, abi, libsDir)
+                }
             }
         }
 

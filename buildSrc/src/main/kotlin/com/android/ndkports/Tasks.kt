@@ -196,6 +196,11 @@ abstract class ModuleProperty @Inject constructor(
 ) {
     @Suppress("UnstableApiUsage")
     @get:Input
+    val headerOnly: Property<Boolean> =
+        objectFactory.property(Boolean::class.java).convention(false)
+
+    @Suppress("UnstableApiUsage")
+    @get:Input
     val includesPerAbi: Property<Boolean> =
         objectFactory.property(Boolean::class.java).convention(false)
 
@@ -270,7 +275,10 @@ abstract class PackageBuilderTask @Inject constructor(
         )
         val modules = modules.asMap.values.map {
             ModuleDescription(
-                it.name, it.includesPerAbi.get(), it.dependencies.get()
+                it.name,
+                it.headerOnly.get(),
+                it.includesPerAbi.get(),
+                it.dependencies.get()
             )
         }
         PrefabPackageBuilder(
