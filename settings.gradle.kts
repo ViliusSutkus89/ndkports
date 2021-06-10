@@ -9,3 +9,6 @@ pluginManagement {
         }
     }
 }
+include("openssl")
+include("jsoncpp")
+include("curl")
