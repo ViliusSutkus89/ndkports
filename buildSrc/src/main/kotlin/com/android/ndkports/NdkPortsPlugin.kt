@@ -148,6 +148,7 @@ class NdkPortsPluginImpl(
                 minSdkVersion.set(extension.minSdkVersion)
                 ndkPath.set(extension.ndkPath)
             }
+            project.tasks.getByName("check").dependsOn(testTask)
         }
     }
 
