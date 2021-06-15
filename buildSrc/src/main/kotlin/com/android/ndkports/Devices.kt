@@ -72,6 +72,9 @@ class DeviceFleet {
         if (line.contains("unauthorized")) {
             return false
         }
+        if (line.startsWith("* daemon")) {
+            return false
+        }
         return true
     }
 
