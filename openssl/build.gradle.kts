@@ -1,9 +1,9 @@
-import com.android.ndkports.Abi
+
 import com.android.ndkports.AdHocPortTask
 import com.android.ndkports.AndroidExecutableTestTask
 import com.android.ndkports.CMakeCompatibleVersion
 
-val portVersion = "1.1.1g"
+val portVersion = "1.1.1k"
 val prefabVersion = CMakeCompatibleVersion(1, 1, 1, 7)
 
 group = "com.android.ndk.thirdparty"
@@ -68,7 +68,7 @@ tasks.register<AndroidExecutableTestTask>("test") {
     val deviceTestRelPath = File("testconf")
 
     val unsupportedTests = listOf(
-        // This test is empty and appears to just be broken in 1.1.1g.
+        // This test is empty and appears to just be broken in 1.1.1k.
         "16-certstatus.conf",
         // zlib support is not enabled.
         "22-compression.conf",
