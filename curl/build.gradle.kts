@@ -2,7 +2,7 @@ import com.android.ndkports.AutoconfPortTask
 import com.android.ndkports.CMakeCompatibleVersion
 import com.android.ndkports.PrefabSysrootPlugin
 
-val portVersion = "7.69.1"
+val portVersion = "7.77.0"
 
 group = "com.android.ndk.thirdparty"
 version = "$portVersion-SNAPSHOT"
@@ -53,7 +53,7 @@ tasks.prefabPackage {
 
     @Suppress("UnstableApiUsage") dependencies.set(
         mapOf(
-            "openssl" to "1.1.1g"
+            "openssl" to "1.1.1k"
         )
     )
 
