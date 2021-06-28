@@ -2,6 +2,7 @@
 /build/
 /buildSrc/build/
 /curl/build/
+/googletest/build/
 /jsoncpp/build/
 /openssl/build/
 
