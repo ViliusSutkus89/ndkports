@@ -53,9 +53,10 @@ data class PackageData(
  */
 data class ModuleDescription(
     val name: String,
+    val static: Boolean,
     val headerOnly: Boolean,
     val includesPerAbi: Boolean,
-    val dependencies: List<String>
+    val dependencies: List<String>,
 ) : Serializable
 
 class PrefabPackageBuilder(
@@ -102,7 +103,8 @@ class PrefabPackageBuilder(
     }
 
     private fun installLibForAbi(module: ModuleDescription, abi: Abi, libsDir: File) {
-        val libName = "lib${module.name}.so"
+        val extension = if (module.static) "a" else "so"
+        val libName = "lib${module.name}.${extension}"
         val installDirectory = libsDir.resolve("android.${abi.abiName}").apply {
             mkdirs()
         }
