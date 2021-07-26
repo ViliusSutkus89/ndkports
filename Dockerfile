@@ -17,4 +17,4 @@ RUN mv platform-tools/adb /usr/bin/adb
 
 WORKDIR /src
 ENTRYPOINT ["./gradlew"]
-CMD ["-PndkPath=/ndk", "release"]
+CMD ["--stacktrace", "-PndkPath=/ndk", "release"]
