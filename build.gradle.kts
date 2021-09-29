@@ -21,8 +21,13 @@ distributions {
     }
 }
 
+tasks {
+    distZip {
+        dependsOn(project.getTasksByName("publish", true))
+    }
+}
+
 tasks.register("release") {
-    dependsOn(project.getTasksByName("build", true))
-    dependsOn(project.getTasksByName("publish", true))
+    dependsOn(project.getTasksByName("test", true))
     dependsOn(":distZip")
 }
