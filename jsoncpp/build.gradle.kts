@@ -2,7 +2,7 @@ import com.android.ndkports.AndroidExecutableTestTask
 import com.android.ndkports.CMakeCompatibleVersion
 import com.android.ndkports.MesonPortTask
 
-val portVersion = "1.9.4"
+val portVersion = "1.9.5"
 
 group = "com.android.ndk.thirdparty"
 version = "$portVersion-SNAPSHOT"
