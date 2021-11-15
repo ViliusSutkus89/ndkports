@@ -1,10 +1,26 @@
-
 import com.android.ndkports.AdHocPortTask
 import com.android.ndkports.AndroidExecutableTestTask
 import com.android.ndkports.CMakeCompatibleVersion
 
-val portVersion = "1.1.1k"
-val prefabVersion = CMakeCompatibleVersion(1, 1, 1, 7)
+fun openSslVersionToCMakeVersion(openSslVersion: String): CMakeCompatibleVersion {
+    val (major, minor, microAndLetter) = openSslVersion.split(".")
+    val letter = microAndLetter.last()
+    val micro = microAndLetter.substringBefore(letter)
+    val tweak = if (letter.isDigit()) {
+        // 1.1.1 is 1.1.1.0.
+        0
+    } else {
+        // 1.1.1a is 1.1.1.1.
+        letter.toInt() - 'a'.toInt() + 1
+    }
+
+    return CMakeCompatibleVersion(
+        major.toInt(), minor.toInt(), micro.toInt(), tweak
+    )
+}
+
+val portVersion = "1.1.1l"
+val prefabVersion = openSslVersionToCMakeVersion(portVersion)
 
 group = "com.android.ndk.thirdparty"
 version = "$portVersion-SNAPSHOT"
@@ -96,8 +112,7 @@ tasks.register<AndroidExecutableTestTask>("test") {
         for (file in testSrc.walk()) {
             if (file.extension == "conf") {
                 push(
-                    file,
-                    deviceTestRelPath.resolve(file.relativeTo(testSrc))
+                    file, deviceTestRelPath.resolve(file.relativeTo(testSrc))
                 )
             }
         }
