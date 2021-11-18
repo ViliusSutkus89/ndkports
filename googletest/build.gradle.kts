@@ -5,7 +5,7 @@ import com.android.ndkports.CMakePortTask
 val portVersion = "1.11.0"
 
 group = "com.android.ndk.thirdparty"
-version = "$portVersion-SNAPSHOT"
+version = "$portVersion${rootProject.extra.get("snapshotSuffix")}"
 
 plugins {
     id("maven-publish")

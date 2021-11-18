@@ -5,7 +5,7 @@ import com.android.ndkports.PrefabSysrootPlugin
 val portVersion = "7.79.1"
 
 group = "com.android.ndk.thirdparty"
-version = "$portVersion-SNAPSHOT"
+version = "$portVersion${rootProject.extra.get("snapshotSuffix")}"
 
 plugins {
     id("maven-publish")
