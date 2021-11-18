@@ -23,7 +23,7 @@ val portVersion = "1.1.1l"
 val prefabVersion = openSslVersionToCMakeVersion(portVersion)
 
 group = "com.android.ndk.thirdparty"
-version = "$portVersion-SNAPSHOT"
+version = "$portVersion${rootProject.extra.get("snapshotSuffix")}"
 
 plugins {
     id("maven-publish")

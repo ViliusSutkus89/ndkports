@@ -1,5 +1,17 @@
+buildscript {
+    val snapshotSuffix = if (hasProperty("release")) {
+        ""
+    } else {
+        "-SNAPSHOT"
+    }
+
+    extra.apply {
+        set("snapshotSuffix", snapshotSuffix)
+    }
+}
+
 group = "com.android"
-version = "1.0.0-SNAPSHOT"
+version = "1.0.0${extra.get("snapshotSuffix")}"
 
 plugins {
     distribution
