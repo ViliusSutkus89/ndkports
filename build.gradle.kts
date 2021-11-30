@@ -1,6 +1,8 @@
 buildscript {
     val snapshotSuffix = if (hasProperty("release")) {
-        ""
+        // We're still tagging releases as betas until we have more thorough
+        // test automation.
+        "-beta-1"
     } else {
         "-SNAPSHOT"
     }
