@@ -19,7 +19,7 @@ dependencies {
 ndkPorts {
     ndkPath.set(File(project.findProperty("ndkPath") as String))
     source.set(project.file("src.tar.gz"))
-    minSdkVersion.set(16)
+    minSdkVersion.set(19)
 }
 
 tasks.prefab {
@@ -35,14 +35,6 @@ tasks.register<AutoconfPortTask>("buildPort") {
             "--with-ca-path=/system/etc/security/cacerts",
             "--with-ssl=$sysroot"
         )
-
-        // aarch64 still defaults to bfd which transitively checks libraries.
-        // When curl is linking one of its own libraries which depends on
-        // openssl, it doesn't pass -rpath-link to be able to find the SSL
-        // libraries and fails to build because of it.
-        //
-        // TODO: Switch to lld once we're using r21.
-        env("LDFLAGS", "-fuse-ld=gold")
     }
 }
 
