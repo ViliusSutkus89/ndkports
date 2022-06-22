@@ -2,7 +2,7 @@ import com.android.ndkports.AutoconfPortTask
 import com.android.ndkports.CMakeCompatibleVersion
 import com.android.ndkports.PrefabSysrootPlugin
 
-val portVersion = "7.79.1"
+val portVersion = "7.83.1"
 
 group = "com.android.ndk.thirdparty"
 version = "$portVersion${rootProject.extra.get("snapshotSuffix")}"
