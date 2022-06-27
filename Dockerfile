@@ -14,7 +14,8 @@ RUN curl -L -o platform-tools.zip \
     https://dl.google.com/android/repository/platform-tools-latest-linux.zip
 RUN unzip platform-tools.zip platform-tools/adb
 RUN mv platform-tools/adb /usr/bin/adb
+RUN mkdir -m 0750 /.android
 
 WORKDIR /src
-ENTRYPOINT ["./gradlew"]
-CMD ["--stacktrace", "-PndkPath=/ndk", "release"]
+ENTRYPOINT ["./gradlew", "--no-daemon", "--gradle-user-home=.gradle_home", "--stacktrace", "-PndkPath=/ndk"]
+CMD ["-Prelease", "clean", "release"]
