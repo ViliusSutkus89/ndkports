@@ -36,3 +36,6 @@ To build a release for distribution to a Maven repo, `scripts/build_release.sh`
 To build a snapshot, `scripts/build_snapshot.sh`
 
 You can also pass custom gradle targets: `scripts/build_snapshot.sh curl`
+
+The scripts use the standard `ANDROID_NDK_ROOT` environment variable to
+locate the NDK. For example, `ANDROID_NDK_ROOT=/path/to/ndk scripts/build_release.sh`
