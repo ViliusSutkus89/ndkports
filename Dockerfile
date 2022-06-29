@@ -13,5 +13,5 @@ RUN mv platform-tools/adb /usr/bin/adb
 RUN mkdir -m 0750 /.android
 
 WORKDIR /src
-ENTRYPOINT ["./gradlew", "--no-daemon", "--gradle-user-home=.gradle_home", "--stacktrace"]
+ENTRYPOINT ["./gradlew", "--no-daemon", "--gradle-user-home=.gradle_home", "--stacktrace", "-PndkPath=/ndk"]
 CMD ["-Prelease", "clean", "release"]
