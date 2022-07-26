@@ -17,7 +17,6 @@ version = "1.0.0${extra.get("snapshotSuffix")}"
 
 repositories {
     mavenCentral()
-    jcenter()
     google()
 }
 
