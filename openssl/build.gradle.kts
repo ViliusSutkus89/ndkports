@@ -19,7 +19,7 @@ fun openSslVersionToCMakeVersion(openSslVersion: String): CMakeCompatibleVersion
     )
 }
 
-val portVersion = "1.1.1q"
+val portVersion = "1.1.1s"
 val prefabVersion = openSslVersionToCMakeVersion(portVersion)
 
 group = "com.android.ndk.thirdparty"
