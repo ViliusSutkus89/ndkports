@@ -64,11 +64,12 @@ abstract class PrefabTask : DefaultTask() {
 
     private fun extract(aar: File, extractDir: File) {
         ZipFile(aar).use { zip ->
+            extractDir.mkdirs()
             zip.entries().asSequence().forEach { entry ->
                 zip.getInputStream(entry).use { input ->
                     val outFile = extractDir.resolve(entry.name)
                     if (entry.isDirectory) {
-                        outFile.mkdirs()
+                        outFile.mkdir()
                     } else {
                         outFile.outputStream().use { output ->
                             input.copyTo(output)
