@@ -14,7 +14,3 @@ repositories {
     google()
 }
 
-tasks.register("release") {
-    dependsOn(project.getTasksByName("test", true))
-    dependsOn(project.getTasksByName("distZip", true))
-}
