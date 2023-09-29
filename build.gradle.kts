@@ -6,7 +6,7 @@ buildscript {
     }
 }
 
-group = "com.android"
+group = "com.viliussutkus89.ndk.thirdparty"
 version = "1.0.0"
 
 repositories {
