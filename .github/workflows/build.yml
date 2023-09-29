@@ -44,4 +44,11 @@ jobs:
       - run: sdkmanager "ndk;${{ matrix.ndk }}"
       - run: pip3 install --user ninja
 
-      - run: ./gradlew ${{ matrix.package }}:build -PndkPath=${{ env.ANDROID_SDK_ROOT }}/ndk/${{ matrix.ndk }}
+      - run: ./gradlew ${{ matrix.package }}:publishToMavenLocal -PndkPath=${{ env.ANDROID_SDK_ROOT }}/ndk/${{ matrix.ndk }}
+
+      - run: tar -cvf maven-local.tar ~/.m2
+      - uses: actions/upload-artifact@v3
+        with:
+          name: "${{ matrix.package }}-${{ matrix.ndk }}.tar"
+          path: maven-local.tar
+          if-no-files-found: error
