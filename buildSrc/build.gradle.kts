@@ -1,7 +1,7 @@
 val kotlinVersion = "1.7.10"
 
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.7.10"
+    id("org.jetbrains.kotlin.jvm") version "1.9.10"
     id("java-gradle-plugin")
     id("maven-publish")
 }
