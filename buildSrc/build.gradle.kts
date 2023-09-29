@@ -20,7 +20,7 @@ dependencies {
 
     implementation("com.google.prefab:api:1.1.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
-    implementation("org.redundent:kotlin-xml-builder:1.6.1")
+    implementation("org.redundent:kotlin-xml-builder:1.9.0")
 
     testImplementation(kotlin("test", kotlinVersion))
     testImplementation(kotlin("test-junit", kotlinVersion))
