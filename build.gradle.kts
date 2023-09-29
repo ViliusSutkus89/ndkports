@@ -1,8 +1,16 @@
 buildscript {
+    val ndkVersion = File(project.findProperty("ndkPath") as String).name
+    val majorNdkVersion = ndkVersion.split(".")[0].toInt()
+    val minSdkSupportedByNdk = if (majorNdkVersion >= 26) {
+        21
+    } else if (majorNdkVersion == 25) {
+        19
     } else {
+        16
     }
-
     extra.apply {
+        set("ndkVersionSuffix", "-ndk${ndkVersion}")
+        set("minSdkSupportedByNdk", minSdkSupportedByNdk)
     }
 }
 
