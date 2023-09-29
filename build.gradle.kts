@@ -1,3 +1,7 @@
+plugins {
+    id("io.github.gradle-nexus.publish-plugin") version "1.3.0"
+}
+
 buildscript {
     val ndkVersion = File(project.findProperty("ndkPath") as String).name
     val majorNdkVersion = ndkVersion.split(".")[0].toInt()
@@ -22,3 +26,8 @@ repositories {
     google()
 }
 
+nexusPublishing {
+    repositories {
+        sonatype()
+    }
+}
