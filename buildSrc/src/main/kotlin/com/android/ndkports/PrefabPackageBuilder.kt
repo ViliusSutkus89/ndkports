@@ -144,7 +144,7 @@ class PrefabPackageBuilder(
                 "uses-sdk" {
                     attributes(
                         "android:minSdkVersion" to packageData.minSdkVersion,
-                        "android:targetSdkVersion" to 29
+                        "android:targetSdkVersion" to 34
                     )
                 }
             }.toString())
