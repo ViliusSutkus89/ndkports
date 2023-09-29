@@ -16,3 +16,4 @@ pluginManagement {
 }
 
 include(":freetype")
+include(":iconv")
