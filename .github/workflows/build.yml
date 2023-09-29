@@ -32,5 +32,6 @@ jobs:
 
       - uses: android-actions/setup-android@v3
       - run: sdkmanager 'ndk;26.0.10792818'
+      - run: pip3 install --user ninja
 
       - run: ./gradlew build -PndkPath=${{ env.ANDROID_SDK_ROOT }}/ndk/26.0.10792818
