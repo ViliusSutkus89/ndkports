@@ -17,3 +17,4 @@ pluginManagement {
 
 include(":freetype")
 include(":iconv")
+include(":poppler")
