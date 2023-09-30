@@ -7,10 +7,8 @@ buildscript {
     val majorNdkVersion = ndkVersion.split(".")[0].toInt()
     val minSdkSupportedByNdk = if (majorNdkVersion >= 26) {
         21
-    } else if (majorNdkVersion == 25) {
-        19
     } else {
-        16
+        19
     }
     extra.apply {
         set("ndkVersionSuffix", "-ndk${ndkVersion}")

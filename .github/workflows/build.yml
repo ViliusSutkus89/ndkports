@@ -29,7 +29,6 @@ jobs:
         ndk:
           - "26.0.10792818"
           - "25.2.9519653"
-          - "24.0.8215888"
 # @TODO: return to matrix, once packages are in mavenCentral
 #        package:
 #          - "freetype"
