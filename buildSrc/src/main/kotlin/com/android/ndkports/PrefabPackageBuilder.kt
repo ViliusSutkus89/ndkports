@@ -68,6 +68,7 @@ class PrefabPackageBuilder(
 ) {
     private val prefabDirectory = packageDirectory.resolve("prefab")
     private val modulesDirectory = prefabDirectory.resolve("modules")
+    private val assetsDirectory = packageDirectory.resolve("assets")
 
     // TODO: Get from gradle.
     private val packageName = "com.android.ndk.thirdparty.${packageData.name}"
@@ -150,6 +151,13 @@ class PrefabPackageBuilder(
             }.toString())
     }
 
+    private fun installAssets() {
+        val sourceAssets = directory.parentFile.parentFile.resolve("assets")
+        if (sourceAssets.exists()) {
+            sourceAssets.copyRecursively(assetsDirectory)
+        }
+    }
+
     fun build() {
         preparePackageDirectory()
         makePackageMetadata()
@@ -175,6 +183,8 @@ class PrefabPackageBuilder(
                 }
             }
         }
+
+        installAssets()
 
         installLicense()
 
