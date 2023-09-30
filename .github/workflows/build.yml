@@ -50,6 +50,8 @@ jobs:
       - run: ./gradlew -PndkPath=${{env.ANDROID_SDK_ROOT}}/ndk/${{matrix.ndk}} iconv:publishToMavenLocal
       - run: ./gradlew -PndkPath=${{env.ANDROID_SDK_ROOT}}/ndk/${{matrix.ndk}} poppler:publishToMavenLocal
 
+      - run: ./gradlew -PndkPath=${{env.ANDROID_SDK_ROOT}}/ndk/${{matrix.ndk}} proxy-libintl:publishToMavenLocal
+
       - run: tar -cvf maven-local.tar ~/.m2
       - uses: actions/upload-artifact@v3
         with:

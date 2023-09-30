@@ -18,3 +18,4 @@ pluginManagement {
 include(":freetype")
 include(":iconv")
 include(":poppler")
+include(":proxy-libintl")
