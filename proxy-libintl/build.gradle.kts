@@ -49,7 +49,6 @@ publishing {
                 description.set("This is a trivial minimal library intended to act as a proxy for a dynamically loaded optional libintl.")
                 url.set("https://github.com/ViliusSutkus89/proxy-libintl")
                 licenses {
-                    // Poppler licenses
                     license {
                         name.set("GPLv2")
                         url.set("https://raw.githubusercontent.com/ViliusSutkus89/proxy-libintl/0.2/COPYING")
