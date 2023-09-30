@@ -43,7 +43,7 @@ jobs:
 
       - uses: android-actions/setup-android@v3
       - run: sdkmanager "ndk;${{ matrix.ndk }}"
-      - run: pip3 install --user ninja
+      - run: pip3 install --user ninja meson
 
 #      - run: ./gradlew ${{ matrix.package }}:publishToMavenLocal -PndkPath=${{ env.ANDROID_SDK_ROOT }}/ndk/${{ matrix.ndk }}
       - run: ./gradlew -PndkPath=${{env.ANDROID_SDK_ROOT}}/ndk/${{matrix.ndk}} freetype:publishToMavenLocal
