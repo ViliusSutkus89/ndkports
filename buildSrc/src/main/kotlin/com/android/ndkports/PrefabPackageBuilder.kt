@@ -71,7 +71,7 @@ class PrefabPackageBuilder(
     private val assetsDirectory = packageDirectory.resolve("assets")
 
     // TODO: Get from gradle.
-    private val packageName = "com.android.ndk.thirdparty.${packageData.name}"
+    private val packageName = "com.viliussutkus89.ndk.thirdparty.${packageData.name}"
 
     private fun preparePackageDirectory() {
         if (packageDirectory.exists()) {
