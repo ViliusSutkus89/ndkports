@@ -30,10 +30,11 @@ jobs:
           - "26.0.10792818"
           - "25.2.9519653"
           - "24.0.8215888"
-        package:
-          - "freetype"
-          - "iconv"
-          - "poppler"
+# @TODO: return to matrix, once packages are in mavenCentral
+#        package:
+#          - "freetype"
+#          - "iconv"
+#          - "poppler"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v3
@@ -45,11 +46,15 @@ jobs:
       - run: sdkmanager "ndk;${{ matrix.ndk }}"
       - run: pip3 install --user ninja
 
-      - run: ./gradlew ${{ matrix.package }}:publishToMavenLocal -PndkPath=${{ env.ANDROID_SDK_ROOT }}/ndk/${{ matrix.ndk }}
+#      - run: ./gradlew ${{ matrix.package }}:publishToMavenLocal -PndkPath=${{ env.ANDROID_SDK_ROOT }}/ndk/${{ matrix.ndk }}
+      - run: ./gradlew -PndkPath=${{env.ANDROID_SDK_ROOT}}/ndk/${{matrix.ndk}} freetype:publishToMavenLocal
+      - run: ./gradlew -PndkPath=${{env.ANDROID_SDK_ROOT}}/ndk/${{matrix.ndk}} iconv:publishToMavenLocal
+      - run: ./gradlew -PndkPath=${{env.ANDROID_SDK_ROOT}}/ndk/${{matrix.ndk}} poppler:publishToMavenLocal
 
       - run: tar -cvf maven-local.tar ~/.m2
       - uses: actions/upload-artifact@v3
         with:
-          name: "${{ matrix.package }}-${{ matrix.ndk }}.tar"
+#          name: "${{ matrix.package }}-${{ matrix.ndk }}.tar"
+          name: maven-local.tar
           path: maven-local.tar
           if-no-files-found: error
