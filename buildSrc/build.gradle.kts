@@ -18,7 +18,7 @@ dependencies {
     implementation(kotlin("stdlib", kotlinVersion))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3")
 
-    implementation("com.google.prefab:api:1.1.2")
+    implementation("com.google.prefab:api:2.0.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
     implementation("org.redundent:kotlin-xml-builder:1.6.1")
 
