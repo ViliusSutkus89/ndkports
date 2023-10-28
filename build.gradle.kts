@@ -1,26 +1,31 @@
-buildscript {
-    val snapshotSuffix = if (hasProperty("release")) {
-        // We're still tagging releases as betas until we have more thorough
-        // test automation.
-        "-beta-1"
-    } else {
-        "-SNAPSHOT"
-    }
+plugins {
+    id("io.github.gradle-nexus.publish-plugin") version "1.3.0"
+}
 
+buildscript {
+    val ndkVersion = File(project.findProperty("ndkPath") as String).name
+    val majorNdkVersion = ndkVersion.split(".")[0].toInt()
+    val minSdkSupportedByNdk = if (majorNdkVersion >= 26) {
+        21
+    } else {
+        19
+    }
     extra.apply {
-        set("snapshotSuffix", snapshotSuffix)
+        set("ndkVersionSuffix", "-ndk${majorNdkVersion}")
+        set("minSdkSupportedByNdk", minSdkSupportedByNdk)
     }
 }
 
-group = "com.android"
-version = "1.0.0${extra.get("snapshotSuffix")}"
+group = "com.viliussutkus89.ndk.thirdparty"
+version = "1.0.0"
 
 repositories {
     mavenCentral()
     google()
 }
 
-tasks.register("release") {
-    dependsOn(project.getTasksByName("test", true))
-    dependsOn(project.getTasksByName("distZip", true))
+nexusPublishing {
+    repositories {
+        sonatype()
+    }
 }

@@ -68,9 +68,10 @@ class PrefabPackageBuilder(
 ) {
     private val prefabDirectory = packageDirectory.resolve("prefab")
     private val modulesDirectory = prefabDirectory.resolve("modules")
+    private val assetsDirectory = packageDirectory.resolve("assets")
 
     // TODO: Get from gradle.
-    private val packageName = "com.android.ndk.thirdparty.${packageData.name}"
+    private val packageName = "com.viliussutkus89.ndk.thirdparty.${packageData.name.replace("-", "_")}"
 
     private fun preparePackageDirectory() {
         if (packageDirectory.exists()) {
@@ -144,10 +145,17 @@ class PrefabPackageBuilder(
                 "uses-sdk" {
                     attributes(
                         "android:minSdkVersion" to packageData.minSdkVersion,
-                        "android:targetSdkVersion" to 29
+                        "android:targetSdkVersion" to 34
                     )
                 }
             }.toString())
+    }
+
+    private fun installAssets() {
+        val sourceAssets = directory.parentFile.parentFile.resolve("assets")
+        if (sourceAssets.exists()) {
+            sourceAssets.copyRecursively(assetsDirectory)
+        }
     }
 
     fun build() {
@@ -159,13 +167,32 @@ class PrefabPackageBuilder(
             }
 
             makeModuleMetadata(module, moduleDirectory)
+            Abi.values().forEach { abi ->
+                val includeDir = directory.resolve("${abi}/include")
+                if (module.includesPerAbi) {
+                    val destination = moduleDirectory.resolve("include/android.${abi.abiName}").apply { mkdir() }
+                    val commonHeaders = includeDir.listFiles { _, name -> !Abi.values().map { "android.${it.abiName}" }.contains(name) } ?: arrayOf<File>()
+                    val perAbiHeaders = includeDir.resolve("android.${abi.abiName}").listFiles() ?: arrayOf<File>()
+                    (commonHeaders + perAbiHeaders).forEach {
+                        it.copyRecursively(destination.resolve(it.name))
+                    }
+                } else {
+                    val destination = moduleDirectory.resolve("include").apply { mkdir() }
+                    includeDir.copyRecursively(destination) { file, exception ->
+                        if (exception !is FileAlreadyExistsException) {
+                            throw exception
+                        }
 
-            if (module.includesPerAbi) {
-                TODO()
-            } else {
-                // TODO: Check that headers are actually identical across ABIs.
-                directory.resolve("${Abi.Arm}/include")
-                    .copyRecursively(moduleDirectory.resolve("include"))
+                        if (!file.readBytes().contentEquals(exception.file.readBytes())) {
+                            val path = file.relativeTo(destination)
+                            throw RuntimeException(
+                                "Found duplicate headers with non-equal contents: $path"
+                            )
+                        }
+
+                        OnErrorAction.SKIP
+                    }
+                }
             }
 
             if (!module.headerOnly) {
@@ -175,6 +202,8 @@ class PrefabPackageBuilder(
                 }
             }
         }
+
+        installAssets()
 
         installLicense()
 

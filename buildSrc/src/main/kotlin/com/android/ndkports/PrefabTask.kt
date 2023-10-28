@@ -64,17 +64,19 @@ abstract class PrefabTask : DefaultTask() {
 
     private fun extract(aar: File, extractDir: File) {
         ZipFile(aar).use { zip ->
-            zip.entries().asSequence()
-                .filter { ! it.isDirectory }
-                .forEach { entry ->
-                    zip.getInputStream(entry).use { input ->
-                        val outFile = extractDir.resolve(entry.name)
-                        outFile.parentFile.mkdirs()
+            extractDir.mkdirs()
+            zip.entries().asSequence().forEach { entry ->
+                zip.getInputStream(entry).use { input ->
+                    val outFile = extractDir.resolve(entry.name)
+                    if (entry.isDirectory) {
+                        outFile.mkdir()
+                    } else {
                         outFile.outputStream().use { output ->
                             input.copyTo(output)
                         }
                     }
                 }
+            }
         }
     }
 
@@ -90,5 +92,24 @@ abstract class PrefabTask : DefaultTask() {
         buildSystemIntegration.generate(Android.Abi.values().map {
             Android(it, osVersion, Android.Stl.CxxShared, ndkVersion)
         })
+
+        updatePkgconfFiles()
+    }
+
+    private fun updatePkgconfFiles() {
+        val ndkPathAbsolute = ndkPath.asFile.get().absolutePath
+        val genDir = generatedDirectory.get().asFile
+        Abi.values().forEach { abi ->
+            val generatedDir = genDir.resolve(abi.triple)
+            generatedDir.resolve("lib").walkTopDown().forEach {
+                if (it.isFile && listOf("cmake", "pc", "la").contains(it.extension)) {
+                    it.writeText(
+                        it.readText()
+                            .replace("/__PREFAB__PACKAGE__PATH__", generatedDir.absolutePath)
+                            .replace("/__NDK__PATH__", ndkPathAbsolute)
+                    )
+                }
+            }
+        }
     }
 }

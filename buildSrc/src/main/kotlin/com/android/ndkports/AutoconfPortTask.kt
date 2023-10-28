@@ -16,14 +16,17 @@
 
 package com.android.ndkports
 
+import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import java.io.File
+import javax.inject.Inject
 
 class AutoconfBuilder(val toolchain: Toolchain, val sysroot: File) :
     RunBuilder()
 
-abstract class AutoconfPortTask : PortTask() {
+abstract class AutoconfPortTask @Inject constructor(objects: ObjectFactory) : PortTask(objects) {
+
     @get:Input
     abstract val autoconf: Property<AutoconfBuilder.() -> Unit>
 
@@ -31,38 +34,63 @@ abstract class AutoconfPortTask : PortTask() {
 
     override fun buildForAbi(
         toolchain: Toolchain,
-        workingDirectory: File,
+        portDirectory: File,
         buildDirectory: File,
-        installDirectory: File
+        installDirectory: File,
+        generatedDirectory: File
     ) {
-        buildDirectory.mkdirs()
-
         val autoconfBlock = autoconf.get()
         val builder = AutoconfBuilder(
-            toolchain,
-            prefabGenerated.get().asFile.resolve(toolchain.abi.triple)
+            toolchain, prefabGenerated.get().asFile.resolve(toolchain.abi.triple)
         )
         builder.autoconfBlock()
 
-        executeSubprocess(listOf(
-            "${sourceDirectory.get().asFile.absolutePath}/configure",
-            "--host=${toolchain.binutilsTriple}",
-            "--prefix=${installDirectory.absolutePath}"
-        ) + builder.cmd,
-            buildDirectory,
+        val libraryTypeArguments = when (defaultLibraryType.get()) {
+            DefaultLibraryType.Static -> listOf("--enable-static", "--disable-shared")
+            DefaultLibraryType.Shared -> listOf("--disable-static", "--enable-shared")
+            DefaultLibraryType.Both -> listOf("--enable-static", "--enable-shared")
+            else -> listOf("")
+        }
+
+        val logsDirectory = logsDirFor(toolchain.abi)
+
+        executeSubprocess(
+            args = listOf(
+                "${sourceDirectory.get().asFile.absolutePath}/configure",
+                "--host=${toolchain.binutilsTriple}",
+                "--prefix=${installDirectory.absolutePath}"
+            ) + libraryTypeArguments + builder.cmd,
+            workingDirectory = buildDirectory,
             additionalEnvironment = mutableMapOf(
                 "AR" to toolchain.ar.absolutePath,
                 "CC" to toolchain.clang.absolutePath,
                 "CXX" to toolchain.clangxx.absolutePath,
                 "RANLIB" to toolchain.ranlib.absolutePath,
                 "STRIP" to toolchain.strip.absolutePath,
-                "PATH" to "${toolchain.binDir}:${System.getenv("PATH")}"
-            ).apply { putAll(builder.env) })
-
-        executeSubprocess(listOf("make", "-j$ncpus"), buildDirectory)
+                "PKG_CONFIG_LIBDIR" to generatedDirectory.resolve("lib/pkgconfig").absolutePath,
+                "PATH" to "${toolchain.binDir}:${System.getenv("PATH")}",
+                "CFLAGS" to "-fPIC",
+                "CXXFLAGS" to "-fPIC",
+                "LDFLAGS" to "-pie",
+            ).apply {
+                builder.env.forEach {
+                    put(it.key,
+                        if (listOf("CFLAGS", "CXXFLAGS").contains(it.key))
+                            "-fPIC ${it.value}"
+                        else if ("LDFLAGS" == it.key)
+                            "-pie ${it.value}"
+                        else it.value
+                    )
+                }
+            }, logFile = logsDirectory.resolve("configure.log")
+        )
 
         executeSubprocess(
-            listOf("make", "-j$ncpus", "install"), buildDirectory
+            listOf("make", "-j$ncpus"), buildDirectory, logFile = logsDirFor(toolchain.abi).resolve("build.log")
+        )
+
+        executeSubprocess(
+            listOf("make", "-j$ncpus", "install"), buildDirectory, logFile = logsDirFor(toolchain.abi).resolve("install.log")
         )
     }
 }

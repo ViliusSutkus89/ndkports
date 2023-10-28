@@ -16,14 +16,16 @@
 
 package com.android.ndkports
 
+import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import java.io.File
+import javax.inject.Inject
 
 class CMakeBuilder(val toolchain: Toolchain, val sysroot: File) :
     RunBuilder()
 
-abstract class CMakePortTask : PortTask() {
+abstract class CMakePortTask @Inject constructor(objects: ObjectFactory) : PortTask(objects) {
     @get:Input
     abstract val cmake: Property<CMakeBuilder.() -> Unit>
 
@@ -31,46 +33,62 @@ abstract class CMakePortTask : PortTask() {
 
     override fun buildForAbi(
         toolchain: Toolchain,
-        workingDirectory: File,
+        portDirectory: File,
         buildDirectory: File,
-        installDirectory: File
-    ) {
-        configure(toolchain, buildDirectory, installDirectory)
-        build(buildDirectory)
-        install(buildDirectory)
-    }
-
-    private fun configure(
-        toolchain: Toolchain, buildDirectory: File, installDirectory: File
+        installDirectory: File,
+        generatedDirectory: File
     ) {
         val cmakeBlock = cmake.get()
-        val builder = CMakeBuilder(
-            toolchain,
-            prefabGenerated.get().asFile.resolve(toolchain.abi.triple)
-        )
+        val builder = CMakeBuilder(toolchain, generatedDirectory)
         builder.cmakeBlock()
 
-        val toolchainFile =
-            toolchain.ndk.path.resolve("build/cmake/android.toolchain.cmake")
+        val toolchainFile = toolchain.ndk.path.resolve("build/cmake/android.toolchain.cmake")
 
-        buildDirectory.mkdirs()
+        val libraryTypeArguments = when (defaultLibraryType.get()) {
+            DefaultLibraryType.Static -> listOf("-DBUILD_STATIC_LIBS=ON", "-DBUILD_SHARED_LIBS=OFF")
+            DefaultLibraryType.Shared -> listOf("-DBUILD_STATIC_LIBS=OFF", "-DBUILD_SHARED_LIBS=ON")
+            DefaultLibraryType.Both -> listOf("-DBUILD_STATIC_LIBS=ON", "-DBUILD_SHARED_LIBS=ON")
+            else -> listOf("")
+        }
+
+        val logsDirectory = logsDirFor(toolchain.abi)
+
         executeSubprocess(
-            listOf(
+            args = listOf(
                 "cmake",
                 "-DCMAKE_TOOLCHAIN_FILE=${toolchainFile.absolutePath}",
                 "-DCMAKE_BUILD_TYPE=RelWithDebInfo",
+                "-DCMAKE_PREFIX_PATH=${generatedDirectory.absolutePath}",
+                "-DCMAKE_FIND_ROOT_PATH=${generatedDirectory.absolutePath}",
                 "-DCMAKE_INSTALL_PREFIX=${installDirectory.absolutePath}",
                 "-DANDROID_ABI=${toolchain.abi.abiName}",
                 "-DANDROID_API_LEVEL=${toolchain.api}",
+                "-DANDROID_PLATFORM=${toolchain.api}",
                 "-GNinja",
                 sourceDirectory.get().asFile.absolutePath,
-            ) + builder.cmd, buildDirectory, builder.env
+            ) + libraryTypeArguments + builder.cmd,
+            workingDirectory = buildDirectory,
+            additionalEnvironment = mutableMapOf(
+                "PKG_CONFIG_LIBDIR" to generatedDirectory.resolve("lib/pkgconfig").absolutePath,
+                "CFLAGS" to "-fPIC",
+                "CXXFLAGS" to "-fPIC",
+                "LDFLAGS" to "-pie",
+            ).apply {
+                builder.env.forEach {
+                    put(it.key,
+                        if (listOf("CFLAGS", "CXXFLAGS").contains(it.key))
+                            "-fPIC ${it.value}"
+                        else if ("LDFLAGS" == it.key)
+                            "-pie ${it.value}"
+                        else it.value
+                    )
+                }
+            },
+            logFile = logsDirectory.resolve("configure.log")
         )
+
+        executeSubprocess(listOf("ninja", "-v"), buildDirectory, logFile = logsDirectory.resolve("build.log"))
+
+        executeSubprocess(listOf("ninja", "-v", "install"), buildDirectory, logFile = logsDirectory.resolve("install.log"))
     }
-
-    private fun build(buildDirectory: File) =
-        executeSubprocess(listOf("ninja", "-v"), buildDirectory)
-
-    private fun install(buildDirectory: File) =
-        executeSubprocess(listOf("ninja", "-v", "install"), buildDirectory)
 }

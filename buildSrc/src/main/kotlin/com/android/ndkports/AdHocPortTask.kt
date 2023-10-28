@@ -16,9 +16,11 @@
 
 package com.android.ndkports
 
+import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import java.io.File
+import javax.inject.Inject
 
 open class RunBuilder {
     val cmd = mutableListOf<String>()
@@ -43,7 +45,7 @@ class AdHocBuilder(
     }
 }
 
-abstract class AdHocPortTask : PortTask() {
+abstract class AdHocPortTask @Inject constructor(objects: ObjectFactory) : PortTask(objects) {
     @get:Input
     abstract val builder: Property<AdHocBuilder.() -> Unit>
 
@@ -51,9 +53,10 @@ abstract class AdHocPortTask : PortTask() {
 
     override fun buildForAbi(
         toolchain: Toolchain,
-        workingDirectory: File,
+        portDirectory: File,
         buildDirectory: File,
-        installDirectory: File
+        installDirectory: File,
+        generatedDirectory: File
     ) {
         buildDirectory.mkdirs()
 

@@ -25,36 +25,88 @@ class PrefabSysrootPlugin(
     private fun installModule(
         module: Module, requirement: PlatformDataInterface
     ) {
-        val installDir = outputDirectory.resolve(requirement.targetTriple)
-        val includeDir = installDir.resolve("include")
+        val installDir = outputDirectory.resolve(requirement.targetTriple).apply { mkdir() }
+        val includeDir = installDir.resolve("include").apply { mkdir() }
+        val libDir = installDir.resolve("lib").apply { mkdir() }
 
-        if (module.isHeaderOnly) {
-            installHeaders(module.includePath.toFile(), includeDir)
-            return
-        }
+        installHeaders(module.includePath.toFile(), includeDir, requirement.targetTriple)
+        migrateLibFiles(includeDir, libDir)
+        createZlibPkgconf(libDir)
 
-        val library = module.getLibraryFor(requirement)
-        installHeaders(module.includePath.toFile(), includeDir)
-        val libDir = installDir.resolve("lib").apply {
-            mkdirs()
+        if (!module.isHeaderOnly) {
+            module.getLibraryFor(requirement).path.toFile().apply {
+                copyTo(libDir.resolve(name))
+            }
         }
-        library.path.toFile().apply { copyTo(libDir.resolve(name)) }
     }
 
-    private fun installHeaders(src: File, dest: File) {
-        src.copyRecursively(dest) { file, exception ->
-            if (exception !is FileAlreadyExistsException) {
-                throw exception
-            }
+    private fun targetTripleToAbiName(triple: String): String {
+        return when (triple) {
+            "arm-linux-androideabi" -> "armeabi-v7a"
+            "aarch64-linux-android" -> "arm64-v8a"
+            "i686-linux-android" -> "x86"
+            "x86_64-linux-android" -> "x86_64"
+            else -> ""
+        }
+    }
 
-            if (!file.readBytes().contentEquals(exception.file.readBytes())) {
-                val path = file.relativeTo(dest)
-                throw RuntimeException(
-                    "Found duplicate headers with non-equal contents: $path"
-                )
-            }
+    private fun installHeaders(src: File, includeDir: File, abiTriple: String) {
+        val commonHeaders = src.listFiles { _, name -> !Abi.values().map { "android.${it.abiName}" }.contains(name) } ?: arrayOf<File>()
+        val perAbiHeaders = src.resolve("android.${targetTripleToAbiName(abiTriple)}").listFiles() ?: arrayOf<File>()
 
-            OnErrorAction.SKIP
+        (commonHeaders + perAbiHeaders).forEach {
+            it.copyRecursively(includeDir.resolve(it.name)) { file, exception ->
+                if (exception !is FileAlreadyExistsException) {
+                    throw exception
+                }
+
+                if (!file.readBytes().contentEquals(exception.file.readBytes())) {
+                    val path = file.relativeTo(includeDir)
+                    throw RuntimeException(
+                        "Found duplicate headers with non-equal contents: $path"
+                    )
+                }
+
+                OnErrorAction.SKIP
+            }
+        }
+    }
+
+    private fun migrateLibFiles(includeDir: File, libDir: File) {
+        includeDir.resolve("lib").let {
+            if (it.exists()) {
+                it.copyRecursively(libDir) { file, exception ->
+                    if (exception !is FileAlreadyExistsException) {
+                        throw exception
+                    }
+
+                    if (!file.readBytes().contentEquals(exception.file.readBytes())) {
+                        val path = file.relativeTo(includeDir)
+                        throw RuntimeException(
+                            "Found duplicate headers with non-equal contents: $path"
+                        )
+                    }
+
+                    OnErrorAction.SKIP
+                }
+                it.deleteRecursively()
+            }
+        }
+    }
+
+    private fun createZlibPkgconf(libDir: File) {
+        val zlibPc = libDir.resolve("pkgconfig/zlib.pc")
+        zlibPc.parentFile.mkdir()
+        if (!zlibPc.exists()) {
+            zlibPc.writeText("""
+                Name: zlib
+                Description: zlib compression library
+                Version: 1.2.7
+
+                Requires:
+                Libs: -lz
+
+            """.trimIndent())
         }
     }
 }

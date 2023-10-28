@@ -22,35 +22,29 @@ import org.gradle.api.tasks.Input
 import java.io.File
 import javax.inject.Inject
 
+class MesonBuilder(val toolchain: Toolchain, val sysroot: File) :
+    RunBuilder()
+
 @Suppress("UnstableApiUsage")
 abstract class MesonPortTask @Inject constructor(objects: ObjectFactory) :
-    PortTask() {
-    enum class DefaultLibraryType(val argument: String) {
-        Both("both"), Shared("shared"), Static("static")
-    }
+    PortTask(objects) {
 
     @get:Input
-    val defaultLibraryType: Property<DefaultLibraryType> =
-        objects.property(DefaultLibraryType::class.java)
-            .convention(DefaultLibraryType.Shared)
+    abstract val meson: Property<MesonBuilder.() -> Unit>
+
+    fun meson(block: MesonBuilder.() -> Unit) = meson.set(block)
 
     override fun buildForAbi(
         toolchain: Toolchain,
-        workingDirectory: File,
+        portDirectory: File,
         buildDirectory: File,
-        installDirectory: File
+        installDirectory: File,
+        generatedDirectory: File
     ) {
-        configure(toolchain, workingDirectory, buildDirectory, installDirectory)
-        build(buildDirectory)
-        install(buildDirectory)
-    }
+        val mesonBlock = meson.get()
+        val builder = MesonBuilder(toolchain, generatedDirectory)
+        builder.mesonBlock()
 
-    private fun configure(
-        toolchain: Toolchain,
-        workingDirectory: File,
-        buildDirectory: File,
-        installDirectory: File
-    ) {
         val cpuFamily = when (toolchain.abi) {
             Abi.Arm -> "arm"
             Abi.Arm64 -> "aarch64"
@@ -65,7 +59,7 @@ abstract class MesonPortTask @Inject constructor(objects: ObjectFactory) :
             Abi.X86_64 -> "x86_64"
         }
 
-        val crossFile = workingDirectory.resolve("cross_file.txt").apply {
+        val crossFile = portDirectory.resolve("cross_file-${toolchain.abi.triple}.txt").apply {
             writeText(
                 """
             [binaries]
@@ -73,36 +67,61 @@ abstract class MesonPortTask @Inject constructor(objects: ObjectFactory) :
             c = '${toolchain.clang}'
             cpp = '${toolchain.clangxx}'
             strip = '${toolchain.strip}'
+            pkg-config = 'pkg-config'
 
             [host_machine]
             system = 'android'
             cpu_family = '$cpuFamily'
             cpu = '$cpu'
             endian = 'little'
+
+            [built-in options]
+            default_library = '${defaultLibraryType.get().argument}'
+
+            [properties]
+            needs_exe_wrapper = true
+            pkg_config_libdir = '${generatedDirectory.resolve("lib/pkgconfig").absolutePath}'
+
             """.trimIndent()
             )
         }
 
+        val logsDirectory = logsDirFor(toolchain.abi)
         executeSubprocess(
-            listOf(
-                "meson",
-                "--cross-file",
-                crossFile.absolutePath,
-                "--buildtype",
-                "release",
-                "--prefix",
-                installDirectory.absolutePath,
-                "--default-library",
-                defaultLibraryType.get().argument,
-                sourceDirectory.get().asFile.absolutePath,
-                buildDirectory.absolutePath
-            ), workingDirectory
+            args = listOf(
+                "meson", "setup",
+                "--cross-file", crossFile.absolutePath,
+                "--buildtype", "release",
+                "--prefix", installDirectory.absolutePath,
+            ) + builder.cmd + listOf(
+                buildDirectory.absolutePath, sourceDirectory.get().asFile.absolutePath
+            ),
+            workingDirectory = buildDirectory,
+            additionalEnvironment = mutableMapOf<String, String>(
+                "CFLAGS" to "-fPIC",
+                "CXXFLAGS" to "-fPIC",
+                "LDFLAGS" to "-pie",
+            ).apply {
+                builder.env.forEach {
+                    put(it.key,
+                        if (listOf("CFLAGS", "CXXFLAGS").contains(it.key))
+                            "-fPIC ${it.value}"
+                        else if ("LDFLAGS" == it.key)
+                            "-pie ${it.value}"
+                        else it.value
+                    )
+                }
+            },
+            logFile = logsDirectory.resolve("configure.log"
+            )
+        )
+
+        executeSubprocess(
+            args = listOf("ninja", "-v"), workingDirectory = buildDirectory, logFile = logsDirectory.resolve("build.log")
+        )
+
+        executeSubprocess(
+            args = listOf("ninja", "-v", "install"), workingDirectory = buildDirectory, logFile = logsDirectory.resolve("install.log")
         )
     }
-
-    private fun build(buildDirectory: File) =
-        executeSubprocess(listOf("ninja", "-v"), buildDirectory)
-
-    private fun install(buildDirectory: File) =
-        executeSubprocess(listOf("ninja", "-v", "install"), buildDirectory)
 }
