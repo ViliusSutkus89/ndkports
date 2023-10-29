@@ -13,6 +13,14 @@ buildscript {
     extra.apply {
         set("ndkVersionSuffix", "-ndk${majorNdkVersion}")
         set("minSdkSupportedByNdk", minSdkSupportedByNdk)
+
+        if (project.findProperty("libraryType") == "shared") {
+            set("libraryType", "shared")
+            set("libraryTypeSuffix", "-shared")
+        } else {
+            set("libraryType", "static")
+            set("libraryTypeSuffix", "-static")
+        }
     }
 }
 

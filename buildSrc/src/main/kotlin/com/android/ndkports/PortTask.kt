@@ -25,7 +25,13 @@ abstract class PortTask(objects: ObjectFactory) : DefaultTask() {
     @get:Input
     val defaultLibraryType: Property<DefaultLibraryType> =
         objects.property(DefaultLibraryType::class.java)
-            .convention(DefaultLibraryType.Static)
+            .convention(
+                if (project.findProperty("libraryType") as String == "shared") {
+                    DefaultLibraryType.Shared
+                } else {
+                    DefaultLibraryType.Static
+                }
+            )
 
     @get:InputDirectory
     abstract val sourceDirectory: DirectoryProperty
