@@ -6,7 +6,8 @@ on:
         description: 'Package name'
         required: true
 jobs:
-  releaseSonatype:
+  release:
+    name: Release ${{ github.event.inputs.PACKAGE }} ${{ matrix.ndk }} ${{ matrix.libraryType }}
     environment: SonatypeAccess
     runs-on: ubuntu-22.04
     strategy:
