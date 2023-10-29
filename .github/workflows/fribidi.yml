@@ -1,24 +1,14 @@
-name: build
+env:
+  package: fribidi
+
+name: build ${{ env.package }}
 on:
   workflow_dispatch:
   push:
     branches: [ master, main ]
-    paths-ignore:
-      - '**.md'
-      - '.github/**'
-      - '!.github/workflows/build.yml'
-
-permissions:
-  actions: none
-  checks: none
-  contents: none
-  deployments: none
-  issues: none
-  packages: none
-  pull-requests: none
-  repository-projects: none
-  security-events: none
-  statuses: none
+    paths:
+      - 'buildSrc'
+      - ${{ env.package }}
 
 jobs:
   build:
@@ -32,8 +22,6 @@ jobs:
         libraryType:
           - "shared"
           - "static"
-        package:
-          - "fribidi"
 
     steps:
       - uses: actions/checkout@v4
@@ -48,18 +36,18 @@ jobs:
       - run: sdkmanager "ndk;${{ matrix.ndk }}"
       - run: pip3 install --user ninja meson
 
-      - run: ./gradlew ${{ matrix.package }}:publishToMavenLocal -PndkPath=${{ env.ANDROID_SDK_ROOT }}/ndk/${{ matrix.ndk }} -PlibraryType=${{ matrix.libraryType }}
+      - run: ./gradlew ${{ env.package }}:publishToMavenLocal -PndkPath=${{ env.ANDROID_SDK_ROOT }}/ndk/${{ matrix.ndk }} -PlibraryType=${{ matrix.libraryType }}
 
       - uses: actions/upload-artifact@v3
         with:
-          name: "${{ matrix.package }}-${{ matrix.ndk }}-logs"
-          path: "${{ matrix.package }}/build/port/logs"
+          name: "${{ env.package }}-${{ matrix.ndk }}-${{ matrix.libraryType }}-logs"
+          path: "${{ env.package }}/build/port/logs"
           if-no-files-found: error
 
       - run: tar -cvf maven-local.tar ~/.m2
       - uses: actions/upload-artifact@v3
         with:
-          name: "${{ matrix.package }}-${{ matrix.ndk }}.maven-local.tar"
+          name: "${{ env.package }}-${{ matrix.ndk }}-${{ matrix.libraryType }}.maven-local.tar"
           path: maven-local.tar
           if-no-files-found: error
 
