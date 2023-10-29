@@ -1,0 +1,16 @@
+name: freetype
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'buildSrc/**'
+      - 'freetype/**'
+      - '.github/workflows/build.yml'
+      - '.github/workflows/freetype.yml'
+
+jobs:
+  build:
+    name: freetype
+    uses: ./.github/workflows/build.yml
+    with:
+      package: freetype

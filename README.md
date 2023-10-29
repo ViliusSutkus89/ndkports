@@ -40,3 +40,5 @@ Figure out proper way to deliver per ABI headers.
 #### [GNU FriBidi](https://github.com/fribidi/fribidi)
 
 #### [libpng](http://libpng.org/pub/png/libpng.html)
+
+#### [freetype](https://freetype.org)

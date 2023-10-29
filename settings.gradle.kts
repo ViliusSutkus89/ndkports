@@ -15,5 +15,13 @@ pluginManagement {
     }
 }
 
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
+    repositories {
+        mavenCentral()
+    }
+}
+
+include(":freetype")
 include(":libpng")
 include(":fribidi")
