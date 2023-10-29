@@ -1,41 +1,38 @@
 # ndkports
 
-A collection of Android build scripts for various third-party libraries and the
+A collection of Android build scripts for various open source libraries and the
 tooling to build them.
 
-If you're an Android app developer looking to *consume* these libraries, this is
-probably not what you want. This project builds AARs to be published to Maven.
-You most likely want to use the AAR, not build it yourself.
+Buildscripts are based on Google's [ndkports](https://android.googlesource.com/platform/tools/ndkports/).
 
-Note: Gradle support for consuming these artifacts from an AAR is a work in
-progress.
+Compiled binaries are (will be) distributed through MavenCentral.
+
+## Matrix
+
+Each port is built on a matrix of NDK versions and library type.
+
+- com.viliussutkus89.ndk.thirdparty:libfoo-ndk26-static:0.4.1
+- com.viliussutkus89.ndk.thirdparty:libfoo-ndk26-shared:0.4.1
+- com.viliussutkus89.ndk.thirdparty:libfoo-ndk25-static:0.4.1
+- com.viliussutkus89.ndk.thirdparty:libfoo-ndk25-shared:0.4.1
+
+#### Min SDK Version:
+
+Builds compiled with NDK-26 support Android SDK 21 (Lollipop) and later.
+
+Builds compiled with NDK-25 support Android SDK 19 (KitKat) and later.
+
+Libraries built with different NDK versions should not be used in the same application.
+
+#### Libraries are built as:
+
+- static (libfoo.a) with static dependencies
+- shared (libfoo.so) with static dependencies
+
+## TODO
+
+Run unit tests provided by upstream packages.
+
+Figure out proper way to deliver per ABI headers.
 
 ## Ports
-
-Each third-party project is called a "port". Ports consist of a description of
-where to fetch the source, apply any patches needed, build, install, and package
-the library into an AAR.
-
-A port is a subclass of the abstract Kotlin class `com.android.ndkports.Port`.
-Projects define the name and version of the port, the URL to fetch source from,
-a list of modules (libraries) to build, and the build steps.
-
-See the [Port class] for documentation on the port API.
-
-Individual port files are kept in `ports/$name/port.kts`. For example, the cURL
-port is [ports/curl/port.kts](ports/curl/port.kts).
-
-[Port class]: src/main/kotlin/com/android/ndkports/Port.kt
-
-## Building a Port
-
-We recommend using the supplied scripts and Dockerfile for consistent builds.
-
-To build a release for distribution to a Maven repo, `scripts/build_release.sh`
-
-To build a snapshot, `scripts/build_snapshot.sh`
-
-You can also pass custom gradle targets: `scripts/build_snapshot.sh curl`
-
-The scripts use the standard `ANDROID_NDK_ROOT` environment variable to
-locate the NDK. For example, `ANDROID_NDK_ROOT=/path/to/ndk scripts/build_release.sh`
