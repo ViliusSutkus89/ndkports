@@ -1,0 +1,48 @@
+name: release
+on:
+  workflow_dispatch:
+    inputs:
+      PACKAGE:
+        description: 'Package name'
+        required: true
+jobs:
+  releaseSonatype:
+    environment: SonatypeAccess
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        ndk:
+          - "26.1.10909125"
+          - "25.2.9519653"
+        libraryType:
+          - "shared"
+          - "static"
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+      - uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: android-actions/setup-android@v3
+      - run: sdkmanager "ndk;${{ matrix.ndk }}"
+      - run: pip3 install --user ninja meson
+
+      - run: ./gradlew ${{ github.event.inputs.PACKAGE }}:build -PndkPath=${{ env.ANDROID_SDK_ROOT }}/ndk/${{ matrix.ndk }} -PlibraryType=${{ matrix.libraryType }}
+
+      - run: ./gradlew ${{ github.event.inputs.PACKAGE }}:publishToSonatype closeSonatypeStagingRepository -PndkPath=${{ env.ANDROID_SDK_ROOT }}/ndk/${{ matrix.ndk }} -PlibraryType=${{ matrix.libraryType }}
+        with:
+          ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
+          ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PASSWORD }}
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+          SIGNING_PASS: ${{ secrets.SIGNING_PASS }}
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: "${{ github.event.inputs.PACKAGE }}-${{ github.event.inputs.NDK }}-${{ github.event.inputs.LIBRARY_TYPE }}-logs"
+          path: "${{ github.event.inputs.PACKAGE }}/build/port/logs"
+          if-no-files-found: error
