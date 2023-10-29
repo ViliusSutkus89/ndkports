@@ -1,0 +1,16 @@
+name: pcre2
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'buildSrc/**'
+      - 'pcre2/**'
+      - '.github/workflows/build.yml'
+      - '.github/workflows/pcre2.yml'
+
+jobs:
+  build:
+    name: pcre2
+    uses: ./.github/workflows/build.yml
+    with:
+      package: pcre2

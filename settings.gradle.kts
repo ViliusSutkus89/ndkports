@@ -23,5 +23,6 @@ dependencyResolutionManagement {
 }
 
 include(":freetype")
+include(":pcre2")
 include(":libpng")
 include(":fribidi")
