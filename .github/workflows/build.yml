@@ -33,6 +33,7 @@ jobs:
           - "shared"
           - "static"
         package:
+          - "fribidi"
 
     steps:
       - uses: actions/checkout@v4

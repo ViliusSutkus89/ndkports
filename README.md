@@ -36,3 +36,5 @@ Run unit tests provided by upstream packages.
 Figure out proper way to deliver per ABI headers.
 
 ## Ports
+
+#### [GNU FriBidi](https://github.com/fribidi/fribidi)
