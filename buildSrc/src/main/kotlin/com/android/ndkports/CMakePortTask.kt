@@ -44,10 +44,10 @@ abstract class CMakePortTask @Inject constructor(objects: ObjectFactory) : PortT
 
         val toolchainFile = toolchain.ndk.path.resolve("build/cmake/android.toolchain.cmake")
 
-        val libraryTypeArguments = when (defaultLibraryType.get()) {
-            DefaultLibraryType.Static -> listOf("-DBUILD_STATIC_LIBS=ON", "-DBUILD_SHARED_LIBS=OFF")
-            DefaultLibraryType.Shared -> listOf("-DBUILD_STATIC_LIBS=OFF", "-DBUILD_SHARED_LIBS=ON")
-            DefaultLibraryType.Both -> listOf("-DBUILD_STATIC_LIBS=ON", "-DBUILD_SHARED_LIBS=ON")
+        val libraryTypeArguments = when (libraryType.get()) {
+            LibraryType.Static -> listOf("-DBUILD_STATIC_LIBS=ON", "-DBUILD_SHARED_LIBS=OFF")
+            LibraryType.Shared -> listOf("-DBUILD_STATIC_LIBS=OFF", "-DBUILD_SHARED_LIBS=ON")
+            LibraryType.Both -> listOf("-DBUILD_STATIC_LIBS=ON", "-DBUILD_SHARED_LIBS=ON")
             else -> listOf("")
         }
 

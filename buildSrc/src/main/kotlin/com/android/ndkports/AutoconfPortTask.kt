@@ -45,10 +45,10 @@ abstract class AutoconfPortTask @Inject constructor(objects: ObjectFactory) : Po
         )
         builder.autoconfBlock()
 
-        val libraryTypeArguments = when (defaultLibraryType.get()) {
-            DefaultLibraryType.Static -> listOf("--enable-static", "--disable-shared")
-            DefaultLibraryType.Shared -> listOf("--disable-static", "--enable-shared")
-            DefaultLibraryType.Both -> listOf("--enable-static", "--enable-shared")
+        val libraryTypeArguments = when (libraryType.get()) {
+            LibraryType.Static -> listOf("--enable-static", "--disable-shared")
+            LibraryType.Shared -> listOf("--disable-static", "--enable-shared")
+            LibraryType.Both -> listOf("--enable-static", "--enable-shared")
             else -> listOf("")
         }
 

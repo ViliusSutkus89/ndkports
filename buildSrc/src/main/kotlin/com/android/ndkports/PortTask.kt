@@ -12,26 +12,22 @@ import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import java.io.File
-import java.io.FileFilter
-import java.io.FilenameFilter
-import javax.inject.Inject
 
 @Suppress("UnstableApiUsage")
 abstract class PortTask(objects: ObjectFactory) : DefaultTask() {
-    enum class DefaultLibraryType(val argument: String) {
+    enum class LibraryType(val argument: String) {
         Both("both"), Shared("shared"), Static("static")
     }
 
     @get:Input
-    val defaultLibraryType: Property<DefaultLibraryType> =
-        objects.property(DefaultLibraryType::class.java)
-            .convention(
-                if (project.findProperty("libraryType") as String == "shared") {
-                    DefaultLibraryType.Shared
-                } else {
-                    DefaultLibraryType.Static
-                }
-            )
+    val libraryType: Property<LibraryType> =
+        objects.property(LibraryType::class.java).convention(
+            if (project.findProperty("libraryType") as String == "shared") {
+                LibraryType.Shared
+            } else {
+                LibraryType.Static
+            }
+        )
 
     @get:InputDirectory
     abstract val sourceDirectory: DirectoryProperty

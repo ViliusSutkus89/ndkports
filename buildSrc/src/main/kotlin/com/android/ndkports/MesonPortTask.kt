@@ -76,7 +76,7 @@ abstract class MesonPortTask @Inject constructor(objects: ObjectFactory) :
             endian = 'little'
 
             [built-in options]
-            default_library = '${defaultLibraryType.get().argument}'
+            default_library = '${libraryType.get().argument}'
 
             [properties]
             needs_exe_wrapper = true
