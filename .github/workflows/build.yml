@@ -14,7 +14,7 @@ jobs:
       fail-fast: false
       matrix:
         ndk:
-          - "26.0.10792818"
+          - "26.1.10909125"
           - "25.2.9519653"
         libraryType:
           - "shared"
