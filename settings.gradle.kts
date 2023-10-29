@@ -15,4 +15,5 @@ pluginManagement {
     }
 }
 
+include(":libpng")
 include(":fribidi")

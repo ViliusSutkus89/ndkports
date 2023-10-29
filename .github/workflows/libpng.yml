@@ -1,0 +1,16 @@
+name: libpng
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'buildSrc/**'
+      - 'libpng/**'
+      - '.github/workflows/build.yml'
+      - '.github/workflows/libpng.yml'
+
+jobs:
+  build:
+    name: libpng
+    uses: ./.github/workflows/build.yml
+    with:
+      package: libpng
