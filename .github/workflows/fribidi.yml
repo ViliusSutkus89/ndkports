@@ -1,53 +1,16 @@
-env:
-  package: fribidi
-
-name: build fribidi
+name: fribidi
 on:
   workflow_dispatch:
   push:
     paths:
       - 'buildSrc/**'
-      - '${{ env.package }}/**'
-      - '.github/workflows/${{ env.package }}.yml'
+      - 'fribidi/**'
+      - '.github/workflows/build.yml'
+      - '.github/workflows/fribidi.yml'
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
-    strategy:
-      fail-fast: false
-      matrix:
-        ndk:
-          - "26.0.10792818"
-          - "25.2.9519653"
-        libraryType:
-          - "shared"
-          - "static"
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          lfs: true
-      - uses: actions/setup-java@v3
-        with:
-          distribution: temurin
-          java-version: 17
-
-      - uses: android-actions/setup-android@v3
-      - run: sdkmanager "ndk;${{ matrix.ndk }}"
-      - run: pip3 install --user ninja meson
-
-      - run: ./gradlew ${{ env.package }}:publishToMavenLocal -PndkPath=${{ env.ANDROID_SDK_ROOT }}/ndk/${{ matrix.ndk }} -PlibraryType=${{ matrix.libraryType }}
-
-      - uses: actions/upload-artifact@v3
-        with:
-          name: "${{ env.package }}-${{ matrix.ndk }}-${{ matrix.libraryType }}-logs"
-          path: "${{ env.package }}/build/port/logs"
-          if-no-files-found: error
-
-      - run: tar -cvf maven-local.tar ~/.m2
-      - uses: actions/upload-artifact@v3
-        with:
-          name: "${{ env.package }}-${{ matrix.ndk }}-${{ matrix.libraryType }}.maven-local.tar"
-          path: maven-local.tar
-          if-no-files-found: error
-
+    name: fribidi
+    uses: ./.github/workflows/build.yml
+    with:
+      package: fribidi
