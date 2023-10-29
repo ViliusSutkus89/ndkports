@@ -41,4 +41,4 @@ Figure out proper way to deliver per ABI headers.
 
 #### [libpng](http://libpng.org/pub/png/libpng.html)
 
-#### [freetype](https://freetype.org)
+#### [FreeType](https://freetype.org)

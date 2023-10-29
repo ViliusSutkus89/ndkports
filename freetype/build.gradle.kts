@@ -44,7 +44,8 @@ tasks.prefabPackage {
 
     modules {
         create("freetype") {
-            static.set(true)
+            static.set(project.findProperty("libraryType") == "static")
+            dependencies.set(listOf("z", "//libpng:png16"))
         }
     }
 }
