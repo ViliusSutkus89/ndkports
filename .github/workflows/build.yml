@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: build ${{ inputs.package }}
+    name: build ${{ inputs.package }} ${{ matrix.ndk }} ${{ matrix.libraryType }}
     runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
