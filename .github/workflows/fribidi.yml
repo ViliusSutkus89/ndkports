@@ -6,8 +6,8 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'buildSrc'
-      - ${{ env.package }}
+      - 'buildSrc/**'
+      - '${{ env.package }}/**'
       - '.github/workflows/${{ env.package }}.yml'
 
 jobs:
