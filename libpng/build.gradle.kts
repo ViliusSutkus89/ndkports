@@ -67,7 +67,7 @@ publishing {
             artifactId += rootProject.extra.get("libraryTypeSuffix")
             artifact(packageSources)
             pom {
-                name.set("Poppler")
+                name.set("libpng")
                 description.set("libpng is the official PNG reference library.")
                 url.set("http://libpng.org/pub/png/libpng.html")
                 licenses {
