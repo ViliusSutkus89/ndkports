@@ -1,14 +1,14 @@
 env:
   package: fribidi
 
-name: build ${{ env.package }}
+name: build fribidi
 on:
   workflow_dispatch:
   push:
-    branches: [ master, main ]
     paths:
       - 'buildSrc'
       - ${{ env.package }}
+      - '.github/workflows/${{ env.package }}.yml'
 
 jobs:
   build:
