@@ -24,12 +24,51 @@ tasks.prefab {
     generator.set(PrefabSysrootPlugin::class.java)
 }
 
-tasks.register<AutoconfPortTask>("buildPort") {
-    autoconf {
-        // https://github.com/libffi/libffi/issues/760
-        // Already fixed, assuming it will be available in libffi-3.4.5
-        env["CFLAGS"] = "-Wno-error=implicit-function-declaration"
+fun File.patch(patch: File) {
+    val pb = ProcessBuilder(
+        if (isFile) listOf("patch", "-p0", absolutePath)
+        else listOf("patch", "-p0")
+    )
+
+    if (isDirectory)
+        pb.directory(absoluteFile)
+
+    val process = pb.start()
+    process.outputStream.writer().use {
+        it.write(patch.readText())
     }
+    process.errorStream.bufferedReader().use {
+        println(it.readText())
+    }
+    process.inputStream.bufferedReader().use {
+        println(it.readText())
+    }
+    if (process.waitFor() != 0) {
+        throw RuntimeException("Patch failed!\n")
+    }
+}
+
+tasks.extractSrc {
+    doLast {
+        when (portVersion) {
+            "3.4.4" -> {
+                outDir.get().asFile.apply {
+                    // https://github.com/libffi/libffi/pull/800
+                    patch(projectDir.resolve("patches/0001-Put-optional-symbols-behind-ifdefs-800.patch"))
+
+                    // https://github.com/libffi/libffi/issues/760
+                    // https://github.com/libffi/libffi/issues/764
+                    patch(projectDir.resolve("patches/0002-Forward-declare-open_temp_exec_file-764.patch"))
+
+                    patch(projectDir.resolve("patches/0003-arm32-no-longdouble.patch"))
+                }
+            }
+        }
+    }
+}
+
+tasks.register<AutoconfPortTask>("buildPort") {
+    autoconf { }
 }
 
 tasks.prefabPackage {
@@ -46,6 +85,7 @@ tasks.prefabPackage {
 val packageSources = tasks.register<Jar>("packageSources") {
     archiveClassifier.set("sources")
     from(projectDir.resolve("build.gradle.kts"))
+    from(projectDir.resolve("patches"))
     from(ndkPorts.source)
 }
 
