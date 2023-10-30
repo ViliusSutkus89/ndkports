@@ -60,7 +60,7 @@ tasks.extractSrc {
                     // https://github.com/libffi/libffi/issues/764
                     patch(projectDir.resolve("patches/0002-Forward-declare-open_temp_exec_file-764.patch"))
 
-                    patch(projectDir.resolve("patches/0003-arm32-no-longdouble.patch"))
+                    patch(projectDir.resolve("patches/0003-longdouble.patch"))
                 }
             }
         }
