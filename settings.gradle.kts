@@ -25,4 +25,5 @@ dependencyResolutionManagement {
 include(":freetype")
 include(":pcre2")
 include(":libpng")
+include(":libjpeg-turbo")
 include(":fribidi")
