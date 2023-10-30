@@ -42,3 +42,5 @@ Figure out proper way to deliver per ABI headers.
 #### [libpng](http://libpng.org/pub/png/libpng.html)
 
 #### [FreeType](https://freetype.org)
+
+#### [PCRE2 - Perl-Compatible Regular Expressions](https://github.com/PCRE2Project/pcre2)
