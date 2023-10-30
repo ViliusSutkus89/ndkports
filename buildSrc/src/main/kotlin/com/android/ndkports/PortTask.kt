@@ -95,6 +95,7 @@ abstract class PortTask(objects: ObjectFactory) : DefaultTask() {
     fun installDirectoryFor(abi: Abi): File =
         installDir.get().asFile.resolve("$abi")
 
+    @Suppress("MemberVisibilityCanBePrivate")
     fun generatedDirectoryFor(abi: Abi): File =
         prefabGenerated.get().asFile.resolve(abi.triple)
 
