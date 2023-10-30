@@ -46,3 +46,5 @@ Figure out proper way to deliver per ABI headers.
 #### [PCRE2 - Perl-Compatible Regular Expressions](https://github.com/PCRE2Project/pcre2)
 
 #### [libjpeg-turbo](https://libjpeg-turbo.org)
+
+#### [libffi](https://sourceware.org/libffi/)

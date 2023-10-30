@@ -1,0 +1,16 @@
+name: libffi
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'buildSrc/**'
+      - 'libffi/**'
+      - '.github/workflows/build.yml'
+      - '.github/workflows/libffi.yml'
+
+jobs:
+  build:
+    name: libffi
+    uses: ./.github/workflows/build.yml
+    with:
+      package: libffi
