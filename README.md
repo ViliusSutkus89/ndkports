@@ -84,3 +84,11 @@ Figure out proper way to deliver per ABI headers.
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libffi-ndk25-shared.svg?label=Maven%20Central%20libffi-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libffi-ndk25-shared)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libffi-ndk26-static.svg?label=Maven%20Central%20libffi-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libffi-ndk26-static)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libffi-ndk26-shared.svg?label=Maven%20Central%20libffi-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libffi-ndk26-shared)
+
+#### [LibTIFF](http://www.simplesystems.org/libtiff/)
+
+[![libtiff](https://github.com/ViliusSutkus89/ndkports/actions/workflows/libtiff.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/libtiff.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libtiff-ndk25-static.svg?label=Maven%20Central%20libtiff-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libtiff-ndk25-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libtiff-ndk25-shared.svg?label=Maven%20Central%20libtiff-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libtiff-ndk25-shared)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libtiff-ndk26-static.svg?label=Maven%20Central%20libtiff-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libtiff-ndk26-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libtiff-ndk26-shared.svg?label=Maven%20Central%20libtiff-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libtiff-ndk26-shared)
