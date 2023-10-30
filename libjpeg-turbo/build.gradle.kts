@@ -215,8 +215,8 @@ publishing {
                     }
                 }
                 scm {
-                    url.set("https://gitlab.freedesktop.org/freetype/freetype")
-                    connection.set("scm:git:https://gitlab.freedesktop.org/freetype/freetype.git")
+                    url.set("https://github.com/ViliusSutkus89/ndkports")
+                    connection.set("scm:git:https://github.com/ViliusSutkus89/ndkports.git")
                 }
             }
         }
