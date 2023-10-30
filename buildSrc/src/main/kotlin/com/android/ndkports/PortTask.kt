@@ -145,7 +145,7 @@ abstract class PortTask(objects: ObjectFactory) : DefaultTask() {
             }
         }
 
-        srcDir.listFiles { file -> file.extension == "la" }.forEach {
+        (srcDir.listFiles { file -> file.extension == "la" } ?: arrayOf<File>()).forEach {
             dstDir.resolve(it.relativeTo(srcDir)).writeText(
                 it.readText()
                     .replace(installDirectory.absolutePath, "/__PREFAB__PACKAGE__PATH__")
