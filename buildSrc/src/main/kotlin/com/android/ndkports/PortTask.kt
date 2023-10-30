@@ -142,6 +142,7 @@ abstract class PortTask(objects: ObjectFactory) : DefaultTask() {
                             .replace(generatedDirectory.absolutePath, "/__PREFAB__PACKAGE__PATH__")
                             .replace(ndkPathAbsolute, "/__NDK__PATH__")
                             .replace("Libs.private:", "Libs:")
+                            .replace("Requires.private:", "Requires:")
                     )
                 }
             }
