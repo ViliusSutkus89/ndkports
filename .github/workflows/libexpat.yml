@@ -1,0 +1,16 @@
+name: libexpat
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'buildSrc/**'
+      - 'libexpat/**'
+      - '.github/workflows/build.yml'
+      - '.github/workflows/libexpat.yml'
+
+jobs:
+  build:
+    name: libexpat
+    uses: ./.github/workflows/build.yml
+    with:
+      package: libexpat
