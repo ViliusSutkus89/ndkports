@@ -6,7 +6,7 @@ import org.gradle.jvm.tasks.Jar
 val portVersion = "2.5.0"
 
 group = rootProject.group
-version = "${portVersion}-beta-1"
+version = "${portVersion}-beta-2"
 
 plugins {
     id("maven-publish")
