@@ -130,8 +130,8 @@ abstract class PortTask(objects: ObjectFactory) : DefaultTask() {
         listOf(
             srcDir.resolve("cmake"),
             srcDir.resolve("pkgconfig")
-        ).forEach {
-            it.walkTopDown().forEach {
+        ).forEach { dir ->
+            dir.walkTopDown().forEach {
                 val dst = dstDir.resolve(it.relativeTo(srcDir))
                 if (it.isDirectory) {
                     dst.mkdir()
@@ -141,9 +141,38 @@ abstract class PortTask(objects: ObjectFactory) : DefaultTask() {
                             .replace(installDirectory.absolutePath, "/__PREFAB__PACKAGE__PATH__")
                             .replace(generatedDirectory.absolutePath, "/__PREFAB__PACKAGE__PATH__")
                             .replace(ndkPathAbsolute, "/__NDK__PATH__")
-                            .replace("Libs.private:", "Libs:")
-                            .replace("Requires.private:", "Requires:")
                     )
+                }
+
+                // Some dependencies link against static libraries,
+                // but don't pick up private dependencies
+                if (libraryType.get() == LibraryType.Static && it.isFile && it.extension == "pc") {
+                    val sb = StringBuilder()
+                    val libs = mutableListOf<String>()
+                    val libsPrivate = mutableListOf<String>()
+                    val requires = mutableListOf<String>()
+                    val requiresPrivate = mutableListOf<String>()
+                    dst.readLines().forEach { line ->
+                        if (line.startsWith(prefix = "Libs:", ignoreCase = true)) {
+                            libs.add(line.substring("Libs:".length))
+                        }
+                        else if (line.startsWith(prefix = "Libs.private:", ignoreCase = true)) {
+                            libsPrivate.add(line.substring("Libs.private:".length))
+                        }
+                        else if (line.startsWith(prefix = "Requires:", ignoreCase = true)) {
+                            requires.add(line.substring("Requires:".length))
+                        }
+                        else if (line.startsWith(prefix = "Requires.private:", ignoreCase = true)) {
+                            requiresPrivate.add(line.substring("Requires.private:".length))
+                        }
+                        else {
+                            sb.appendLine(line)
+                        }
+                    }
+
+                    sb.appendLine("Libs: ${(libs + libsPrivate).joinToString(" ")}")
+                    sb.appendLine("Requires: ${(requires + requiresPrivate).joinToString(" ")}")
+                    dst.writeText(sb.toString())
                 }
             }
         }
@@ -152,6 +181,7 @@ abstract class PortTask(objects: ObjectFactory) : DefaultTask() {
             dstDir.resolve(it.relativeTo(srcDir)).writeText(
                 it.readText()
                     .replace(installDirectory.absolutePath, "/__PREFAB__PACKAGE__PATH__")
+                    .replace(generatedDirectory.absolutePath, "/__PREFAB__PACKAGE__PATH__")
                     .replace(ndkPathAbsolute, "/__NDK__PATH__")
             )
         }
