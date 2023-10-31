@@ -13,9 +13,11 @@ class PrefabSysrootPlugin(
     override fun generate(requirements: Collection<PlatformDataInterface>) {
         prepareOutputDirectory(outputDirectory)
 
-        for (pkg in packages) {
-            for (module in pkg.modules) {
-                for (requirement in requirements) {
+        for (requirement in requirements) {
+            val libDir = outputDirectory.resolve(requirement.targetTriple).apply { mkdir() }.resolve("lib").apply { mkdir() }
+            createZlibPkgconf(libDir)
+            for (pkg in packages) {
+                for (module in pkg.modules) {
                     installModule(module, requirement)
                 }
             }
@@ -25,13 +27,12 @@ class PrefabSysrootPlugin(
     private fun installModule(
         module: Module, requirement: PlatformDataInterface
     ) {
-        val installDir = outputDirectory.resolve(requirement.targetTriple).apply { mkdir() }
+        val installDir = outputDirectory.resolve(requirement.targetTriple)
         val includeDir = installDir.resolve("include").apply { mkdir() }
-        val libDir = installDir.resolve("lib").apply { mkdir() }
+        val libDir = installDir.resolve("lib")
 
         installHeaders(module.includePath.toFile(), includeDir, requirement.targetTriple)
         migrateLibFiles(includeDir, libDir)
-        createZlibPkgconf(libDir)
 
         if (!module.isHeaderOnly) {
             module.getLibraryFor(requirement).path.toFile().apply {
@@ -95,8 +96,7 @@ class PrefabSysrootPlugin(
     }
 
     private fun createZlibPkgconf(libDir: File) {
-        val zlibPc = libDir.resolve("pkgconfig/zlib.pc")
-        zlibPc.parentFile.mkdir()
+        val zlibPc = libDir.resolve("pkgconfig").apply { mkdir() }.resolve("zlib.pc")
         if (!zlibPc.exists()) {
             zlibPc.writeText("""
                 Name: zlib
