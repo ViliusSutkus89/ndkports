@@ -34,15 +34,24 @@ jobs:
       - run: ./gradlew ${{ inputs.package }}:publishToMavenLocal -PndkPath=${{ env.ANDROID_SDK_ROOT }}/ndk/${{ matrix.ndk }} -PlibraryType=${{ matrix.libraryType }}
 
       - uses: actions/upload-artifact@v3
+        name: Artifact logs
+        if: always()
         with:
           name: "${{ inputs.package }}-${{ matrix.ndk }}-${{ matrix.libraryType }}-logs"
           path: "${{ inputs.package }}/build/port/logs"
           if-no-files-found: error
 
-      - run: tar -cvf maven-local.tar ~/.m2
       - uses: actions/upload-artifact@v3
+        name: Artifact build
+        if: always()
         with:
-          name: "${{ inputs.package }}-${{ matrix.ndk }}-${{ matrix.libraryType }}.maven-local.tar"
-          path: maven-local.tar
+          name: "${{ inputs.package }}-${{ matrix.ndk }}-${{ matrix.libraryType }}-build"
+          path: "${{ inputs.package }}/build"
           if-no-files-found: error
 
+      - uses: actions/upload-artifact@v3
+        name: Artifact MavenLocal
+        with:
+          name: "${{ inputs.package }}-${{ matrix.ndk }}-${{ matrix.libraryType }}-mavenLocal"
+          path: ~/.m2
+          if-no-files-found: error
