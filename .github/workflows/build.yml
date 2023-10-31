@@ -40,15 +40,15 @@ jobs:
         with:
           name: "${{ inputs.package }}-${{ matrix.ndk }}-${{ matrix.libraryType }}-logs"
           path: "${{ inputs.package }}/build/port/logs"
-          if-no-files-found: error
 
+      - run: tar --use-compress-program=lz4 -cf "${{ inputs.package }}-${{ matrix.ndk }}-${{ matrix.libraryType }}-build.tar.lz4" "${{ inputs.package }}/build"
+        if: always()
       - uses: actions/upload-artifact@v3
         name: Artifact build
         if: always()
         with:
-          name: "${{ inputs.package }}-${{ matrix.ndk }}-${{ matrix.libraryType }}-build"
-          path: "${{ inputs.package }}/build"
-          if-no-files-found: error
+          name: "${{ inputs.package }}-${{ matrix.ndk }}-${{ matrix.libraryType }}-build.tar.lz4"
+          path: "${{ inputs.package }}-${{ matrix.ndk }}-${{ matrix.libraryType }}-build.tar.lz4"
 
       - uses: actions/upload-artifact@v3
         name: Artifact MavenLocal
