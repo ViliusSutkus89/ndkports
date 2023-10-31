@@ -1,0 +1,16 @@
+name: fontconfig
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'buildSrc/**'
+      - 'fontconfig/**'
+      - '.github/workflows/build.yml'
+      - '.github/workflows/fontconfig.yml'
+
+jobs:
+  build:
+    name: fontconfig
+    uses: ./.github/workflows/build.yml
+    with:
+      package: fontconfig
