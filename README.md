@@ -140,3 +140,11 @@ Figure out proper way to deliver per ABI headers.
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/pixman-ndk25-shared.svg?label=Maven%20Central%20pixman-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:pixman-ndk25-shared)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/pixman-ndk26-static.svg?label=Maven%20Central%20pixman-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:pixman-ndk26-static)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/pixman-ndk26-shared.svg?label=Maven%20Central%20pixman-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:pixman-ndk26-shared)
+
+#### [libiconv](https://www.gnu.org/software/libiconv/)
+
+[![libiconv](https://github.com/ViliusSutkus89/ndkports/actions/workflows/libiconv.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/libiconv.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libiconv-ndk25-static.svg?label=Maven%20Central%20libiconv-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libiconv-ndk25-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libiconv-ndk25-shared.svg?label=Maven%20Central%20libiconv-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libiconv-ndk25-shared)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libiconv-ndk26-static.svg?label=Maven%20Central%20libiconv-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libiconv-ndk26-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libiconv-ndk26-shared.svg?label=Maven%20Central%20libiconv-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libiconv-ndk26-shared)

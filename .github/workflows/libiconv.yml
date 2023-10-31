@@ -1,0 +1,16 @@
+name: libiconv
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'buildSrc/**'
+      - 'libiconv/**'
+      - '.github/workflows/build.yml'
+      - '.github/workflows/libiconv.yml'
+
+jobs:
+  build:
+    name: libiconv
+    uses: ./.github/workflows/build.yml
+    with:
+      package: libiconv
