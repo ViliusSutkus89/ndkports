@@ -1,0 +1,16 @@
+name: lcms2
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'buildSrc/**'
+      - 'lcms2/**'
+      - '.github/workflows/build.yml'
+      - '.github/workflows/lcms2.yml'
+
+jobs:
+  build:
+    name: lcms2
+    uses: ./.github/workflows/build.yml
+    with:
+      package: lcms2
