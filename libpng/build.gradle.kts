@@ -6,7 +6,7 @@ import org.gradle.jvm.tasks.Jar
 val portVersion = "1.6.40"
 
 group = rootProject.group
-version = "${portVersion}-beta-3"
+version = "${portVersion}-beta-4"
 
 plugins {
     id("maven-publish")
@@ -47,8 +47,10 @@ tasks.prefabPackage {
 
     modules {
         create("png16") {
-            static.set(project.findProperty("libraryType") == "static")
-            dependencies.set(listOf("z", "m"))
+            if (project.findProperty("libraryType") == "static") {
+                static.set(true)
+                dependencies.set(listOf("z", "m"))
+            }
         }
     }
 }
