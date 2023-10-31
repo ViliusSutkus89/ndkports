@@ -1,0 +1,16 @@
+name: libtool
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'buildSrc/**'
+      - 'libtool/**'
+      - '.github/workflows/build.yml'
+      - '.github/workflows/libtool.yml'
+
+jobs:
+  build:
+    name: libtool
+    uses: ./.github/workflows/build.yml
+    with:
+      package: libtool

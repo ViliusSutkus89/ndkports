@@ -108,3 +108,11 @@ Figure out proper way to deliver per ABI headers.
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/lcms2-ndk25-shared.svg?label=Maven%20Central%20lcms2-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:lcms2-ndk25-shared)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/lcms2-ndk26-static.svg?label=Maven%20Central%20lcms2-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:lcms2-ndk26-static)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/lcms2-ndk26-shared.svg?label=Maven%20Central%20lcms2-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:lcms2-ndk26-shared)
+
+#### [GNU Libtool](https://www.gnu.org/software/libtool/)
+
+[![libtool](https://github.com/ViliusSutkus89/ndkports/actions/workflows/libtool.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/libtool.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libtool-ndk25-static.svg?label=Maven%20Central%20libtool-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libtool-ndk25-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libtool-ndk25-shared.svg?label=Maven%20Central%20libtool-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libtool-ndk25-shared)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libtool-ndk26-static.svg?label=Maven%20Central%20libtool-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libtool-ndk26-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libtool-ndk26-shared.svg?label=Maven%20Central%20libtool-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libtool-ndk26-shared)
