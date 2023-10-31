@@ -16,7 +16,7 @@ plugins {
 
 dependencies {
     val ndkVersionSuffix = rootProject.extra.get("ndkVersionSuffix")
-    implementation("com.viliussutkus89.ndk.thirdparty:libpng${ndkVersionSuffix}-static:1.6.40-beta-2")
+    implementation("com.viliussutkus89.ndk.thirdparty:libpng${ndkVersionSuffix}-static:1.6.40-beta-4")
 
     // Library bz2 found: NO
     // Run-time dependency harfbuzz found: NO (tried pkgconfig and cmake)
