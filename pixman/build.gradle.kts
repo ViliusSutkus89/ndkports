@@ -25,7 +25,23 @@ tasks.prefab {
 }
 
 tasks.register<MesonPortTask>("buildPort") {
-    meson { }
+    meson {
+        // @TODO: try to re-enable SIMD and NEON for pixman-0.42.3
+        // Potentially related issues
+        // https://gitlab.freedesktop.org/pixman/pixman/-/issues/46
+        // https://gitlab.freedesktop.org/pixman/pixman/-/issues/45
+        // https://gitlab.freedesktop.org/pixman/pixman/-/issues/80
+        // https://github.com/android/ndk/issues/1569
+        if (toolchain.abi == com.android.ndkports.Abi.Arm) {
+            args(
+                "-Dneon=disabled",
+                "-Darm-simd=disabled",
+            )
+        }
+        if (toolchain.abi == com.android.ndkports.Abi.Arm64) {
+            arg("-Da64-neon=disabled")
+        }
+    }
 }
 
 tasks.prefabPackage {
