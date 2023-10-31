@@ -132,3 +132,11 @@ Figure out proper way to deliver per ABI headers.
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/spiro-ndk25-shared.svg?label=Maven%20Central%20spiro-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:spiro-ndk25-shared)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/spiro-ndk26-static.svg?label=Maven%20Central%20spiro-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:spiro-ndk26-static)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/spiro-ndk26-shared.svg?label=Maven%20Central%20spiro-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:spiro-ndk26-shared)
+
+#### [Pixman](https://www.pixman.org)
+
+[![pixman](https://github.com/ViliusSutkus89/ndkports/actions/workflows/pixman.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/pixman.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/pixman-ndk25-static.svg?label=Maven%20Central%20pixman-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:pixman-ndk25-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/pixman-ndk25-shared.svg?label=Maven%20Central%20pixman-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:pixman-ndk25-shared)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/pixman-ndk26-static.svg?label=Maven%20Central%20pixman-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:pixman-ndk26-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/pixman-ndk26-shared.svg?label=Maven%20Central%20pixman-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:pixman-ndk26-shared)

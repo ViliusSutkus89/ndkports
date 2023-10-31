@@ -1,0 +1,16 @@
+name: pixman
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'buildSrc/**'
+      - 'pixman/**'
+      - '.github/workflows/build.yml'
+      - '.github/workflows/pixman.yml'
+
+jobs:
+  build:
+    name: pixman
+    uses: ./.github/workflows/build.yml
+    with:
+      package: pixman
