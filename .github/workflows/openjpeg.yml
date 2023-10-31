@@ -1,0 +1,16 @@
+name: openjpeg
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'buildSrc/**'
+      - 'openjpeg/**'
+      - '.github/workflows/build.yml'
+      - '.github/workflows/openjpeg.yml'
+
+jobs:
+  build:
+    name: openjpeg
+    uses: ./.github/workflows/build.yml
+    with:
+      package: openjpeg

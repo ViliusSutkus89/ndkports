@@ -116,3 +116,11 @@ Figure out proper way to deliver per ABI headers.
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libtool-ndk25-shared.svg?label=Maven%20Central%20libtool-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libtool-ndk25-shared)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libtool-ndk26-static.svg?label=Maven%20Central%20libtool-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libtool-ndk26-static)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libtool-ndk26-shared.svg?label=Maven%20Central%20libtool-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libtool-ndk26-shared)
+
+#### [OpenJPEG](https://www.openjpeg.org)
+
+[![openjpeg](https://github.com/ViliusSutkus89/ndkports/actions/workflows/openjpeg.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/openjpeg.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/openjpeg-ndk25-static.svg?label=Maven%20Central%20openjpeg-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:openjpeg-ndk25-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/openjpeg-ndk25-shared.svg?label=Maven%20Central%20openjpeg-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:openjpeg-ndk25-shared)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/openjpeg-ndk26-static.svg?label=Maven%20Central%20openjpeg-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:openjpeg-ndk26-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/openjpeg-ndk26-shared.svg?label=Maven%20Central%20openjpeg-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:openjpeg-ndk26-shared)
