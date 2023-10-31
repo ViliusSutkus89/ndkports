@@ -44,6 +44,6 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
-          name: "${{ github.event.inputs.PACKAGE }}-${{ github.event.inputs.NDK }}-${{ github.event.inputs.LIBRARY_TYPE }}-logs"
+          name: "${{ github.event.inputs.PACKAGE }}-${{ matrix.ndk }}-${{ matrix.libraryType }}-logs"
           path: "${{ github.event.inputs.PACKAGE }}/build/port/logs"
           if-no-files-found: error
