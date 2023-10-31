@@ -1,0 +1,16 @@
+name: spiro
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'buildSrc/**'
+      - 'spiro/**'
+      - '.github/workflows/build.yml'
+      - '.github/workflows/spiro.yml'
+
+jobs:
+  build:
+    name: spiro
+    uses: ./.github/workflows/build.yml
+    with:
+      package: spiro
