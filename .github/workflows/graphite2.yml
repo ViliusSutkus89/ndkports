@@ -1,0 +1,16 @@
+name: graphite2
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'buildSrc/**'
+      - 'graphite2/**'
+      - '.github/workflows/build.yml'
+      - '.github/workflows/graphite2.yml'
+
+jobs:
+  build:
+    name: graphite2
+    uses: ./.github/workflows/build.yml
+    with:
+      package: graphite2
