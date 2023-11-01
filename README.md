@@ -156,3 +156,11 @@ Figure out proper way to deliver per ABI headers.
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/fontconfig-ndk25-shared.svg?label=Maven%20Central%20fontconfig-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:fontconfig-ndk25-shared)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/fontconfig-ndk26-static.svg?label=Maven%20Central%20fontconfig-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:fontconfig-ndk26-static)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/fontconfig-ndk26-shared.svg?label=Maven%20Central%20fontconfig-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:fontconfig-ndk26-shared)
+
+#### [libxml2](https://gitlab.gnome.org/GNOME/libxml2)
+
+[![libxml2](https://github.com/ViliusSutkus89/ndkports/actions/workflows/libxml2.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/libxml2.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libxml2-ndk25-static.svg?label=Maven%20Central%20libxml2-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libxml2-ndk25-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libxml2-ndk25-shared.svg?label=Maven%20Central%20libxml2-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libxml2-ndk25-shared)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libxml2-ndk26-static.svg?label=Maven%20Central%20libxml2-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libxml2-ndk26-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libxml2-ndk26-shared.svg?label=Maven%20Central%20libxml2-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libxml2-ndk26-shared)

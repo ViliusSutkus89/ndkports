@@ -1,0 +1,16 @@
+name: libxml2
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'buildSrc/**'
+      - 'libxml2/**'
+      - '.github/workflows/build.yml'
+      - '.github/workflows/libxml2.yml'
+
+jobs:
+  build:
+    name: libxml2
+    uses: ./.github/workflows/build.yml
+    with:
+      package: libxml2
