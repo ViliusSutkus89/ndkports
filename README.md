@@ -196,3 +196,11 @@ Figure out proper way to deliver per ABI headers.
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/graphite2-ndk25-shared.svg?label=Maven%20Central%20graphite2-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:graphite2-ndk25-shared)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/graphite2-ndk26-static.svg?label=Maven%20Central%20graphite2-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:graphite2-ndk26-static)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/graphite2-ndk26-shared.svg?label=Maven%20Central%20graphite2-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:graphite2-ndk26-shared)
+
+#### [HarfBuzz](https://harfbuzz.github.io/)
+
+[![harfbuzz](https://github.com/ViliusSutkus89/ndkports/actions/workflows/harfbuzz.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/harfbuzz.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/harfbuzz-ndk25-static.svg?label=Maven%20Central%20harfbuzz-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:harfbuzz-ndk25-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/harfbuzz-ndk25-shared.svg?label=Maven%20Central%20harfbuzz-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:harfbuzz-ndk25-shared)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/harfbuzz-ndk26-static.svg?label=Maven%20Central%20harfbuzz-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:harfbuzz-ndk26-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/harfbuzz-ndk26-shared.svg?label=Maven%20Central%20harfbuzz-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:harfbuzz-ndk26-shared)

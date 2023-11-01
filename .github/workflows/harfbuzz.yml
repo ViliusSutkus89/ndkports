@@ -1,0 +1,16 @@
+name: harfbuzz
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'buildSrc/**'
+      - 'harfbuzz/**'
+      - '.github/workflows/build.yml'
+      - '.github/workflows/harfbuzz.yml'
+
+jobs:
+  build:
+    name: harfbuzz
+    uses: ./.github/workflows/build.yml
+    with:
+      package: harfbuzz
