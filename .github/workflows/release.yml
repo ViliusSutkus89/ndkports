@@ -31,7 +31,20 @@ jobs:
       - run: sdkmanager "ndk;${{ matrix.ndk }}"
       - run: pip3 install --user ninja meson
 
-      - run: ./gradlew ${{ github.event.inputs.PACKAGE }}:build -PndkPath=${{ env.ANDROID_SDK_ROOT }}/ndk/${{ matrix.ndk }} -PlibraryType=${{ matrix.libraryType }}
+      - run: ./gradlew ${{ github.event.inputs.PACKAGE }}:publishToMavenLocal -PndkPath=${{ env.ANDROID_SDK_ROOT }}/ndk/${{ matrix.ndk }} -PlibraryType=${{ matrix.libraryType }}
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: "${{ github.event.inputs.PACKAGE }}-${{ matrix.ndk }}-${{ matrix.libraryType }}-logs"
+          path: "${{ github.event.inputs.PACKAGE }}/build/port/logs"
+          if-no-files-found: error
+
+      - run: tar -cvf maven-local.tar ~/.m2
+      - uses: actions/upload-artifact@v3
+        with:
+          name: "${{ inputs.package }}-${{ matrix.ndk }}-${{ matrix.libraryType }}-mavenLocal"
+          path: ~/.m2
+          if-no-files-found: error
 
       - run: ./gradlew ${{ github.event.inputs.PACKAGE }}:publishToSonatype closeSonatypeStagingRepository -PndkPath=${{ env.ANDROID_SDK_ROOT }}/ndk/${{ matrix.ndk }} -PlibraryType=${{ matrix.libraryType }}
         env:
@@ -39,9 +52,3 @@ jobs:
           ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PASSWORD }}
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
           SIGNING_PASS: ${{ secrets.SIGNING_PASS }}
-
-      - uses: actions/upload-artifact@v3
-        with:
-          name: "${{ github.event.inputs.PACKAGE }}-${{ matrix.ndk }}-${{ matrix.libraryType }}-logs"
-          path: "${{ github.event.inputs.PACKAGE }}/build/port/logs"
-          if-no-files-found: error
