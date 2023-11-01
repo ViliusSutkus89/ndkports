@@ -1,0 +1,16 @@
+name: json-glib
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'buildSrc/**'
+      - 'json-glib/**'
+      - '.github/workflows/build.yml'
+      - '.github/workflows/json-glib.yml'
+
+jobs:
+  build:
+    name: json-glib
+    uses: ./.github/workflows/build.yml
+    with:
+      package: json-glib
