@@ -19,7 +19,7 @@ dependencies {
     implementation("com.viliussutkus89.ndk.thirdparty:freetype${ndkVersionSuffix}-static:2.13.2-beta-3")
     implementation("com.viliussutkus89.ndk.thirdparty:libpng${ndkVersionSuffix}-static:1.6.40-beta-4")
     implementation("com.viliussutkus89.ndk.thirdparty:pixman${ndkVersionSuffix}-static:0.42.2-beta-2")
-    implementation("com.viliussutkus89.ndk.thirdparty:glib2${ndkVersionSuffix}-static:2.78.1-beta-1")
+    implementation("com.viliussutkus89.ndk.thirdparty:glib2${ndkVersionSuffix}-static:2.78.1-beta-2")
     implementation("com.viliussutkus89.ndk.thirdparty:fontconfig${ndkVersionSuffix}-static:2.14.2-beta-1")
 //    Run-time dependency libspectre found: NO (tried pkgconfig and cmake) - CAIRO_CAN_TEST_PS_SURFACE
 //    Run-time dependency poppler-glib found: NO (tried pkgconfig and cmake) - CAIRO_CAN_TEST_PDF_SURFACE
