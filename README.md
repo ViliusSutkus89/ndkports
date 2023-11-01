@@ -180,3 +180,11 @@ Figure out proper way to deliver per ABI headers.
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/glib2-ndk25-shared.svg?label=Maven%20Central%20glib2-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:glib2-ndk25-shared)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/glib2-ndk26-static.svg?label=Maven%20Central%20glib2-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:glib2-ndk26-static)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/glib2-ndk26-shared.svg?label=Maven%20Central%20glib2-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:glib2-ndk26-shared)
+
+#### [Cairo](https://cairographics.org)
+
+[![cairo](https://github.com/ViliusSutkus89/ndkports/actions/workflows/cairo.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/cairo.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/cairo-ndk25-static.svg?label=Maven%20Central%20cairo-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:cairo-ndk25-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/cairo-ndk25-shared.svg?label=Maven%20Central%20cairo-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:cairo-ndk25-shared)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/cairo-ndk26-static.svg?label=Maven%20Central%20cairo-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:cairo-ndk26-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/cairo-ndk26-shared.svg?label=Maven%20Central%20cairo-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:cairo-ndk26-shared)

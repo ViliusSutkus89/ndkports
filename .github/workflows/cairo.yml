@@ -1,0 +1,16 @@
+name: cairo
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'buildSrc/**'
+      - 'cairo/**'
+      - '.github/workflows/build.yml'
+      - '.github/workflows/cairo.yml'
+
+jobs:
+  build:
+    name: cairo
+    uses: ./.github/workflows/build.yml
+    with:
+      package: cairo
