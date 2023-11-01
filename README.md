@@ -164,3 +164,11 @@ Figure out proper way to deliver per ABI headers.
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libxml2-ndk25-shared.svg?label=Maven%20Central%20libxml2-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libxml2-ndk25-shared)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libxml2-ndk26-static.svg?label=Maven%20Central%20libxml2-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libxml2-ndk26-static)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libxml2-ndk26-shared.svg?label=Maven%20Central%20libxml2-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libxml2-ndk26-shared)
+
+#### [proxy-libintl](https://github.com/ViliusSutkus89/proxy-libintl)
+
+[![proxy-libintl](https://github.com/ViliusSutkus89/ndkports/actions/workflows/proxy-libintl.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/proxy-libintl.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/proxy-libintl-ndk25-static.svg?label=Maven%20Central%20proxy-libintl-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:proxy-libintl-ndk25-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/proxy-libintl-ndk25-shared.svg?label=Maven%20Central%20proxy-libintl-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:proxy-libintl-ndk25-shared)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/proxy-libintl-ndk26-static.svg?label=Maven%20Central%20proxy-libintl-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:proxy-libintl-ndk26-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/proxy-libintl-ndk26-shared.svg?label=Maven%20Central%20proxy-libintl-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:proxy-libintl-ndk26-shared)

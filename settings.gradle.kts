@@ -23,6 +23,7 @@ dependencyResolutionManagement {
 include(":libffi")
 include(":freetype")
 include(":libiconv")
+include(":proxy-libintl")
 include(":pcre2")
 include(":libpng")
 include(":libjpeg-turbo")

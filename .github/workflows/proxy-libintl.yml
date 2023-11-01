@@ -1,0 +1,16 @@
+name: proxy-libintl
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'buildSrc/**'
+      - 'proxy-libintl/**'
+      - '.github/workflows/build.yml'
+      - '.github/workflows/proxy-libintl.yml'
+
+jobs:
+  build:
+    name: proxy-libintl
+    uses: ./.github/workflows/build.yml
+    with:
+      package: proxy-libintl
