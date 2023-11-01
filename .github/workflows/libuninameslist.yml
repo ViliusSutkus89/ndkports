@@ -1,0 +1,16 @@
+name: libuninameslist
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'buildSrc/**'
+      - 'libuninameslist/**'
+      - '.github/workflows/build.yml'
+      - '.github/workflows/libuninameslist.yml'
+
+jobs:
+  build:
+    name: libuninameslist
+    uses: ./.github/workflows/build.yml
+    with:
+      package: libuninameslist
