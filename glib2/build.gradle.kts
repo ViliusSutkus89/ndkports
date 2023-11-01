@@ -19,7 +19,7 @@ dependencies {
     implementation("com.viliussutkus89.ndk.thirdparty:libiconv${ndkVersionSuffix}-static:1.17-beta-1")
     implementation("com.viliussutkus89.ndk.thirdparty:proxy-libintl${ndkVersionSuffix}-static:0.4.1")
     implementation("com.viliussutkus89.ndk.thirdparty:libffi${ndkVersionSuffix}-static:3.4.4-beta-1")
-    implementation("com.viliussutkus89.ndk.thirdparty:pcre2${ndkVersionSuffix}-static:10.42-beta-1")
+    implementation("com.viliussutkus89.ndk.thirdparty:pcre2${ndkVersionSuffix}-static:10.42-beta-2")
 }
 
 ndkPorts {
