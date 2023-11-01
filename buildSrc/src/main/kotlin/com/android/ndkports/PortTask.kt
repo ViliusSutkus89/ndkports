@@ -169,9 +169,12 @@ abstract class PortTask(objects: ObjectFactory) : DefaultTask() {
                             sb.appendLine(line)
                         }
                     }
-
-                    sb.appendLine("Libs: ${(libs + libsPrivate).joinToString(" ")}")
-                    sb.appendLine("Requires: ${(requires + requiresPrivate).joinToString(" ")}")
+                    (libs + libsPrivate).joinToString(" ").trim().let { libsWithPrivates ->
+                        sb.appendLine("Libs: $libsWithPrivates")
+                    }
+                    (requires + requiresPrivate).joinToString(" ").trim().let { requiresWithPrivates ->
+                        sb.appendLine("Requires: $requiresWithPrivates")
+                    }
                     dst.writeText(sb.toString())
                 }
             }
