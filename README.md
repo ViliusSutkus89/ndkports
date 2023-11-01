@@ -172,3 +172,11 @@ Figure out proper way to deliver per ABI headers.
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/proxy-libintl-ndk25-shared.svg?label=Maven%20Central%20proxy-libintl-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:proxy-libintl-ndk25-shared)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/proxy-libintl-ndk26-static.svg?label=Maven%20Central%20proxy-libintl-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:proxy-libintl-ndk26-static)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/proxy-libintl-ndk26-shared.svg?label=Maven%20Central%20proxy-libintl-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:proxy-libintl-ndk26-shared)
+
+#### [GLib](https://gitlab.gnome.org/GNOME/glib/)
+
+[![glib2](https://github.com/ViliusSutkus89/ndkports/actions/workflows/glib2.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/glib2.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/glib2-ndk25-static.svg?label=Maven%20Central%20glib2-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:glib2-ndk25-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/glib2-ndk25-shared.svg?label=Maven%20Central%20glib2-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:glib2-ndk25-shared)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/glib2-ndk26-static.svg?label=Maven%20Central%20glib2-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:glib2-ndk26-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/glib2-ndk26-shared.svg?label=Maven%20Central%20glib2-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:glib2-ndk26-shared)

@@ -1,0 +1,16 @@
+name: glib2
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'buildSrc/**'
+      - 'glib2/**'
+      - '.github/workflows/build.yml'
+      - '.github/workflows/glib2.yml'
+
+jobs:
+  build:
+    name: glib2
+    uses: ./.github/workflows/build.yml
+    with:
+      package: glib2
