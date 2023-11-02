@@ -11,7 +11,7 @@ on:
         required: false
 jobs:
   release:
-    name: Release ${{ github.event.inputs.PACKAGE }} ${{ matrix.ndk }} ${{ matrix.libraryType }}
+    name: Release ${{ github.event.inputs.PACKAGE }} ${{ github.event.inputs.VERSION }} ${{ matrix.ndk }} ${{ matrix.libraryType }}
     environment: SonatypeAccess
     runs-on: ubuntu-22.04
     strategy:
