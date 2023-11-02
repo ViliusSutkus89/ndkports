@@ -232,3 +232,11 @@ Pango-1.51.0 requires API level 21
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/pango-ndk25-shared.svg?label=Maven%20Central%20pango-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:pango-ndk25-shared)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/pango-ndk26-static.svg?label=Maven%20Central%20pango-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:pango-ndk26-static)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/pango-ndk26-shared.svg?label=Maven%20Central%20pango-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:pango-ndk26-shared)
+
+#### [FontForge](https://fontforge.org)
+
+[![fontforge](https://github.com/ViliusSutkus89/ndkports/actions/workflows/fontforge.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/fontforge.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/fontforge-ndk25-static.svg?label=Maven%20Central%20fontforge-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:fontforge-ndk25-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/fontforge-ndk25-shared.svg?label=Maven%20Central%20fontforge-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:fontforge-ndk25-shared)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/fontforge-ndk26-static.svg?label=Maven%20Central%20fontforge-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:fontforge-ndk26-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/fontforge-ndk26-shared.svg?label=Maven%20Central%20fontforge-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:fontforge-ndk26-shared)

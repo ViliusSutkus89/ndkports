@@ -1,0 +1,11 @@
+--- gio.c.orig	2017-07-22 08:00:39.154250006 +0300
++++ gio.c	2023-11-02 14:24:04.863000000 +0200
+@@ -232,7 +232,7 @@
+ 	    gc->threaddata!=NULL && !gc->done ) {
+ 	void *ret;
+ 	gc->abort = true;
+-	pthread_cancel(gc->threaddata->thread);
++//	pthread_cancel(gc->threaddata->thread);
+ 	pthread_join(gc->threaddata->thread, &ret);
+     }
+ #endif

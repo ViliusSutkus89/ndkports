@@ -1,0 +1,30 @@
+name: fontforge
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'buildSrc/**'
+      - '.github/workflows/build.yml'
+      - 'fontforge/**'
+      - '.github/workflows/fontforge.yml'
+jobs:
+  build-fontforge-20230101:
+    name: fontforge 20230101
+    uses: ./.github/workflows/build.yml
+    with:
+      package: fontforge
+      version: '20230101'
+
+  build-fontforge-20200314:
+    name: fontforge 20200314
+    uses: ./.github/workflows/build.yml
+    with:
+      package: fontforge
+      version: '20200314'
+
+  build-fontforge-20170731:
+    name: fontforge 20170731
+    uses: ./.github/workflows/build.yml
+    with:
+      package: fontforge
+      version: '20170731'
