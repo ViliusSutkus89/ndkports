@@ -59,7 +59,7 @@ jobs:
 
       - run: ./gradlew \
           ${{ inputs.PACKAGE }}:publishToMavenLocal \
-          -PpackageVersion=${{ inputs.VERSION }} \
+          -PpackageVersion='${{ inputs.VERSION }}' \
           -PndkPath=${{ env.ANDROID_SDK_ROOT }}/ndk/${{ matrix.ndk }} \
           -PlibraryType=${{ matrix.libraryType }}
 
@@ -78,7 +78,7 @@ jobs:
       - run: ./gradlew -PrepoDescription=${{ env.REPO_DESCRIPTION }} \
           findSonatypeStagingRepository -x initializeSonatypeStagingRepository \
           ${{ inputs.PACKAGE }}:publishToSonatype \
-          -PpackageVersion=${{ inputs.VERSION }} \
+          -PpackageVersion='${{ inputs.VERSION }}' \
           -PndkPath=${{ env.ANDROID_SDK_ROOT }}/ndk/${{ matrix.ndk }} \
           -PlibraryType=${{ matrix.libraryType }}
         env:
