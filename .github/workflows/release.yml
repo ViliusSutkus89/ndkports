@@ -39,13 +39,13 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
-          name: "${{ github.event.inputs.PACKAGE }}-${{ matrix.ndk }}-${{ matrix.libraryType }}-logs"
+          name: "${{ github.event.inputs.PACKAGE }}-${{ github.even.inputs.VERSION }}-${{ matrix.ndk }}-${{ matrix.libraryType }}-logs"
           path: "${{ github.event.inputs.PACKAGE }}/build/port/logs"
           if-no-files-found: error
 
       - uses: actions/upload-artifact@v3
         with:
-          name: "${{ inputs.package }}-${{ matrix.ndk }}-${{ matrix.libraryType }}-mavenLocal"
+          name: "${{ inputs.package }}-${{ github.even.inputs.VERSION }}-${{ matrix.ndk }}-${{ matrix.libraryType }}-mavenLocal"
           path: ~/.m2
           if-no-files-found: error
 

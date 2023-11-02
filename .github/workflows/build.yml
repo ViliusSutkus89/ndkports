@@ -41,21 +41,21 @@ jobs:
         name: Artifact logs
         if: always()
         with:
-          name: "${{ inputs.package }}-${{ matrix.ndk }}-${{ matrix.libraryType }}-logs"
+          name: "${{ inputs.package }}-${{ inputs.version }}-${{ matrix.ndk }}-${{ matrix.libraryType }}-logs"
           path: "${{ inputs.package }}/build/port/logs"
 
-      - run: tar --use-compress-program=lz4 -cf "${{ inputs.package }}-${{ matrix.ndk }}-${{ matrix.libraryType }}-build.tar.lz4" "${{ inputs.package }}/build"
+      - run: tar --use-compress-program=lz4 -cf "${{ inputs.package }}-${{ inputs.version }}-${{ matrix.ndk }}-${{ matrix.libraryType }}-build.tar.lz4" "${{ inputs.package }}/build"
         if: always()
       - uses: actions/upload-artifact@v3
         name: Artifact build
         if: always()
         with:
-          name: "${{ inputs.package }}-${{ matrix.ndk }}-${{ matrix.libraryType }}-build.tar.lz4"
-          path: "${{ inputs.package }}-${{ matrix.ndk }}-${{ matrix.libraryType }}-build.tar.lz4"
+          name: "${{ inputs.package }}-${{ inputs.version }}-${{ matrix.ndk }}-${{ matrix.libraryType }}-build.tar.lz4"
+          path: "${{ inputs.package }}-${{ inputs.version }}-${{ matrix.ndk }}-${{ matrix.libraryType }}-build.tar.lz4"
 
       - uses: actions/upload-artifact@v3
         name: Artifact MavenLocal
         with:
-          name: "${{ inputs.package }}-${{ matrix.ndk }}-${{ matrix.libraryType }}-mavenLocal"
+          name: "${{ inputs.package }}-${{ inputs.version }}-${{ matrix.ndk }}-${{ matrix.libraryType }}-mavenLocal"
           path: ~/.m2
           if-no-files-found: error
