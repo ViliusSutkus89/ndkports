@@ -33,6 +33,11 @@ repositories {
 }
 
 nexusPublishing {
+    project.findProperty("repoDescription")?.toString().let {
+        if (!it.isNullOrEmpty()) {
+            repositoryDescription.set(it)
+        }
+    }
     repositories {
         sonatype()
     }

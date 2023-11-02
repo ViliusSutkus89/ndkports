@@ -1,4 +1,5 @@
 name: release
+run-name: ${{ inputs.PACKAGE }} ${{ inputs.VERSION }}
 on:
   workflow_dispatch:
     inputs:
@@ -9,9 +10,30 @@ on:
         description: 'Package version'
         default: ''
         required: false
+
+env:
+  REPO_DESCRIPTION: ${{ inputs.PACKAGE }}-${{ inputs.VERSION }}-${{ github.run_id }}-${{ github.run_attempt }}
+
 jobs:
-  release:
-    name: Release ${{ github.event.inputs.PACKAGE }} ${{ github.event.inputs.VERSION }} ${{ matrix.ndk }} ${{ matrix.libraryType }}
+  openSonatype:
+    environment: SonatypeAccess
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: actions/checkout@v4
+
+      - run: ./gradlew -PrepoDescription=${{ env.REPO_DESCRIPTION }} initializeSonatypeStagingRepository
+        env:
+          ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
+          ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PASSWORD }}
+
+  publishToSonatype:
+    name: ${{ matrix.ndk }} ${{ matrix.libraryType }}
+    needs: openSonatype
     environment: SonatypeAccess
     runs-on: ubuntu-22.04
     strategy:
@@ -23,9 +45,7 @@ jobs:
         libraryType:
           - "shared"
           - "static"
-
     steps:
-      - uses: actions/checkout@v4
       - uses: actions/setup-java@v3
         with:
           distribution: temurin
@@ -35,7 +55,13 @@ jobs:
       - run: sdkmanager "ndk;${{ matrix.ndk }}"
       - run: pip3 install --user ninja meson
 
-      - run: ./gradlew ${{ github.event.inputs.PACKAGE }}:publishToMavenLocal -PpackageVersion=${{ github.even.inputs.VERSION }} -PndkPath=${{ env.ANDROID_SDK_ROOT }}/ndk/${{ matrix.ndk }} -PlibraryType=${{ matrix.libraryType }}
+      - uses: actions/checkout@v4
+
+      - run: ./gradlew \
+          ${{ inputs.PACKAGE }}:publishToMavenLocal \
+          -PpackageVersion=${{ inputs.VERSION }} \
+          -PndkPath=${{ env.ANDROID_SDK_ROOT }}/ndk/${{ matrix.ndk }} \
+          -PlibraryType=${{ matrix.libraryType }}
 
       - uses: actions/upload-artifact@v3
         with:
@@ -45,13 +71,37 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
-          name: "${{ inputs.package }}-${{ github.even.inputs.VERSION }}-${{ matrix.ndk }}-${{ matrix.libraryType }}-mavenLocal"
+          name: "${{ inputs.package }}-${{ inputs.VERSION }}-${{ matrix.ndk }}-${{ matrix.libraryType }}-mavenLocal"
           path: ~/.m2
           if-no-files-found: error
 
-      - run: ./gradlew ${{ github.event.inputs.PACKAGE }}:publishToSonatype -PpackageVersion=${{ github.even.inputs.VERSION }} closeSonatypeStagingRepository -PndkPath=${{ env.ANDROID_SDK_ROOT }}/ndk/${{ matrix.ndk }} -PlibraryType=${{ matrix.libraryType }}
+      - run: ./gradlew -PrepoDescription=${{ env.REPO_DESCRIPTION }} \
+          findSonatypeStagingRepository -x initializeSonatypeStagingRepository \
+          ${{ inputs.PACKAGE }}:publishToSonatype \
+          -PpackageVersion=${{ inputs.VERSION }} \
+          -PndkPath=${{ env.ANDROID_SDK_ROOT }}/ndk/${{ matrix.ndk }} \
+          -PlibraryType=${{ matrix.libraryType }}
         env:
           ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
           ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PASSWORD }}
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
           SIGNING_PASS: ${{ secrets.SIGNING_PASS }}
+
+  closeSonatype:
+    needs: publishToSonatype
+    environment: SonatypeAccess
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: actions/checkout@v4
+
+      - run: ./gradlew -PrepoDescription=${{ env.REPO_DESCRIPTION }} \
+          findSonatypeStagingRepository -x initializeSonatypeStagingRepository \
+          closeSonatypeStagingRepository
+        env:
+          ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
+          ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PASSWORD }}
