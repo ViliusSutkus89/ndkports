@@ -43,7 +43,6 @@ jobs:
           path: "${{ github.event.inputs.PACKAGE }}/build/port/logs"
           if-no-files-found: error
 
-      - run: tar -cvf maven-local.tar ~/.m2
       - uses: actions/upload-artifact@v3
         with:
           name: "${{ inputs.package }}-${{ matrix.ndk }}-${{ matrix.libraryType }}-mavenLocal"
