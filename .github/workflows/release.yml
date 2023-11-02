@@ -23,10 +23,11 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
+      - uses: android-actions/setup-android@v3
 
       - uses: actions/checkout@v4
 
-      - run: ./gradlew -PrepoDescription=${{ env.REPO_DESCRIPTION }} initializeSonatypeStagingRepository
+      - run: ./gradlew -PrepoDescription=${{ env.REPO_DESCRIPTION }} initializeSonatypeStagingRepository -PndkPath=${{ env.ANDROID_SDK_ROOT }}/ndk/26.1.10909125
         env:
           ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
           ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PASSWORD }}
@@ -87,10 +88,11 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
+      - uses: android-actions/setup-android@v3
 
       - uses: actions/checkout@v4
 
-      - run: ./gradlew -PrepoDescription=${{ env.REPO_DESCRIPTION }} findSonatypeStagingRepository -x initializeSonatypeStagingRepository closeSonatypeStagingRepository
+      - run: ./gradlew -PrepoDescription=${{ env.REPO_DESCRIPTION }} findSonatypeStagingRepository -x initializeSonatypeStagingRepository closeSonatypeStagingRepository -PndkPath=${{ env.ANDROID_SDK_ROOT }}/ndk/26.1.10909125
         env:
           ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
           ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PASSWORD }}
