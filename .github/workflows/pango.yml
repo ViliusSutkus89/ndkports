@@ -1,0 +1,16 @@
+name: pango
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'buildSrc/**'
+      - 'pango/**'
+      - '.github/workflows/build.yml'
+      - '.github/workflows/pango.yml'
+
+jobs:
+  build:
+    name: pango
+    uses: ./.github/workflows/build.yml
+    with:
+      package: pango
