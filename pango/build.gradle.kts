@@ -5,9 +5,18 @@ import org.gradle.jvm.tasks.Jar
 
 group = rootProject.group
 
-val portVersion = "1.49.4"
-//val portVersion = "1.51.0"
-version = "${portVersion}-beta-1"
+// Hardcode a list of available versions
+val portVersion = when(project.findProperty("packageVersion")) {
+    "1.49.4" -> {
+        version = "1.49.4-beta-1"
+        "1.49.4"
+    }
+//    "1.51.0" -> {
+    else -> {
+        version = "1.51.0-beta-1"
+        "1.51.0"
+    }
+}
 
 plugins {
     id("maven-publish")
@@ -127,7 +136,7 @@ publishing {
                 licenses {
                     license {
                         name.set("LGPLv2")
-                        url.set("https://gitlab.gnome.org/GNOME/pango/-/blob/1.49.4/COPYING")
+                        url.set("https://gitlab.gnome.org/GNOME/pango/-/raw/1.49.4/COPYING")
                         distribution.set("repo")
                     }
                 }
