@@ -33,8 +33,8 @@ repositories {
 }
 
 nexusPublishing {
-    project.findProperty("repoDescription")?.toString().let {
-        if (!it.isNullOrEmpty()) {
+    project.findProperty("repoDescription")?.toString()?.let {
+        if (it.isNotEmpty()) {
             repositoryDescription.set(it)
         }
     }
