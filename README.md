@@ -223,7 +223,8 @@ Figure out proper way to deliver per ABI headers.
 
 #### [Pango](https://pango.gnome.org)
 
-Pango-1.49.4 is latest to support API level 19
+Pango-1.49.4 supports API level 19
+
 Pango-1.51.0 requires API level 21
 
 [![pango](https://github.com/ViliusSutkus89/ndkports/actions/workflows/pango.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/pango.yml)
