@@ -57,11 +57,7 @@ jobs:
 
       - uses: actions/checkout@v4
 
-      - run: ./gradlew \
-          ${{ inputs.PACKAGE }}:publishToMavenLocal \
-          -PpackageVersion='${{ inputs.VERSION }}' \
-          -PndkPath=${{ env.ANDROID_SDK_ROOT }}/ndk/${{ matrix.ndk }} \
-          -PlibraryType=${{ matrix.libraryType }}
+      - run: ./gradlew ${{ inputs.PACKAGE }}:publishToMavenLocal -PpackageVersion=${{ inputs.VERSION }} -PndkPath=${{ env.ANDROID_SDK_ROOT }}/ndk/${{ matrix.ndk }} -PlibraryType=${{ matrix.libraryType }}
 
       - uses: actions/upload-artifact@v3
         with:
@@ -75,12 +71,7 @@ jobs:
           path: ~/.m2
           if-no-files-found: error
 
-      - run: ./gradlew -PrepoDescription=${{ env.REPO_DESCRIPTION }} \
-          findSonatypeStagingRepository -x initializeSonatypeStagingRepository \
-          ${{ inputs.PACKAGE }}:publishToSonatype \
-          -PpackageVersion='${{ inputs.VERSION }}' \
-          -PndkPath=${{ env.ANDROID_SDK_ROOT }}/ndk/${{ matrix.ndk }} \
-          -PlibraryType=${{ matrix.libraryType }}
+      - run: ./gradlew -PrepoDescription=${{ env.REPO_DESCRIPTION }} findSonatypeStagingRepository -x initializeSonatypeStagingRepository ${{ inputs.PACKAGE }}:publishToSonatype -PpackageVersion=${{ inputs.VERSION }} -PndkPath=${{ env.ANDROID_SDK_ROOT }}/ndk/${{ matrix.ndk }} -PlibraryType=${{ matrix.libraryType }}
         env:
           ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
           ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PASSWORD }}
@@ -99,9 +90,7 @@ jobs:
 
       - uses: actions/checkout@v4
 
-      - run: ./gradlew -PrepoDescription=${{ env.REPO_DESCRIPTION }} \
-          findSonatypeStagingRepository -x initializeSonatypeStagingRepository \
-          closeSonatypeStagingRepository
+      - run: ./gradlew -PrepoDescription=${{ env.REPO_DESCRIPTION }} findSonatypeStagingRepository -x initializeSonatypeStagingRepository closeSonatypeStagingRepository
         env:
           ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
           ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PASSWORD }}
