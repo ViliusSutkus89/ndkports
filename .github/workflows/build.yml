@@ -5,7 +5,10 @@ on:
       package:
         required: true
         type: string
-
+      version:
+        required: false
+        type: string
+        default: ''
 jobs:
   build:
     if: "!contains(github.event.head_commit.message, '[SkipCI]')"
@@ -32,7 +35,7 @@ jobs:
       - run: sdkmanager "ndk;${{ matrix.ndk }}"
       - run: pip3 install --user ninja meson
 
-      - run: ./gradlew ${{ inputs.package }}:publishToMavenLocal -PndkPath=${{ env.ANDROID_SDK_ROOT }}/ndk/${{ matrix.ndk }} -PlibraryType=${{ matrix.libraryType }}
+      - run: ./gradlew ${{ inputs.package }}:publishToMavenLocal -PpackageVersion=${{ inputs.version }} -PndkPath=${{ env.ANDROID_SDK_ROOT }}/ndk/${{ matrix.ndk }} -PlibraryType=${{ matrix.libraryType }}
 
       - uses: actions/upload-artifact@v3
         name: Artifact logs

@@ -5,6 +5,10 @@ on:
       PACKAGE:
         description: 'Package name'
         required: true
+      VERSION:
+        description: 'Package version'
+        default: ''
+        required: false
 jobs:
   release:
     name: Release ${{ github.event.inputs.PACKAGE }} ${{ matrix.ndk }} ${{ matrix.libraryType }}
@@ -31,7 +35,7 @@ jobs:
       - run: sdkmanager "ndk;${{ matrix.ndk }}"
       - run: pip3 install --user ninja meson
 
-      - run: ./gradlew ${{ github.event.inputs.PACKAGE }}:publishToMavenLocal -PndkPath=${{ env.ANDROID_SDK_ROOT }}/ndk/${{ matrix.ndk }} -PlibraryType=${{ matrix.libraryType }}
+      - run: ./gradlew ${{ github.event.inputs.PACKAGE }}:publishToMavenLocal -PpackageVersion=${{ github.even.inputs.VERSION }} -PndkPath=${{ env.ANDROID_SDK_ROOT }}/ndk/${{ matrix.ndk }} -PlibraryType=${{ matrix.libraryType }}
 
       - uses: actions/upload-artifact@v3
         with:
@@ -46,7 +50,7 @@ jobs:
           path: ~/.m2
           if-no-files-found: error
 
-      - run: ./gradlew ${{ github.event.inputs.PACKAGE }}:publishToSonatype closeSonatypeStagingRepository -PndkPath=${{ env.ANDROID_SDK_ROOT }}/ndk/${{ matrix.ndk }} -PlibraryType=${{ matrix.libraryType }}
+      - run: ./gradlew ${{ github.event.inputs.PACKAGE }}:publishToSonatype -PpackageVersion=${{ github.even.inputs.VERSION }} closeSonatypeStagingRepository -PndkPath=${{ env.ANDROID_SDK_ROOT }}/ndk/${{ matrix.ndk }} -PlibraryType=${{ matrix.libraryType }}
         env:
           ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
           ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PASSWORD }}
