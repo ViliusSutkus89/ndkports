@@ -114,7 +114,7 @@ tasks.extractSrc {
             srcDir.resolve("gutils/gio.c").patch(projectDir.resolve("patches/gutils-gio.no-pthread-cancel.patch"))
 
             // fontforgeexe/startnoui.c
-//            srcDir.resolve("fontforgeexe/startnoui.c").patch(projectDir.resolve("patches/fontforgeexe-startnoui.FindOrMakeEncoding.patch"))
+            srcDir.resolve("fontforgeexe/startnoui.c").patch(projectDir.resolve("patches/fontforgeexe-startnoui.FindOrMakeEncoding.patch"))
 
             // android-ndk-r20/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/pwd.h
             // #if __ANDROID_API__ >= 26

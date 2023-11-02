@@ -1,13 +1,10 @@
 --- startnoui.c	2017-07-22 08:00:39.126236006 +0300
-+++ startnoui.c	2023-11-02 14:20:43.522000000 +0200
-@@ -106,8 +106,8 @@
-     bindtextdomain("FontForge", getLocaleDir());
-     textdomain("FontForge");
++++ startnoui.c	2023-11-02 15:42:45.446000000 +0200
+@@ -27,6 +27,7 @@
+ #include "fontforgevw.h"
+ #include "scripting.h"
+ #include "start.h"
++#include "encoding.h"
  
--    if ( default_encoding==NULL )
--	default_encoding=FindOrMakeEncoding("ISO8859-1");
-+    //if ( default_encoding==NULL )
-+	//default_encoding=FindOrMakeEncoding("ISO8859-1");
-     if ( default_encoding==NULL )
- 	default_encoding=&custom;	/* In case iconv is broken */
-     CheckIsScript(argc,argv);		/* Will run the script and exit if it is a script */
+ #ifndef _NO_LIBUNICODENAMES
+ #include <libunicodenames.h>	/* need to open a database when we start */
