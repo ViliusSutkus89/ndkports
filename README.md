@@ -7,6 +7,8 @@ Buildscripts are based on Google's [ndkports](https://android.googlesource.com/p
 
 Compiled binaries are (will be) distributed through MavenCentral.
 
+Most packages aim to deliver up-to-date version, unless specified otherwise.
+
 ## Matrix
 
 Each port is built on a matrix of NDK versions and library type.
