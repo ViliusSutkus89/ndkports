@@ -215,12 +215,12 @@ publishing {
                     // Poppler licenses
                     license {
                         name.set("GPLv2")
-                        url.set("https://cgit.freedesktop.org/poppler/poppler/plain/COPYING?h=poppler-21.02.0")
+                        url.set("https://cgit.freedesktop.org/poppler/poppler/plain/COPYING?h=poppler-$portVersion")
                         distribution.set("repo")
                     }
                     license {
                         name.set("GPLv3")
-                        url.set("https://cgit.freedesktop.org/poppler/poppler/plain/COPYING3?h=poppler-21.02.0")
+                        url.set("https://cgit.freedesktop.org/poppler/poppler/plain/COPYING3?h=poppler-$portVersion")
                         distribution.set("repo")
                     }
 
@@ -244,7 +244,10 @@ publishing {
                 }
                 developers {
                     // Developer list obtained from:
-                    // https://gitlab.freedesktop.org/poppler/poppler/-/blob/poppler-21.02.0/AUTHORS
+                    // https://gitlab.freedesktop.org/poppler/poppler/-/raw/poppler-0.81.0/AUTHORS
+                    // https://gitlab.freedesktop.org/poppler/poppler/-/raw/poppler-0.89.0/AUTHORS
+                    // https://gitlab.freedesktop.org/poppler/poppler/-/raw/poppler-21.02.0/AUTHORS
+                    // https://gitlab.freedesktop.org/poppler/poppler/-/raw/poppler-23.10.0/AUTHORS
                     // https://gitlab.freedesktop.org/poppler/poppler-data/-/blob/POPPLER_DATA_0_4_12/README
                     developer {
                         name.set("Derek Noonburg")
