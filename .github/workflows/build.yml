@@ -10,6 +10,10 @@ on:
         required: false
         type: string
         default: ''
+      apt_packages:
+        required: false
+        type: string
+        default: ''
 jobs:
   build:
     if: "!contains(github.event.head_commit.message, '[SkipCI]')"
@@ -33,6 +37,8 @@ jobs:
       - uses: android-actions/setup-android@v3
       - run: sdkmanager "ndk;${{ matrix.ndk }}"
       - run: pip3 install --user ninja meson
+      - run: sudo apt-get install --yes ${{ inputs.apt_packages }}
+        if: inputs.apt_packages
 
       - uses: actions/checkout@v4
 
