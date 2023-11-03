@@ -238,7 +238,9 @@ Pango-1.51.0 requires API level 21
 #### [FontForge](https://fontforge.org)
 
 FontForge-20170731 supports API level 19
+
 FontForge-20200314 supports API level 24
+
 FontForge-20230101 supports API level 24
 
 [![fontforge](https://github.com/ViliusSutkus89/ndkports/actions/workflows/fontforge.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/fontforge.yml)
