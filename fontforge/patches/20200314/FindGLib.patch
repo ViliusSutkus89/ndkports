@@ -1,0 +1,24 @@
+--- cmake/packages/FindGLIB.cmake	2019-11-13 11:00:19.000000000 +0200
++++ cmake/packages/FindGLIB.cmake	2023-11-03 07:49:34.466000000 +0200
+@@ -126,7 +126,8 @@
+   set_property(TARGET GLIB::GLIB PROPERTY
+                INTERFACE_INCLUDE_DIRECTORIES "${GLIB_INCLUDE_DIRS}")
+   set_property(TARGET GLIB::GLIB PROPERTY
+-               INTERFACE_LINK_LIBRARIES "${GLIB_LIBRARIES}")
++               INTERFACE_LINK_LIBRARIES "${PC_GLIB_LIBRARIES}")
++  set_property(TARGET GLIB::GLIB PROPERTY INTERFACE_LINK_DIRECTORIES "${PC_GLIB_LIBDIR}")
+   if(DEFINED GLIB_GIO_LIBRARIES)
+     set_property(TARGET GLIB::GLIB APPEND PROPERTY
+                  INTERFACE_LINK_LIBRARIES "${GLIB_GIO_LIBRARIES}")
+
+--- CMakeLists.txt	2020-03-14 06:01:25.000000000 +0200
++++ CMakeLists.txt	2023-11-03 07:53:25.053000000 +0200
+@@ -99,7 +99,7 @@
+ find_package(Freetype 2.3.7 REQUIRED)
+ find_package(Gettext REQUIRED)
+ find_package_with_target(Intl REQUIRED)
+-find_package(GLIB 2.6 REQUIRED COMPONENTS gio)
++find_package(GLIB 2.6 REQUIRED COMPONENTS gio gobject gmodule)
+ find_package(Iconv REQUIRED)
+ find_package(LibXml2 REQUIRED)
+ find_package(MathLib REQUIRED)
