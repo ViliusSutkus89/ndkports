@@ -56,6 +56,9 @@ jobs:
       - run: sdkmanager "ndk;${{ matrix.ndk }}"
       - run: pip3 install --user ninja meson
 
+      - run: sudo apt-get install --yes gettext
+        if: inputs.PACKAGE == "fontforge"
+
       - uses: actions/checkout@v4
 
       - run: ./gradlew ${{ inputs.PACKAGE }}:publishToMavenLocal -PpackageVersion=${{ inputs.VERSION }} -PndkPath=${{ env.ANDROID_SDK_ROOT }}/ndk/${{ matrix.ndk }} -PlibraryType=${{ matrix.libraryType }}
