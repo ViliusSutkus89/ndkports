@@ -1,0 +1,41 @@
+--- CMakeLists.txt	2019-09-22 18:56:22.000000000 +0300
++++ CMakeLists.txt	2023-11-03 10:53:17.851000000 +0200
+@@ -93,9 +93,6 @@
+ 
+ if(WIN32)
+   set(_default_fontconfiguration "win32")
+-elseif(ANDROID)
+-  # on android we don't have fontconfig and we don't want windows-specific code
+-  set(_default_fontconfiguration "generic")
+ else()
+   set(_default_fontconfiguration "fontconfig")
+ endif()
+@@ -124,7 +121,7 @@
+ macro_bool_to_01(ENABLE_SPLASH HAVE_SPLASH)
+ find_package(Freetype REQUIRED)
+ if(WITH_FONTCONFIGURATION_FONTCONFIG)
+-  find_package(Fontconfig REQUIRED)
++  pkg_search_module(FONTCONFIG REQUIRED IMPORTED_TARGET fontconfig)
+ endif()
+ macro_optional_find_package(JPEG)
+ macro_optional_find_package(PNG)
+@@ -237,10 +234,6 @@
+   # Use mingw's ansi stdio extensions
+   add_definitions(-D__USE_MINGW_ANSI_STDIO=1)
+ endif()
+-if(FONTCONFIG_FOUND)
+-  add_definitions(${FONTCONFIG_DEFINITIONS})
+-  include_directories(SYSTEM ${FONTCONFIG_INCLUDE_DIR})
+-endif()
+ if(WITH_FONTCONFIGURATION_WIN32)
+   if(MINGW)
+     # Set the minimum required Internet Explorer version to 5.0
+@@ -428,7 +421,7 @@
+   )
+ endif()
+ if(FONTCONFIG_FOUND)
+-  set(poppler_LIBS ${poppler_LIBS} ${FONTCONFIG_LIBRARIES})
++  set(poppler_LIBS ${poppler_LIBS} PkgConfig::FONTCONFIG)
+ endif()
+ 
+ if(JPEG_FOUND)

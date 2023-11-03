@@ -19,13 +19,8 @@ val portVersion = when(project.findProperty("packageVersion")) {
         version = "21.02.0-beta-1"
         "21.02.0"
     }
-    "23.10.0" -> {
+    else /* "23.10.0" */ -> {
         version = "23.10.0-beta-1"
-        "0.81.0"
-    }
-    // @TODO:
-    else -> {
-        version = "0.81.0-beta-1"
         "0.81.0"
     }
 }
@@ -48,11 +43,9 @@ dependencies {
     implementation("com.viliussutkus89.ndk.thirdparty:cairo${ndkVersionSuffix}-static:1.18.0-beta-1")
     implementation("com.viliussutkus89.ndk.thirdparty:lcms2${ndkVersionSuffix}-static:2.15-beta-2")
 
-    when (portVersion) {
+    if (listOf("0.81.0", "0.89.0", "21.02.0").contains(portVersion)) {
         // 23.10.0 supports Android's native alternative of fontconfig
-        "0.81.0", "0.89.0", "21.02.0" -> {
-            implementation("com.viliussutkus89.ndk.thirdparty:fontconfig${ndkVersionSuffix}-static:2.14.2-beta-1")
-        }
+        implementation("com.viliussutkus89.ndk.thirdparty:fontconfig${ndkVersionSuffix}-static:2.14.2-beta-1")
     }
 }
 
@@ -69,10 +62,6 @@ tasks.findByName("extractSrc")?.dependsOn(
     }
 )
 
-fun File.replace(oldValue: String, newValue: String, ignoreCase: Boolean = false): File {
-    writeText(readText().replace(oldValue, newValue, ignoreCase))
-    return this
-}
 
 fun File.patch(patch: String) {
     patch(projectDir.resolve("patches/$portVersion").resolve(patch))
@@ -110,9 +99,6 @@ tasks.extractSrc {
                 srcDir.resolve("CMakeLists.txt").patch("fontconfig.patch")
                 srcDir.resolve("CMakeLists.txt").patch("FindCairo.patch")
                 srcDir.resolve("ConfigureChecks.cmake").patch("have_unistd_h.patch")
-            }
-            "0.89.0", "21.02.0" -> {
-                TODO()
             }
             "23.10.0" -> {
                 // https://android.googlesource.com/platform/bionic/+/master/docs/32-bit-abi.md

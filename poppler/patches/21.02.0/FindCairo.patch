@@ -1,0 +1,19 @@
+--- CMakeLists.txt	2023-11-03 12:59:37.594000000 +0200
++++ CMakeLists.txt	2023-11-03 13:00:13.671000000 +0200
+@@ -173,7 +173,7 @@
+ 
+ # Check for rendering backends (Splash included unless disabled)
+ set(HAVE_SPLASH ${ENABLE_SPLASH})
+-macro_optional_find_package(Cairo ${CAIRO_VERSION})
++pkg_search_module(CAIRO REQUIRED IMPORTED_TARGET cairo)
+ 
+ if(ENABLE_SPLASH)
+   find_package(Boost 1.58.0)
+@@ -183,6 +183,7 @@
+ endif()
+ 
+ if(CAIRO_FOUND)
++  set(CAIRO_LIBRARIES PkgConfig::CAIRO)
+   set(HAVE_CAIRO ${CAIRO_FOUND})
+   set(CAIRO_FEATURE "#define POPPLER_HAS_CAIRO 1")
+   set(CAIRO_REQ "cairo")
