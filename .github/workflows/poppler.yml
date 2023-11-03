@@ -1,0 +1,38 @@
+name: poppler
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'buildSrc/**'
+      - '.github/workflows/build.yml'
+      - 'poppler/**'
+      - '.github/workflows/poppler.yml'
+
+jobs:
+  build-poppler-23_10_0:
+    name: poppler 23.10.0
+    uses: ./.github/workflows/build.yml
+    with:
+      package: poppler
+      version: '23.10.0'
+  
+  build-poppler-21_02_0:
+    name: poppler 21.02.0
+    uses: ./.github/workflows/build.yml
+    with:
+      package: poppler
+      version: '21.02.0'
+  
+  build-poppler-0_89_0:
+    name: poppler 0.89.0
+    uses: ./.github/workflows/build.yml
+    with:
+      package: poppler
+      version: '0.89.0'
+  
+  build-poppler-0_81_0:
+    name: poppler 0.81.0
+    uses: ./.github/workflows/build.yml
+    with:
+      package: poppler
+      version: '0.81.0'
