@@ -95,10 +95,14 @@ tasks.extractSrc {
     doLast {
         val srcDir = outDir.get().asFile
         when (portVersion) {
-            "0.81.0", "0.89.0", "21.02.0" -> {
+            "0.81.0" -> {
                 srcDir.resolve("CMakeLists.txt").patch("fontconfig.patch")
                 srcDir.resolve("CMakeLists.txt").patch("FindCairo.patch")
                 srcDir.resolve("ConfigureChecks.cmake").patch("have_unistd_h.patch")
+            }
+            "0.89.0", "21.02.0" -> {
+                srcDir.resolve("CMakeLists.txt").patch("fontconfig.patch")
+                srcDir.resolve("CMakeLists.txt").patch("FindCairo.patch")
             }
             "23.10.0" -> {
                 srcDir.resolve("CMakeLists.txt").patch("FindCairo.patch")
