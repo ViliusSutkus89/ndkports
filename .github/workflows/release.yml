@@ -57,7 +57,7 @@ jobs:
       - run: pip3 install --user ninja meson
 
       - run: sudo apt-get install --yes gettext
-        if: inputs.PACKAGE == "fontforge"
+        if: ${{ inputs.PACKAGE == 'fontforge' }}
 
       - uses: actions/checkout@v4
 
