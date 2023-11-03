@@ -77,6 +77,10 @@ fun File.replace(oldValue: String, newValue: String, ignoreCase: Boolean = false
     return this
 }
 
+fun File.patch(patch: String) {
+    patch(projectDir.resolve("patches").resolve(patch))
+}
+
 fun File.patch(patch: File) {
     val pb = ProcessBuilder(
         if (isFile) listOf("patch", "-p0", absolutePath)
@@ -111,13 +115,13 @@ tasks.extractSrc {
 
             // pthread_cancel unavailable on Android
             // @TODO: implement a proper workaround
-            srcDir.resolve("gutils/gio.c").patch(projectDir.resolve("patches/gutils-gio.no-pthread-cancel.patch"))
+            srcDir.resolve("gutils/gio.c").patch("gutils-gio.no-pthread-cancel.patch")
 
             // fontforgeexe/startnoui.c
-            srcDir.resolve("fontforgeexe/startnoui.c").patch(projectDir.resolve("patches/fontforgeexe-startnoui.FindOrMakeEncoding.patch"))
+            srcDir.resolve("fontforgeexe/startnoui.c").patch("fontforgeexe-startnoui.FindOrMakeEncoding.patch")
 
             // https://android.googlesource.com/platform/bionic/+/master/docs/32-bit-abi.md
-            srcDir.resolve("config.h.in").patch(projectDir.resolve("patches/file_offset_bits.patch"))
+            srcDir.resolve("config.h.in").patch("file_offset_bits.patch")
 
             // android-ndk-r20/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/pwd.h
             // #if __ANDROID_API__ >= 26
@@ -125,16 +129,16 @@ tasks.extractSrc {
             // void setpwent(void) __INTRODUCED_IN(26);
             // void endpwent(void) __INTRODUCED_IN(26);
             // #endif /* __ANDROID_API__ >= 26 */
-            srcDir.resolve("gutils/fsys.c").patch(projectDir.resolve("patches/gutils-fsys.patch"))
+            srcDir.resolve("gutils/fsys.c").patch("gutils-fsys.patch")
 
             // https://android.googlesource.com/platform/bionic/+/master/docs/status.md
             // New libc functions in P (API level 28):
             // endhostent/endnetent/endprotoent/getnetent/getprotoent/sethostent/setnetent/setprotoent (completing <netdb.h>)
-            srcDir.resolve("gutils/gutils.c").patch(projectDir.resolve("patches/gutils-gutils.patch"))
+            srcDir.resolve("gutils/gutils.c").patch("gutils-gutils.patch")
 
             // Leak some memory by not calling endhostent() and endprotoent()
             // These are deprecated functions, not used in the current upstream version of fontforge
-            srcDir.resolve("fontforge/http.c").patch(projectDir.resolve("patches/fontforge-http.patch"))
+            srcDir.resolve("fontforge/http.c").patch("fontforge-http.patch")
 
             // Fix sent upstream:
             // https://github.com/fontforge/fontforge/pull/3746
@@ -145,7 +149,7 @@ tasks.extractSrc {
             // char* nl_langinfo(nl_item __item) __INTRODUCED_IN(26);
             // char* nl_langinfo_l(nl_item __item, locale_t __l) __INTRODUCED_IN(26);
             // #endif /* __ANDROID_API__ >= 26 */
-            srcDir.resolve("fontforge/noprefs.c").patch(projectDir.resolve("patches/fontforge-noprefs.NL_LANGINFO.patch"))
+            srcDir.resolve("fontforge/noprefs.c").patch("fontforge-noprefs.NL_LANGINFO.patch")
 
             if (minSupportedSdk < 21) {
                 // fontforge uses newlocale and localeconv, which are not available on Android pre 21 (Lollipop)
@@ -161,11 +165,11 @@ tasks.extractSrc {
                 // #if __ANDROID_API__ >= 21
                 // struct lconv* localeconv(void) __INTRODUCED_IN(21);
                 // #endif /* __ANDROID_API__ >= 21 */
-                srcDir.patch(projectDir.resolve("patches/localeconv.patch"))
+                srcDir.patch("localeconv.patch")
             }
 
             // rpl_localtime calls itself until stack exhaustion
-            srcDir.resolve("lib/localtime-buffer.c").patch(projectDir.resolve("patches/lib-localtime-buffer.patch"))
+            srcDir.resolve("lib/localtime-buffer.c").patch("lib-localtime-buffer.patch")
         }
 
         if (portVersion == "20230101") {
@@ -200,7 +204,6 @@ if (portVersion == "20170731") {
         val generatedDependencies = prefabGenerated.get().asFile
         autoconf {
             args(
-                "--disable-programs",
                 "--disable-python-scripting",
                 "--disable-python-extension",
                 "--without-included-ltdl",
