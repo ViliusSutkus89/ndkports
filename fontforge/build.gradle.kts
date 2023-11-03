@@ -221,19 +221,6 @@ if (portVersion == "20170731") {
                 env["LDFLAGS"] = "-L${it.resolve("lib")}"
             }
         }
-        doLast {
-            com.android.ndkports.Abi.values().forEach { abi ->
-                installDirectoryFor(abi)
-                    .resolve("include/android.${abi.abiName}/lib/pkgconfig/libfontforge.pc")
-                    .replace("-ljpeg", "")
-                    .replace("-lpng16", "")
-                    .replace("-lspiro", "")
-                    .replace("-luninameslist", "")
-                    .replace(
-                        "Requires.private:",
-                        "Requires.private: freetype2 intl gio-2.0 libturbojpeg libuninameslist libxml-2.0 libspiro pango libpng16"
-                    )
-            }
         }
     }
 } else {
