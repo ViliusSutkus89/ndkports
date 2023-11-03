@@ -21,7 +21,7 @@ val portVersion = when(project.findProperty("packageVersion")) {
     }
     else /* "23.10.0" */ -> {
         version = "23.10.0-beta-1"
-        "0.81.0"
+        "23.10.0"
     }
 }
 
@@ -101,11 +101,8 @@ tasks.extractSrc {
                 srcDir.resolve("ConfigureChecks.cmake").patch("have_unistd_h.patch")
             }
             "23.10.0" -> {
-                // https://android.googlesource.com/platform/bionic/+/master/docs/32-bit-abi.md
-                projectDir.resolve("CheckFileOffsetBits.cmake").copyTo(
-                    target = outDir.get().asFile.resolve("cmake/modules/CheckFileOffsetBits.cmake"),
-                    overwrite = true
-                )
+                srcDir.resolve("CMakeLists.txt").patch("FindCairo.patch")
+                srcDir.resolve("cmake/modules/CheckFileOffsetBits.cmake").patch("CheckFileOffsetBits.patch")
             }
         }
     }
@@ -121,7 +118,6 @@ tasks.register<CMakePortTask>("buildPort") {
             cmake {
                 args(
                     "-DENABLE_UNSTABLE_API_ABI_HEADERS=ON",
-
                     // poppler-gLib requires older GLib version.
                     "-DENABLE_GLIB=OFF",
                 )
@@ -138,15 +134,22 @@ tasks.register<CMakePortTask>("buildPort") {
         "23.10.0" -> {
             cmake {
                 args(
+                    "-DENABLE_UNSTABLE_API_ABI_HEADERS=ON",
                     "-DENABLE_NSS3=OFF",
                     "-DENABLE_GPGME=OFF",
                     "-DENABLE_QT5=OFF",
                     "-DENABLE_QT6=OFF",
                     "-DENABLE_BOOST=OFF",
                     "-DENABLE_LIBCURL=OFF",
-
-                    "-DENABLE_GLIB=OFF",
                 )
+            }
+            doLast {
+                com.android.ndkports.Abi.values().forEach { abi ->
+                    installDirectoryFor(abi)
+                        .resolve("include/android.${abi.abiName}/lib/pkgconfig/poppler.pc").appendText(
+                            "Requires: freetype2 libpng16 libturbojpeg libtiff-4 libopenjp2 glib-2.0 cairo lcms2"
+                        )
+                }
             }
         }
     }
@@ -176,6 +179,12 @@ tasks.prefabPackage {
         create("poppler-cpp") {
             static.set(project.findProperty("libraryType") == "static")
             dependencies.set(listOf(":poppler"))
+        }
+        if (portVersion == "23.10.0") {
+            create("poppler-glib") {
+                static.set(project.findProperty("libraryType") == "static")
+                dependencies.set(listOf(":poppler"))
+            }
         }
     }
 }

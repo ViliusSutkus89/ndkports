@@ -1,0 +1,14 @@
+--- CheckFileOffsetBits.cmake	2023-10-02 22:55:54.000000000 +0300
++++ CheckFileOffsetBits.cmake	2023-11-03 13:14:02.057000000 +0200
+@@ -18,6 +18,11 @@
+ 	 "${CMAKE_CURRENT_LIST_FILE}" PATH)
+ 
+ MACRO (CHECK_FILE_OFFSET_BITS)
++  IF (ANDROID_API_LEVEL LESS 24)
++    SET(_FILE_OFFSET_BITS "" CACHE INTERNAL "_FILE_OFFSET_BITS macro needed for large files")
++    MESSAGE(STATUS "Not enabling _FILE_OFFSET_BITS for Android API pre 24. This only affects 32bit devices")
++  ENDIF (ANDROID_API_LEVEL LESS 24)
++
+   IF(NOT DEFINED _FILE_OFFSET_BITS)
+     MESSAGE(STATUS "Checking _FILE_OFFSET_BITS for large files")
+     TRY_COMPILE(__WITHOUT_FILE_OFFSET_BITS_64
