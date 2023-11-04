@@ -9,8 +9,16 @@ on:
       - '.github/workflows/pdf2htmlEX.yml'
 
 jobs:
-  build:
+  build-pdf2htmlEX-0_18_8_rc1:
+    name: pdf2htmlEX 0.18.8.rc1
     uses: ./.github/workflows/build.yml
-    name: pdf2htmlEX
     with:
       package: pdf2htmlEX
+      version: '0.18.8.rc1'
+
+  build-pdf2htmlEX-0_18_7_poppler_0_81_0:
+    name: pdf2htmlEX 0.18.7-poppler-0.81.0
+    uses: ./.github/workflows/build.yml
+    with:
+      package: pdf2htmlEX
+      version: '0.18.7-poppler-0.81.0'
