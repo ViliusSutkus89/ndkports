@@ -11,7 +11,7 @@ group = rootProject.group
 // Hardcode a list of available versions
 val portVersion = when(project.findProperty("packageVersion")) {
     "20170731" -> {
-        version = "20170731-beta-1"
+        version = "20170731-beta-2"
         "20170731"
     }
     "20200314" -> {
@@ -239,6 +239,42 @@ when (portVersion) {
                     env["LDFLAGS"] = "-L${it.resolve("lib")}"
                 }
             }
+
+            doLast {
+                com.android.ndkports.Abi.values().forEach { abi ->
+                    val pkgConfigDir = installDirectoryFor(abi).resolve("include/android.${abi.abiName}/lib/pkgconfig")
+                    pkgConfigDir.resolve("libfontforge.pc")
+                        // Add Missing Requires:
+                        .replace(
+                            "Requires:",
+                            "Requires: freetype2 intl gio-2.0 libxml-2.0 pango"
+                        )
+                        // Pull dependencies as Requires:, instead of Libs:
+                        .replace("-ljpeg", "")
+                        .replace("-lpng16", "")
+                        .replace("-lspiro", "")
+                        .replace("-luninameslist", "")
+                        .replace(
+                            "Requires:",
+                            "Requires: libturbojpeg libpng16 libspiro libuninameslist"
+                        )
+                    pkgConfigDir.resolve("libfontforgeexe.pc")
+                        // Add Missing Requires:
+                        .replace(
+                            "Requires:",
+                            "Requires: freetype2 intl gio-2.0 libxml-2.0 pango"
+                        )
+                        // Pull dependencies as Requires:, instead of Libs:
+                        .replace("-ljpeg", "")
+                        .replace("-lpng16", "")
+                        .replace("-lspiro", "")
+                        .replace("-luninameslist", "")
+                        .replace(
+                            "Requires:",
+                            "Requires: libturbojpeg libpng16 libspiro libuninameslist"
+                        )
+                }
+            }
         }
     }
     "20200314" -> {
@@ -282,31 +318,42 @@ tasks.prefabPackage {
                         ":gioftp",
                         ":gutils",
                         ":gunicode",
-                        "//libjpeg-turbo:jpeg",
-                        "//libpng:png16",
                         "z",
                         "m",
-                        "//spiro:spiro",
                         "//libtool:tool",
-                        "//cairo:cairo"
+                        "//libjpeg-turbo:jpeg",
+                        "//libpng:png16",
+                        "//spiro:spiro",
+                        "//libuninameslist:uninameslist",
+                        "//freetype:freetype",
+                        "//proxy-libintl:intl",
+                        "//glib2:gio-2.0",
+                        "//libxml2:xml-2.0",
+                        "//pango:pango",
+                        "//cairo:cairo",
                     ))
                 }
                 create("fontforgeexe") {
                     static.set(project.findProperty("libraryType") == "static")
                     includesPerAbi.set(true)
                     dependencies.set(listOf(
+                        ":fontforge",
                         ":gioftp",
                         ":gutils",
                         ":gunicode",
-                        "//libjpeg-turbo:jpeg",
-                        "//libpng:png16",
                         "z",
                         "m",
-                        "//spiro:spiro",
-                        "//uninameslist:uninameslist",
                         "//libtool:tool",
-                        ":fontforge",
-                        "//cairo:cairo"
+                        "//libjpeg-turbo:jpeg",
+                        "//libpng:png16",
+                        "//spiro:spiro",
+                        "//libuninameslist:uninameslist",
+                        "//freetype:freetype",
+                        "//proxy-libintl:intl",
+                        "//glib2:gio-2.0",
+                        "//libxml2:xml-2.0",
+                        "//pango:pango",
+                        "//cairo:cairo",
                     ))
                 }
                 create("gioftp") {
@@ -328,15 +375,18 @@ tasks.prefabPackage {
                     static.set(project.findProperty("libraryType") == "static")
                     includesPerAbi.set(true)
                     dependencies.set(listOf(
-                        ":gioftp",
-                        ":gutils",
-                        ":gunicode",
-                        "//libjpeg-turbo:jpeg",
-                        "//libpng:png16",
                         "z",
                         "m",
-                        "//spiro:spiro",
                         "//libtool:tool",
+                        "//libjpeg-turbo:jpeg",
+                        "//libpng:png16",
+                        "//spiro:spiro",
+                        "//libuninameslist:uninameslist",
+                        "//freetype:freetype",
+                        "//proxy-libintl:intl",
+                        "//glib2:gio-2.0",
+                        "//libxml2:xml-2.0",
+                        "//pango:pango",
                         "//cairo:cairo",
                         "//libtiff:tiff",
                     ))
@@ -348,15 +398,18 @@ tasks.prefabPackage {
                     static.set(project.findProperty("libraryType") == "static")
                     includesPerAbi.set(true)
                     dependencies.set(listOf(
-                        ":gioftp",
-                        ":gutils",
-                        ":gunicode",
-                        "//libjpeg-turbo:jpeg",
-                        "//libpng:png16",
                         "z",
                         "m",
-                        "//spiro:spiro",
                         "//libtool:tool",
+                        "//libjpeg-turbo:jpeg",
+                        "//libpng:png16",
+                        "//spiro:spiro",
+                        "//libuninameslist:uninameslist",
+                        "//freetype:freetype",
+                        "//proxy-libintl:intl",
+                        "//glib2:gio-2.0",
+                        "//libxml2:xml-2.0",
+                        "//pango:pango",
                         "//cairo:cairo",
                         "//libtiff:tiff",
                     ))
