@@ -263,3 +263,16 @@ Available versions:
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/poppler-ndk25-shared.svg?label=Maven%20Central%20poppler-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:poppler-ndk25-shared)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/poppler-ndk26-static.svg?label=Maven%20Central%20poppler-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:poppler-ndk26-static)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/poppler-ndk26-shared.svg?label=Maven%20Central%20poppler-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:poppler-ndk26-shared)
+
+#### [pdf2htmlEX](https://github.com/pdf2htmlEX/pdf2htmlEX)
+
+Available versions:
+
+- v0.18.8.rc1
+- v0.18.7-poppler-0.81.0
+
+[![pdf2htmlEX](https://github.com/ViliusSutkus89/ndkports/actions/workflows/pdf2htmlEX.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/pdf2htmlEX.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/pdf2htmlEX-ndk25-static.svg?label=Maven%20Central%20pdf2htmlEX-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:pdf2htmlEX-ndk25-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/pdf2htmlEX-ndk25-shared.svg?label=Maven%20Central%20pdf2htmlEX-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:pdf2htmlEX-ndk25-shared)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/pdf2htmlEX-ndk26-static.svg?label=Maven%20Central%20pdf2htmlEX-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:pdf2htmlEX-ndk26-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/pdf2htmlEX-ndk26-shared.svg?label=Maven%20Central%20pdf2htmlEX-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:pdf2htmlEX-ndk26-shared)

@@ -1,0 +1,16 @@
+name: pdf2htmlEX
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'buildSrc/**'
+      - '.github/workflows/build.yml'
+      - 'pdf2htmlEX/**'
+      - '.github/workflows/pdf2htmlEX.yml'
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+    name: pdf2htmlEX
+    with:
+      package: pdf2htmlEX
