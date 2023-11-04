@@ -54,6 +54,7 @@ abstract class AdHocPortTask @Inject constructor(objects: ObjectFactory) : PortT
     override fun buildForAbi(
         toolchain: Toolchain,
         portDirectory: File,
+        sourceDirectory: File,
         buildDirectory: File,
         installDirectory: File,
         generatedDirectory: File
@@ -62,7 +63,7 @@ abstract class AdHocPortTask @Inject constructor(objects: ObjectFactory) : PortT
 
         val builderBlock = builder.get()
         val builder = AdHocBuilder(
-            sourceDirectory.get().asFile,
+            sourceDirectory,
             buildDirectory,
             installDirectory,
             toolchain,

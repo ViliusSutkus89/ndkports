@@ -35,6 +35,7 @@ abstract class AutoconfPortTask @Inject constructor(objects: ObjectFactory) : Po
     override fun buildForAbi(
         toolchain: Toolchain,
         portDirectory: File,
+        sourceDirectory: File,
         buildDirectory: File,
         installDirectory: File,
         generatedDirectory: File
@@ -56,7 +57,7 @@ abstract class AutoconfPortTask @Inject constructor(objects: ObjectFactory) : Po
 
         executeSubprocess(
             args = listOf(
-                "${sourceDirectory.get().asFile.absolutePath}/configure",
+                sourceDirectory.resolve("configure").absolutePath,
                 "--host=${toolchain.binutilsTriple}",
                 "--prefix=${installDirectory.absolutePath}"
             ) + libraryTypeArguments + builder.cmd,

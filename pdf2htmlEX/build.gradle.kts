@@ -102,6 +102,12 @@ tasks.prefab {
 }
 
 tasks.register<CMakePortTask>("buildPort") {
+    when (portVersion) {
+        "0.18.8.rc1" -> {
+            sourceSubDirectory.set("pdf2htmlEX")
+        }
+    }
+
     cmake { }
 
     doLast {

@@ -10,6 +10,7 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
 import java.io.File
 
@@ -31,6 +32,10 @@ abstract class PortTask(objects: ObjectFactory) : DefaultTask() {
 
     @get:InputDirectory
     abstract val sourceDirectory: DirectoryProperty
+
+    @get:Optional
+    @get:Input
+    abstract val sourceSubDirectory: Property<String>
 
     @get:OutputDirectory
     abstract val buildDir: DirectoryProperty
@@ -107,9 +112,15 @@ abstract class PortTask(objects: ObjectFactory) : DefaultTask() {
         for (abi in Abi.values()) {
             logsDirFor(abi).mkdir()
             val api = abi.adjustMinSdkVersion(minSdkVersion.get())
+            val sourceDir = if (sourceSubDirectory.isPresent) {
+                sourceDirectory.get().asFile.resolve(sourceSubDirectory.get())
+            } else {
+                sourceDirectory.get().asFile
+            }
             buildForAbi(
                 Toolchain(ndk, abi, api),
-                buildDir.asFile.get(),
+                portDirectory = buildDir.asFile.get(),
+                sourceDirectory = sourceDir,
                 buildDirectory = buildDirectoryFor(abi).apply { mkdirs() },
                 installDirectory = installDirectoryFor(abi),
                 generatedDirectoryFor(abi)
@@ -204,6 +215,7 @@ abstract class PortTask(objects: ObjectFactory) : DefaultTask() {
     abstract fun buildForAbi(
         toolchain: Toolchain,
         portDirectory: File,
+        sourceDirectory: File,
         buildDirectory: File,
         installDirectory: File,
         generatedDirectory: File,

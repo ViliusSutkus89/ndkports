@@ -37,6 +37,7 @@ abstract class MesonPortTask @Inject constructor(objects: ObjectFactory) :
     override fun buildForAbi(
         toolchain: Toolchain,
         portDirectory: File,
+        sourceDirectory: File,
         buildDirectory: File,
         installDirectory: File,
         generatedDirectory: File
@@ -94,7 +95,8 @@ abstract class MesonPortTask @Inject constructor(objects: ObjectFactory) :
                 "--buildtype", "release",
                 "--prefix", installDirectory.absolutePath,
             ) + builder.cmd + listOf(
-                buildDirectory.absolutePath, sourceDirectory.get().asFile.absolutePath
+                buildDirectory.absolutePath,
+                sourceDirectory.absolutePath
             ),
             workingDirectory = buildDirectory,
             additionalEnvironment = mutableMapOf<String, String>(

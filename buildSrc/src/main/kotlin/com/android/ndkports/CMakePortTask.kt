@@ -34,6 +34,7 @@ abstract class CMakePortTask @Inject constructor(objects: ObjectFactory) : PortT
     override fun buildForAbi(
         toolchain: Toolchain,
         portDirectory: File,
+        sourceDirectory: File,
         buildDirectory: File,
         installDirectory: File,
         generatedDirectory: File
@@ -65,7 +66,7 @@ abstract class CMakePortTask @Inject constructor(objects: ObjectFactory) : PortT
                 "-DANDROID_API_LEVEL=${toolchain.api}",
                 "-DANDROID_PLATFORM=${toolchain.api}",
                 "-GNinja",
-                sourceDirectory.get().asFile.absolutePath,
+                sourceDirectory.absolutePath
             ) + libraryTypeArguments + builder.cmd,
             workingDirectory = buildDirectory,
             additionalEnvironment = mutableMapOf(
