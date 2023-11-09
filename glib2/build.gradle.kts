@@ -93,14 +93,8 @@ tasks.register<MesonPortTask>("buildPort") {
     doLast {
         com.android.ndkports.Abi.values().forEach { abi ->
             installDirectoryFor(abi).let { iDir ->
-                val glibConfigFile = File("lib/glib-2.0/include/glibconfig.h")
-                val dst = iDir.resolve("include/android.${abi.abiName}").resolve(glibConfigFile).apply {
-                    parentFile.mkdirs()
-                    if (exists()) {
-                        delete()
-                    }
-                }
-                iDir.resolve(glibConfigFile).copyTo(dst)
+                iDir.resolve("lib/glib-2.0/include/glibconfig.h")
+                    .copyTo(iDir.resolve("include/glib-2.0/glibconfig.h"))
             }
         }
     }
@@ -113,6 +107,7 @@ tasks.prefabPackage {
 
     modules {
         create("glib-2.0") {
+            includesPerAbi.set(true)
             static.set(project.findProperty("libraryType") == "static")
             dependencies.set(listOf(
                 "//proxy-libintl:intl",
@@ -122,6 +117,7 @@ tasks.prefabPackage {
             ))
         }
         create("gio-2.0") {
+            includesPerAbi.set(true)
             static.set(project.findProperty("libraryType") == "static")
             dependencies.set(listOf(
                 ":glib-2.0",
@@ -132,6 +128,7 @@ tasks.prefabPackage {
             ))
         }
         create("gmodule-2.0") {
+            includesPerAbi.set(true)
             static.set(project.findProperty("libraryType") == "static")
             dependencies.set(listOf(
                 ":gmodule-no-export-2.0",
@@ -139,6 +136,7 @@ tasks.prefabPackage {
             ))
         }
         create("gobject-2.0") {
+            includesPerAbi.set(true)
             static.set(project.findProperty("libraryType") == "static")
             dependencies.set(listOf(
                 ":glib-2.0",
@@ -147,6 +145,7 @@ tasks.prefabPackage {
             ))
         }
         create("gthread-2.0") {
+            includesPerAbi.set(true)
             static.set(project.findProperty("libraryType") == "static")
             dependencies.set(listOf(
                 ":glib-2.0",
