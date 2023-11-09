@@ -11,15 +11,15 @@ group = rootProject.group
 // Hardcode a list of available versions
 val portVersion = when(project.findProperty("packageVersion")) {
     "20170731" -> {
-        version = "20170731-beta-2"
+        version = "20170731-beta-3"
         "20170731"
     }
     "20200314" -> {
-        version = "20200314-beta-1"
+        version = "20200314-beta-2"
         "20200314"
     }
     else /* "20230101" */ -> {
-        version = "20230101-beta-1"
+        version = "20230101-beta-2"
         "20230101"
     }
 }
@@ -39,26 +39,26 @@ val minSupportedSdk = when (portVersion) {
 
 dependencies {
     val ndkVersionSuffix = rootProject.extra.get("ndkVersionSuffix")
-    implementation("com.viliussutkus89.ndk.thirdparty:cairo${ndkVersionSuffix}-static:1.18.0-beta-1")
-    implementation("com.viliussutkus89.ndk.thirdparty:freetype${ndkVersionSuffix}-static:2.13.2-beta-3")
-    implementation("com.viliussutkus89.ndk.thirdparty:proxy-libintl${ndkVersionSuffix}-static:0.4.1")
-    implementation("com.viliussutkus89.ndk.thirdparty:glib2${ndkVersionSuffix}-static:2.78.1-beta-2")
-    implementation("com.viliussutkus89.ndk.thirdparty:libjpeg-turbo${ndkVersionSuffix}-static:3.0.1-beta-1")
-    implementation("com.viliussutkus89.ndk.thirdparty:libtool${ndkVersionSuffix}-static:2.4.6-beta-1")
-    implementation("com.viliussutkus89.ndk.thirdparty:libpng${ndkVersionSuffix}-static:1.6.40-beta-4")
-    implementation("com.viliussutkus89.ndk.thirdparty:libuninameslist${ndkVersionSuffix}-static:20230916-beta-1")
-    implementation("com.viliussutkus89.ndk.thirdparty:libxml2${ndkVersionSuffix}-static:2.11.5-beta-1")
-    implementation("com.viliussutkus89.ndk.thirdparty:spiro${ndkVersionSuffix}-static:20221101-beta-1")
+    implementation("com.viliussutkus89.ndk.thirdparty:cairo${ndkVersionSuffix}-static:1.18.0-beta-2")
+    implementation("com.viliussutkus89.ndk.thirdparty:freetype${ndkVersionSuffix}-static:2.13.2-beta-4")
+    implementation("com.viliussutkus89.ndk.thirdparty:proxy-libintl${ndkVersionSuffix}-static:0.4.1.1")
+    implementation("com.viliussutkus89.ndk.thirdparty:glib2${ndkVersionSuffix}-static:2.78.1-beta-3")
+    implementation("com.viliussutkus89.ndk.thirdparty:libjpeg-turbo${ndkVersionSuffix}-static:3.0.1-beta-2")
+    implementation("com.viliussutkus89.ndk.thirdparty:libtool${ndkVersionSuffix}-static:2.4.6-beta-2")
+    implementation("com.viliussutkus89.ndk.thirdparty:libpng${ndkVersionSuffix}-static:1.6.40-beta-5")
+    implementation("com.viliussutkus89.ndk.thirdparty:libuninameslist${ndkVersionSuffix}-static:20230916-beta-2")
+    implementation("com.viliussutkus89.ndk.thirdparty:libxml2${ndkVersionSuffix}-static:2.11.5-beta-2")
+    implementation("com.viliussutkus89.ndk.thirdparty:spiro${ndkVersionSuffix}-static:20221101-beta-2")
 
     if (minSupportedSdk >= 21)
-        implementation("com.viliussutkus89.ndk.thirdparty:pango${ndkVersionSuffix}-static:1.51.0-beta-1")
+        implementation("com.viliussutkus89.ndk.thirdparty:pango${ndkVersionSuffix}-static:1.51.0-beta-2")
     else
-        implementation("com.viliussutkus89.ndk.thirdparty:pango${ndkVersionSuffix}-static:1.49.4-beta-1")
+        implementation("com.viliussutkus89.ndk.thirdparty:pango${ndkVersionSuffix}-static:1.49.4-beta-2")
 
     if (portVersion != "20170731") {
         // libfontforge checks for TIFFRewriteField , which was deprecated in libtiff-4
         // http://www.simplesystems.org/libtiff/v4.0.0.html
-        implementation("com.viliussutkus89.ndk.thirdparty:libtiff${ndkVersionSuffix}-static:4.6.0-beta-2")
+        implementation("com.viliussutkus89.ndk.thirdparty:libtiff${ndkVersionSuffix}-static:4.6.0-beta-3")
     }
 
     // -- Could NOT find GIF (missing: GIF_LIBRARY GIF_INCLUDE_DIR)

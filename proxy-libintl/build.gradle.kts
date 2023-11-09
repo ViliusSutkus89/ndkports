@@ -3,10 +3,10 @@ import com.android.ndkports.CMakeCompatibleVersion
 import com.android.ndkports.PrefabSysrootPlugin
 import org.gradle.jvm.tasks.Jar
 
-val portVersion = "0.4.1"
-
 group = rootProject.group
-version = portVersion
+
+val portVersion = "0.4.1"
+version = "$portVersion.1"
 
 plugins {
     id("maven-publish")

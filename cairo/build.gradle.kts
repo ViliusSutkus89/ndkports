@@ -6,7 +6,7 @@ import org.gradle.jvm.tasks.Jar
 val portVersion = "1.18.0"
 
 group = rootProject.group
-version = "${portVersion}-beta-1"
+version = "${portVersion}-beta-2"
 
 plugins {
     id("maven-publish")
@@ -16,11 +16,11 @@ plugins {
 
 dependencies {
     val ndkVersionSuffix = rootProject.extra.get("ndkVersionSuffix")
-    implementation("com.viliussutkus89.ndk.thirdparty:freetype${ndkVersionSuffix}-static:2.13.2-beta-3")
-    implementation("com.viliussutkus89.ndk.thirdparty:libpng${ndkVersionSuffix}-static:1.6.40-beta-4")
-    implementation("com.viliussutkus89.ndk.thirdparty:pixman${ndkVersionSuffix}-static:0.42.2-beta-2")
-    implementation("com.viliussutkus89.ndk.thirdparty:glib2${ndkVersionSuffix}-static:2.78.1-beta-2")
-    implementation("com.viliussutkus89.ndk.thirdparty:fontconfig${ndkVersionSuffix}-static:2.14.2-beta-1")
+    implementation("com.viliussutkus89.ndk.thirdparty:freetype${ndkVersionSuffix}-static:2.13.2-beta-4")
+    implementation("com.viliussutkus89.ndk.thirdparty:libpng${ndkVersionSuffix}-static:1.6.40-beta-5")
+    implementation("com.viliussutkus89.ndk.thirdparty:pixman${ndkVersionSuffix}-static:0.42.2-beta-3")
+    implementation("com.viliussutkus89.ndk.thirdparty:glib2${ndkVersionSuffix}-static:2.78.1-beta-3")
+    implementation("com.viliussutkus89.ndk.thirdparty:fontconfig${ndkVersionSuffix}-static:2.14.2-beta-2")
 //    Run-time dependency libspectre found: NO (tried pkgconfig and cmake) - CAIRO_CAN_TEST_PS_SURFACE
 //    Run-time dependency poppler-glib found: NO (tried pkgconfig and cmake) - CAIRO_CAN_TEST_PDF_SURFACE
 //    Run-time dependency librsvg-2.0 found: NO (tried pkgconfig and cmake) - CAIRO_CAN_TEST_SVG_SURFACE
@@ -49,7 +49,6 @@ tasks.extractSrc {
 tasks.prefab {
     generator.set(PrefabSysrootPlugin::class.java)
 }
-
 
 tasks.register<MesonPortTask>("buildPort") {
     meson { }

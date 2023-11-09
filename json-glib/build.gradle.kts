@@ -6,7 +6,7 @@ import org.gradle.jvm.tasks.Jar
 val portVersion = "1.8.0"
 
 group = rootProject.group
-version = "${portVersion}-beta-1"
+version = "${portVersion}-beta-2"
 
 plugins {
     id("maven-publish")
@@ -16,7 +16,7 @@ plugins {
 
 dependencies {
     val ndkVersionSuffix = rootProject.extra.get("ndkVersionSuffix")
-    implementation("com.viliussutkus89.ndk.thirdparty:glib2${ndkVersionSuffix}-static:2.78.1-beta-2")
+    implementation("com.viliussutkus89.ndk.thirdparty:glib2${ndkVersionSuffix}-static:2.78.1-beta-3")
 }
 
 ndkPorts {
@@ -64,7 +64,6 @@ publishing {
                 description.set("JSON-GLib is a library providing serialization and deserialization support for the JavaScript Object Notation (JSON) format described by RFC 4627.")
                 url.set("https://wiki.gnome.org/Projects/JsonGlib")
                 licenses {
-                    // Poppler licenses
                     license {
                         name.set("LGPL-2.1-or-later")
                         url.set("https://gitlab.gnome.org/GNOME/json-glib/-/raw/1.8.0/COPYING")

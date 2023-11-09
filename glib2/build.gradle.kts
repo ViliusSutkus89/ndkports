@@ -6,7 +6,7 @@ import org.gradle.jvm.tasks.Jar
 val portVersion = "2.78.1"
 
 group = rootProject.group
-version = "${portVersion}-beta-2"
+version = "${portVersion}-beta-3"
 
 plugins {
     id("maven-publish")
@@ -16,10 +16,10 @@ plugins {
 
 dependencies {
     val ndkVersionSuffix = rootProject.extra.get("ndkVersionSuffix")
-    implementation("com.viliussutkus89.ndk.thirdparty:libiconv${ndkVersionSuffix}-static:1.17-beta-1")
-    implementation("com.viliussutkus89.ndk.thirdparty:proxy-libintl${ndkVersionSuffix}-static:0.4.1")
-    implementation("com.viliussutkus89.ndk.thirdparty:libffi${ndkVersionSuffix}-static:3.4.4-beta-1")
-    implementation("com.viliussutkus89.ndk.thirdparty:pcre2${ndkVersionSuffix}-static:10.42-beta-2")
+    implementation("com.viliussutkus89.ndk.thirdparty:libiconv${ndkVersionSuffix}-static:1.17-beta-2")
+    implementation("com.viliussutkus89.ndk.thirdparty:proxy-libintl${ndkVersionSuffix}-static:0.4.1.1")
+    implementation("com.viliussutkus89.ndk.thirdparty:libffi${ndkVersionSuffix}-static:3.4.4-beta-2")
+    implementation("com.viliussutkus89.ndk.thirdparty:pcre2${ndkVersionSuffix}-static:10.42-beta-3")
 }
 
 ndkPorts {
