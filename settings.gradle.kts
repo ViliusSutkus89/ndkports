@@ -16,6 +16,12 @@ pluginManagement {
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
     repositories {
+        val extraRepositories: String? by settings
+        extraRepositories?.split(" ")?.forEach {
+            maven {
+                url = java.net.URI("https://oss.sonatype.org/service/local/repositories/comviliussutkus89-${it}/content/")
+            }
+        }
         mavenCentral()
     }
 }
