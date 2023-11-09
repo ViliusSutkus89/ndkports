@@ -35,8 +35,6 @@ Libraries built with different NDK versions should not be used in the same appli
 
 Run unit tests provided by upstream packages.
 
-Figure out proper way to deliver per ABI headers.
-
 ## Ports
 
 #### [GNU FriBidi](https://github.com/fribidi/fribidi)

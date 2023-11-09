@@ -31,8 +31,8 @@ class PrefabSysrootPlugin(
         val includeDir = installDir.resolve("include").apply { mkdir() }
         val libDir = installDir.resolve("lib")
 
-        installHeaders(module.includePath.toFile(), includeDir, requirement.targetTriple)
-        migrateLibFiles(includeDir, libDir)
+        installHeaders(module, includeDir, requirement.targetTriple)
+        installConfigFiles(module, libDir, requirement.targetTriple)
 
         if (!module.isHeaderOnly) {
             module.getLibraryFor(requirement).path.toFile().apply {
@@ -51,10 +51,9 @@ class PrefabSysrootPlugin(
         }
     }
 
-    private fun installHeaders(src: File, includeDir: File, abiTriple: String) {
-        val commonHeaders = src.listFiles { _, name -> !Abi.values().map { "android.${it.abiName}" }.contains(name) } ?: arrayOf<File>()
-        val perAbiHeaders = src.resolve("android.${targetTripleToAbiName(abiTriple)}").listFiles() ?: arrayOf<File>()
-
+    private fun installHeaders(module: Module, includeDir: File, abiTriple: String) {
+        val commonHeaders = module.includePath.toFile().listFiles() ?: arrayOf<File>()
+        val perAbiHeaders = module.path.toFile().resolve("libs/android.${abiTriple}/include").listFiles() ?: arrayOf<File>()
         (commonHeaders + perAbiHeaders).forEach {
             it.copyRecursively(includeDir.resolve(it.name)) { file, exception ->
                 if (exception !is FileAlreadyExistsException) {
@@ -73,24 +72,25 @@ class PrefabSysrootPlugin(
         }
     }
 
-    private fun migrateLibFiles(includeDir: File, libDir: File) {
-        includeDir.resolve("lib").let {
-            if (it.exists()) {
-                it.copyRecursively(libDir) { file, exception ->
-                    if (exception !is FileAlreadyExistsException) {
-                        throw exception
-                    }
+    private fun installConfigFiles(module: Module, libDir: File, abiTriple: String) {
+        val src = module.path.toFile().resolve("libs/android.${targetTripleToAbiName(abiTriple)}")
 
-                    if (!file.readBytes().contentEquals(exception.file.readBytes())) {
-                        val path = file.relativeTo(includeDir)
-                        throw RuntimeException(
-                            "Found duplicate headers with non-equal contents: $path"
-                        )
-                    }
-
-                    OnErrorAction.SKIP
+        src.listFiles { file, filename ->
+            listOf("cmake", "pkgconfig").contains(filename) || file.extension == "la"
+        }?.forEach {
+            it.copyRecursively(libDir.resolve(it.name)) { file, exception ->
+                if (exception !is FileAlreadyExistsException) {
+                    throw exception
                 }
-                it.deleteRecursively()
+
+                if (!file.readBytes().contentEquals(exception.file.readBytes())) {
+                    val path = file.relativeTo(src)
+                    throw RuntimeException(
+                        "Found duplicate headers with non-equal contents: $path"
+                    )
+                }
+
+                OnErrorAction.SKIP
             }
         }
     }

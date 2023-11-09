@@ -62,7 +62,7 @@ data class ModuleDescription(
 class PrefabPackageBuilder(
     private val packageData: PackageData,
     private val packageDirectory: File,
-    private val directory: File,
+    private val installDirectory: File,
     private val sourceDirectory: File,
     private val ndk: Ndk,
 ) {
@@ -106,14 +106,11 @@ class PrefabPackageBuilder(
     private fun installLibForAbi(module: ModuleDescription, abi: Abi, libsDir: File) {
         val extension = if (module.static) "a" else "so"
         val libName = "lib${module.name}.${extension}"
-        val installDirectory = libsDir.resolve("android.${abi.abiName}").apply {
-            mkdirs()
-        }
+        val dstDir = libsDir.resolve("android.${abi.abiName}")
 
-        directory.resolve("$abi/lib/$libName")
-            .copyTo(installDirectory.resolve(libName))
+        installDirectory.resolve("$abi/lib/$libName").copyTo(dstDir.resolve(libName))
 
-        installDirectory.resolve("abi.json").writeText(
+        dstDir.resolve("abi.json").writeText(
             Json.encodeToString(
                 AndroidAbiMetadata(
                     abi = abi.abiName,
@@ -152,7 +149,7 @@ class PrefabPackageBuilder(
     }
 
     private fun installAssets() {
-        val sourceAssets = directory.parentFile.parentFile.resolve("assets")
+        val sourceAssets = installDirectory.parentFile.parentFile.resolve("assets")
         if (sourceAssets.exists()) {
             sourceAssets.copyRecursively(assetsDirectory)
         }
@@ -167,38 +164,34 @@ class PrefabPackageBuilder(
             }
 
             makeModuleMetadata(module, moduleDirectory)
-            Abi.values().forEach { abi ->
-                val includeDir = directory.resolve("${abi}/include")
-                if (module.includesPerAbi) {
-                    val destination = moduleDirectory.resolve("include/android.${abi.abiName}").apply { mkdir() }
-                    val commonHeaders = includeDir.listFiles { _, name -> !Abi.values().map { "android.${it.abiName}" }.contains(name) } ?: arrayOf<File>()
-                    val perAbiHeaders = includeDir.resolve("android.${abi.abiName}").listFiles() ?: arrayOf<File>()
-                    (commonHeaders + perAbiHeaders).forEach {
-                        it.copyRecursively(destination.resolve(it.name))
-                    }
-                } else {
-                    val destination = moduleDirectory.resolve("include").apply { mkdir() }
-                    includeDir.copyRecursively(destination) { file, exception ->
-                        if (exception !is FileAlreadyExistsException) {
-                            throw exception
-                        }
 
-                        if (!file.readBytes().contentEquals(exception.file.readBytes())) {
-                            val path = file.relativeTo(destination)
-                            throw RuntimeException(
-                                "Found duplicate headers with non-equal contents: $path"
-                            )
-                        }
-
-                        OnErrorAction.SKIP
-                    }
+            val libsDir = moduleDirectory.resolve("libs").apply { mkdir() }
+            for (abi in Abi.values()) {
+                libsDir.resolve("android.${abi.abiName}").apply { mkdir() }
+                installConfigForAbi(module, abi, libsDir)
+                if (!module.headerOnly) {
+                    installLibForAbi(module, abi, libsDir)
                 }
             }
 
-            if (!module.headerOnly) {
-                val libsDir = moduleDirectory.resolve("libs").apply { mkdirs() }
-                for (abi in Abi.values()) {
-                    installLibForAbi(module, abi, libsDir)
+            Abi.values().forEach { abi ->
+                val destination = if (module.includesPerAbi) {
+                    libsDir.resolve("android.${abi.abiName}").apply{ mkdir() }.resolve("include").apply { mkdir() }
+                } else {
+                    moduleDirectory.resolve("include").apply { mkdir() }
+                }
+                installDirectory.resolve("${abi}/include").copyRecursively(destination) { file, exception ->
+                    if (exception !is FileAlreadyExistsException) {
+                        throw exception
+                    }
+
+                    if (!file.readBytes().contentEquals(exception.file.readBytes())) {
+                        val path = file.relativeTo(destination)
+                        throw RuntimeException(
+                            "Found duplicate headers with non-equal contents: $path"
+                        )
+                    }
+                    OnErrorAction.SKIP
                 }
             }
         }
@@ -208,5 +201,79 @@ class PrefabPackageBuilder(
         installLicense()
 
         createAndroidManifest()
+    }
+
+    private fun installConfigForAbi(module: ModuleDescription, abi: Abi, libsDir: File) {
+        val srcDir = installDirectory.resolve("$abi/lib")
+        val dstDir = libsDir.resolve("android.${abi.abiName}")
+
+        val abiInstallDir = installDirectory.resolve("$abi")
+        val generatedDir = installDirectory.resolve("../dependencies/generated/${abi.triple}").absoluteFile
+
+        listOf(
+            srcDir.resolve("cmake"),
+            srcDir.resolve("pkgconfig")
+        ).forEach { dir ->
+            dir.walkTopDown().forEach {
+                val dst = dstDir.resolve(it.relativeTo(srcDir))
+                if (it.isDirectory) {
+                    dst.mkdir()
+                } else if (it.isFile && it.extension in listOf("cmake", "pc")) {
+                    dst.writeText(
+                        it.readText()
+                            .replace(abiInstallDir.absolutePath, "/__PREFAB__PACKAGE__PATH__")
+                            .replace(generatedDir.absolutePath, "/__PREFAB__PACKAGE__PATH__")
+                            .replace(ndk.path.absolutePath, "/__NDK__PATH__")
+                    )
+                }
+
+                // Some dependencies link against static libraries,
+                // but don't pick up private dependencies
+                if (module.static && it.isFile && it.extension == "pc") {
+                    val sb = StringBuilder()
+                    val libs = mutableListOf<String>()
+                    val libsPrivate = mutableListOf<String>()
+                    val requires = mutableListOf<String>()
+                    val requiresPrivate = mutableListOf<String>()
+                    dst.readLines().forEach { line ->
+                        if (line.startsWith(prefix = "Libs:", ignoreCase = true)) {
+                            libs.add(line.substring("Libs:".length))
+                        }
+                        else if (line.startsWith(prefix = "Libs.private:", ignoreCase = true)) {
+                            libsPrivate.add(line.substring("Libs.private:".length))
+                        }
+                        else if (line.startsWith(prefix = "Requires:", ignoreCase = true)) {
+                            requires.add(line.substring("Requires:".length))
+                        }
+                        else if (line.startsWith(prefix = "Requires.private:", ignoreCase = true)) {
+                            requiresPrivate.add(line.substring("Requires.private:".length))
+                        }
+                        else {
+                            sb.appendLine(line)
+                        }
+                    }
+                    (libs + libsPrivate).joinToString(" ").trim().let { libsWithPrivates ->
+                        if (libsWithPrivates.isNotEmpty()) {
+                            sb.appendLine("Libs: $libsWithPrivates")
+                        }
+                    }
+                    (requires + requiresPrivate).joinToString(" ").trim().let { requiresWithPrivates ->
+                        if (requiresWithPrivates.isNotEmpty()) {
+                            sb.appendLine("Requires: $requiresWithPrivates")
+                        }
+                    }
+                    dst.writeText(sb.toString())
+                }
+            }
+        }
+
+        (srcDir.listFiles { file -> file.extension == "la" } ?: arrayOf<File>()).forEach {
+            dstDir.resolve(it.relativeTo(srcDir)).writeText(
+                it.readText()
+                    .replace(abiInstallDir.absolutePath, "/__PREFAB__PACKAGE__PATH__")
+                    .replace(generatedDir.absolutePath, "/__PREFAB__PACKAGE__PATH__")
+                    .replace(ndk.path.absolutePath, "/__NDK__PATH__")
+            )
+        }
     }
 }
