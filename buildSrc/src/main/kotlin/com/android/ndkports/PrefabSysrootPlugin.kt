@@ -53,7 +53,7 @@ class PrefabSysrootPlugin(
 
     private fun installHeaders(module: Module, includeDir: File, abiTriple: String) {
         val commonHeaders = module.includePath.toFile().listFiles() ?: arrayOf<File>()
-        val perAbiHeaders = module.path.toFile().resolve("libs/android.${abiTriple}/include").listFiles() ?: arrayOf<File>()
+        val perAbiHeaders = module.path.toFile().resolve("libs/android.${targetTripleToAbiName(abiTriple)}/include").listFiles() ?: arrayOf<File>()
         (commonHeaders + perAbiHeaders).forEach {
             it.copyRecursively(includeDir.resolve(it.name)) { file, exception ->
                 if (exception !is FileAlreadyExistsException) {
