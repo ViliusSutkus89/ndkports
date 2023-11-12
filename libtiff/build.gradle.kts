@@ -45,15 +45,18 @@ tasks.prefabPackage {
     licensePath.set("LICENSE.md")
 
     modules {
+        val isStatic = project.findProperty("libraryType") == "static"
         create("tiff") {
-            static.set(project.findProperty("libraryType") == "static")
             includesPerAbi.set(true)
-            dependencies.set(listOf("m", "z", "//libjpeg-turbo:jpeg"))
+            if (isStatic) {
+                static.set(true)
+                dependencies.set(listOf("m", "z", "//libjpeg-turbo:jpeg"))
+            }
         }
         create("tiffxx") {
-            static.set(project.findProperty("libraryType") == "static")
             includesPerAbi.set(true)
-            dependencies.set(listOf("m", "z", "//libjpeg-turbo:jpeg"))
+            static.set(isStatic)
+            dependencies.set(listOf(":tiff"))
         }
     }
 }
