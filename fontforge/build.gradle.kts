@@ -242,7 +242,7 @@ when (portVersion) {
 
             doLast {
                 com.android.ndkports.Abi.values().forEach { abi ->
-                    val pkgConfigDir = installDirectoryFor(abi).resolve("include/android.${abi.abiName}/lib/pkgconfig")
+                    val pkgConfigDir = installDirectoryFor(abi).resolve("lib/pkgconfig")
                     pkgConfigDir.resolve("libfontforge.pc")
                         // Add Missing Requires:
                         .replace(
