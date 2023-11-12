@@ -207,35 +207,31 @@ class PrefabPackageBuilder(
         val srcDir = installDirectory.resolve("$abi/lib")
         val dstDir = libsDir.resolve("android.${abi.abiName}")
 
-        val abiInstallDir = installDirectory.resolve("$abi")
-        val generatedDir = installDirectory.resolve("../dependencies/generated/${abi.triple}").absoluteFile
+        val abiInstallDir = installDirectory.resolve("$abi").absolutePath
+        val generatedDir = installDirectory.resolve("../dependencies/generated/${abi.triple}").absolutePath
+        val ndkPath = ndk.path.absolutePath
 
-        listOf(
-            srcDir.resolve("cmake"),
-            srcDir.resolve("pkgconfig")
-        ).forEach { dir ->
-            dir.walkTopDown().forEach {
-                val dst = dstDir.resolve(it.relativeTo(srcDir))
-                if (it.isDirectory) {
-                    dst.mkdir()
-                } else if (it.isFile && it.extension in listOf("cmake", "pc")) {
-                    dst.writeText(
-                        it.readText()
-                            .replace(abiInstallDir.absolutePath, "/__PREFAB__PACKAGE__PATH__")
-                            .replace(generatedDir.absolutePath, "/__PREFAB__PACKAGE__PATH__")
-                            .replace(ndk.path.absolutePath, "/__NDK__PATH__")
-                    )
-                }
+        srcDir.walkTopDown().forEach { srcFile ->
+            if (srcFile.isFile && listOf("cmake", "la", "pc").contains(srcFile.extension)) {
+                val dstFile = dstDir.resolve(srcFile.relativeTo(srcDir))
+                dstFile.parentFile.mkdirs()
+                var configFileContent = srcFile.readText()
+                    .replace(abiInstallDir, "/__PREFAB__PACKAGE__PATH__")
+                    .replace(generatedDir, "/__PREFAB__PACKAGE__PATH__")
+                    .replace(ndkPath, "/__NDK__PATH__")
 
                 // Some dependencies link against static libraries,
-                // but don't pick up private dependencies
-                if (module.static && it.isFile && it.extension == "pc") {
+                // but don't pick up private dependencies.
+                // Workaround this issue by marking all private
+                // dependencies as public dependencies in pkg-config.
+                if (module.static && dstFile.extension == "pc") {
                     val sb = StringBuilder()
                     val libs = mutableListOf<String>()
                     val libsPrivate = mutableListOf<String>()
                     val requires = mutableListOf<String>()
                     val requiresPrivate = mutableListOf<String>()
-                    dst.readLines().forEach { line ->
+
+                    configFileContent.split("\r\n", "\r", "\n").forEach { line ->
                         if (line.startsWith(prefix = "Libs:", ignoreCase = true)) {
                             libs.add(line.substring("Libs:".length))
                         }
@@ -262,18 +258,11 @@ class PrefabPackageBuilder(
                             sb.appendLine("Requires: $requiresWithPrivates")
                         }
                     }
-                    dst.writeText(sb.toString())
+                    configFileContent = sb.toString()
                 }
-            }
-        }
 
-        (srcDir.listFiles { file -> file.extension == "la" } ?: arrayOf<File>()).forEach {
-            dstDir.resolve(it.relativeTo(srcDir)).writeText(
-                it.readText()
-                    .replace(abiInstallDir.absolutePath, "/__PREFAB__PACKAGE__PATH__")
-                    .replace(generatedDir.absolutePath, "/__PREFAB__PACKAGE__PATH__")
-                    .replace(ndk.path.absolutePath, "/__NDK__PATH__")
-            )
+                dstFile.writeText(configFileContent)
+            }
         }
     }
 }

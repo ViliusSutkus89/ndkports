@@ -1,5 +1,5 @@
-import com.android.ndkports.CMakePortTask
 import com.android.ndkports.CMakeCompatibleVersion
+import com.android.ndkports.CMakePortTask
 import com.android.ndkports.PrefabSysrootPlugin
 import org.gradle.jvm.tasks.Jar
 
@@ -28,21 +28,7 @@ val buildTask = tasks.register<CMakePortTask>("buildPort") {
     cmake {
         arg("-DBUILD_CODEC=OFF")
     }
-
-    doLast {
-        com.android.ndkports.Abi.values().forEach { abi ->
-            installDirectoryFor(abi).let { installDirectory ->
-                val dstDir = installDirectory.resolve("include/android.${abi.abiName}/lib/openjpeg-2.5").apply { mkdirs() }
-                installDirectory.resolve("lib/openjpeg-2.5").listFiles()?.forEach {
-                    dstDir.resolve(it.name).writeText(
-                        it.readText().replace(installDirectory.absolutePath, "/__PREFAB__PACKAGE__PATH__")
-                    )
-                }
-            }
-        }
-    }
 }
-
 
 tasks.prefabPackage {
     version.set(CMakeCompatibleVersion.parse(portVersion))

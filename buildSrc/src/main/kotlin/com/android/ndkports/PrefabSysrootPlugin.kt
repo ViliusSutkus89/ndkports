@@ -73,24 +73,20 @@ class PrefabSysrootPlugin(
     }
 
     private fun installConfigFiles(module: Module, libDir: File, abiTriple: String) {
-        val src = module.path.toFile().resolve("libs/android.${targetTripleToAbiName(abiTriple)}")
-
-        src.listFiles { file, filename ->
-            listOf("cmake", "pkgconfig").contains(filename) || file.extension == "la"
-        }?.forEach {
-            it.copyRecursively(libDir.resolve(it.name)) { file, exception ->
-                if (exception !is FileAlreadyExistsException) {
-                    throw exception
+        val srcDir = module.path.toFile().resolve("libs/android.${targetTripleToAbiName(abiTriple)}")
+        srcDir.walkTopDown().forEach { srcFile ->
+            if (srcFile.isFile && listOf("cmake", "la", "pc").contains(srcFile.extension)) {
+                val dstFile = libDir.resolve(srcFile.relativeTo(srcDir))
+                dstFile.parentFile.mkdirs()
+                try {
+                    srcFile.copyTo(dstFile)
+                } catch(e: FileAlreadyExistsException) {
+                    if (!srcFile.readBytes().contentEquals(dstFile.readBytes())) {
+                        throw RuntimeException(
+                            "Found duplicate config files with non-equal contents: ${srcFile.relativeTo(srcDir)}"
+                        )
+                    }
                 }
-
-                if (!file.readBytes().contentEquals(exception.file.readBytes())) {
-                    val path = file.relativeTo(src)
-                    throw RuntimeException(
-                        "Found duplicate headers with non-equal contents: $path"
-                    )
-                }
-
-                OnErrorAction.SKIP
             }
         }
     }
