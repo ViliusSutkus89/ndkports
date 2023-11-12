@@ -129,7 +129,7 @@ tasks.register<CMakePortTask>("buildPort") {
             doLast {
                 com.android.ndkports.Abi.values().forEach { abi ->
                     installDirectoryFor(abi)
-                        .resolve("include/android.${abi.abiName}/lib/pkgconfig/poppler.pc").appendText(
+                        .resolve("lib/pkgconfig/poppler.pc").appendText(
                             "Requires: freetype2 libpng16 libturbojpeg libtiff-4 libopenjp2 glib-2.0 cairo lcms2 fontconfig"
                         )
                 }
@@ -150,7 +150,7 @@ tasks.register<CMakePortTask>("buildPort") {
             doLast {
                 com.android.ndkports.Abi.values().forEach { abi ->
                     installDirectoryFor(abi)
-                        .resolve("include/android.${abi.abiName}/lib/pkgconfig/poppler.pc").appendText(
+                        .resolve("lib/pkgconfig/poppler.pc").appendText(
                             "Requires: freetype2 libpng16 libturbojpeg libtiff-4 libopenjp2 glib-2.0 cairo lcms2"
                         )
                 }
