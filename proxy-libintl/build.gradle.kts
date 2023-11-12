@@ -35,7 +35,6 @@ tasks.prefabPackage {
 
     modules {
         create("intl") {
-            includesPerAbi.set(true)
             static.set(project.findProperty("libraryType") == "static")
         }
     }
