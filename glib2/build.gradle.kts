@@ -121,50 +121,52 @@ tasks.prefabPackage {
     licensePath.set("COPYING")
 
     modules {
+        val isStatic = project.findProperty("libraryType") == "static"
         create("glib-2.0") {
             includesPerAbi.set(true)
-            static.set(project.findProperty("libraryType") == "static")
+            static.set(isStatic)
             dependencies.set(listOf(
                 "//proxy-libintl:intl",
                 "m",
                 "//libiconv:iconv",
-                "//pcre2:pcre2-8"
+                "//pcre2:pcre2-8",
+                "//libffi:ffi",
             ))
         }
         create("gio-2.0") {
             includesPerAbi.set(true)
-            static.set(project.findProperty("libraryType") == "static")
+            static.set(isStatic)
             dependencies.set(listOf(
+                "//proxy-libintl:intl",
                 ":glib-2.0",
                 ":gobject-2.0",
-                ":gmodule-no-export-2.0",
+                ":gmodule-2.0",
                 "z",
-                "//proxy-libintl:intl"
             ))
         }
         create("gmodule-2.0") {
             includesPerAbi.set(true)
-            static.set(project.findProperty("libraryType") == "static")
+            static.set(isStatic)
             dependencies.set(listOf(
-                ":gmodule-no-export-2.0",
+                "//proxy-libintl:intl",
                 ":glib-2.0",
             ))
         }
         create("gobject-2.0") {
             includesPerAbi.set(true)
-            static.set(project.findProperty("libraryType") == "static")
+            static.set(isStatic)
             dependencies.set(listOf(
+                "//proxy-libintl:intl",
                 ":glib-2.0",
                 "//libffi:ffi",
-                "//proxy-libintl:intl"
             ))
         }
         create("gthread-2.0") {
             includesPerAbi.set(true)
-            static.set(project.findProperty("libraryType") == "static")
+            static.set(isStatic)
             dependencies.set(listOf(
+                "//proxy-libintl:intl",
                 ":glib-2.0",
-                "//proxy-libintl:intl"
             ))
         }
     }
