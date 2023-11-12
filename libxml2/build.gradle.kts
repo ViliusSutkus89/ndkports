@@ -49,8 +49,12 @@ tasks.prefabPackage {
 
     modules {
         create("xml2") {
-            static.set(project.findProperty("libraryType") == "static")
-            dependencies.set(listOf("z", "//libiconv:iconv", "m"))
+            if (project.findProperty("libraryType") == "static") {
+                static.set(true)
+                dependencies.set(listOf("z", "//libiconv:iconv", "m"))
+            } else {
+                dependencies.set(listOf("//libiconv:iconv"))
+            }
         }
     }
 }
