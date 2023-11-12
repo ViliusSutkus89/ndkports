@@ -47,10 +47,8 @@ tasks.prefabPackage {
 
     modules {
         create("png16") {
-            if (project.findProperty("libraryType") == "static") {
-                static.set(true)
-                dependencies.set(listOf("z", "m"))
-            }
+            static.set(project.findProperty("libraryType") == "static")
+            dependencies.set(listOf("z", "m"))
         }
     }
 }
