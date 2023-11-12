@@ -93,8 +93,23 @@ tasks.register<MesonPortTask>("buildPort") {
     doLast {
         com.android.ndkports.Abi.values().forEach { abi ->
             installDirectoryFor(abi).let { iDir ->
-                iDir.resolve("lib/glib-2.0/include/glibconfig.h")
-                    .copyTo(iDir.resolve("include/glib-2.0/glibconfig.h"))
+                val src = iDir.resolve("lib/glib-2.0/include/glibconfig.h")
+                val dst = iDir.resolve("include/glib-2.0/glibconfig.h")
+                try {
+                    src.copyTo(dst)
+                } catch (e: FileAlreadyExistsException) {
+                    if (!src.readBytes().contentEquals(dst.readBytes())) {
+                        throw RuntimeException(
+                            "Found duplicate config files with non-equal contents: include/glib-2.0/glibconfig.h"
+                        )
+                    }
+                }
+
+                iDir.resolve("lib/pkgconfig/glib-2.0.pc").let {
+                    it.writeText(it.readText()
+                        .replace("-I\${libdir}/glib-2.0/include", "")
+                    )
+                }
             }
         }
     }
