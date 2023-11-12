@@ -37,8 +37,10 @@ tasks.prefabPackage {
 
     modules {
         create("openjp2") {
-            static.set(project.findProperty("libraryType") == "static")
-            dependencies.set(listOf("m"))
+            if (project.findProperty("libraryType") == "static") {
+                static.set(true)
+                dependencies.set(listOf("m"))
+            }
         }
     }
 }
