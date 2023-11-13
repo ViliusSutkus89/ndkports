@@ -207,9 +207,9 @@ class PrefabPackageBuilder(
         val srcDir = installDirectory.resolve("$abi/lib")
         val dstDir = libsDir.resolve("android.${abi.abiName}")
 
-        val abiInstallDir = installDirectory.resolve("$abi").absolutePath
-        val generatedDir = installDirectory.resolve("../dependencies/generated/${abi.triple}").absolutePath
-        val ndkPath = ndk.path.absolutePath
+        val abiInstallDir = installDirectory.resolve("$abi").canonicalPath
+        val generatedDir = installDirectory.resolve("../dependencies/generated/${abi.triple}").canonicalPath
+        val ndkPath = ndk.path.canonicalPath
 
         srcDir.walkTopDown().forEach { srcFile ->
             if (srcFile.isFile && listOf("cmake", "la", "pc").contains(srcFile.extension)) {
