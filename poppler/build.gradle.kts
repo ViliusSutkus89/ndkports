@@ -62,15 +62,14 @@ tasks.findByName("extractSrc")?.dependsOn(
     }
 )
 
-
 fun File.patch(patch: String) {
     patch(projectDir.resolve("patches/$portVersion").resolve(patch))
 }
 
 fun File.patch(patch: File) {
     val pb = ProcessBuilder(
-        if (isFile) listOf("patch", "-p0", absolutePath)
-        else listOf("patch", "-p0")
+        if (isFile) listOf("patch", "--ignore-whitespace", "-p0", absolutePath)
+        else listOf("patch", "--ignore-whitespace", "-p0")
     )
 
     if (isDirectory)
@@ -100,9 +99,14 @@ tasks.extractSrc {
                 srcDir.resolve("CMakeLists.txt").patch("FindCairo.patch")
                 srcDir.resolve("ConfigureChecks.cmake").patch("have_unistd_h.patch")
             }
-            "0.89.0", "21.02.0" -> {
+            "0.89.0" -> {
                 srcDir.resolve("CMakeLists.txt").patch("fontconfig.patch")
                 srcDir.resolve("CMakeLists.txt").patch("FindCairo.patch")
+            }
+            "21.02.0" -> {
+                srcDir.resolve("CMakeLists.txt").patch("fontconfig.patch")
+                srcDir.resolve("CMakeLists.txt").patch("FindCairo.patch")
+                srcDir.patch("glib-boxed-type.patch")
             }
             "23.10.0" -> {
                 srcDir.resolve("CMakeLists.txt").patch("FindCairo.patch")
@@ -118,13 +122,26 @@ tasks.prefab {
 
 tasks.register<CMakePortTask>("buildPort") {
     when (portVersion) {
-        "0.81.0", "0.89.0", "21.02.0" -> {
+        "0.81.0", "0.89.0" -> {
             cmake {
                 args(
                     "-DENABLE_UNSTABLE_API_ABI_HEADERS=ON",
                     // poppler-gLib requires older GLib version.
                     "-DENABLE_GLIB=OFF",
                 )
+            }
+            doLast {
+                com.android.ndkports.Abi.values().forEach { abi ->
+                    installDirectoryFor(abi)
+                        .resolve("lib/pkgconfig/poppler.pc").appendText(
+                            "Requires: freetype2 libpng16 libturbojpeg libtiff-4 libopenjp2 glib-2.0 cairo lcms2 fontconfig"
+                        )
+                }
+            }
+        }
+        "21.02.0" -> {
+            cmake {
+                arg("-DENABLE_UNSTABLE_API_ABI_HEADERS=ON")
             }
             doLast {
                 com.android.ndkports.Abi.values().forEach { abi ->
@@ -184,10 +201,17 @@ tasks.prefabPackage {
             static.set(project.findProperty("libraryType") == "static")
             dependencies.set(listOf(":poppler"))
         }
-        if (portVersion == "23.10.0") {
+        if (listOf("21.02.0", "23.10.0").contains(portVersion)) {
             create("poppler-glib") {
                 static.set(project.findProperty("libraryType") == "static")
-                dependencies.set(listOf(":poppler"))
+                dependencies.set(
+                    listOf(
+                        ":poppler",
+                        "//glib2:glib-2.0",
+                        "//glib2:gobject-2.0",
+                        "//cairo:cairo",
+                    )
+                )
             }
         }
     }
