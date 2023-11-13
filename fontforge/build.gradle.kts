@@ -15,11 +15,11 @@ val portVersion = when(project.findProperty("packageVersion")) {
         "20170731"
     }
     "20200314" -> {
-        version = "20200314-beta-2"
+        version = "20200314-beta-3"
         "20200314"
     }
     else /* "20230101" */ -> {
-        version = "20230101-beta-2"
+        version = "20230101-beta-3"
         "20230101"
     }
 }
@@ -47,7 +47,7 @@ dependencies {
     implementation("com.viliussutkus89.ndk.thirdparty:libtool${ndkVersionSuffix}-static:2.4.6-beta-2")
     implementation("com.viliussutkus89.ndk.thirdparty:libpng${ndkVersionSuffix}-static:1.6.40-beta-5")
     implementation("com.viliussutkus89.ndk.thirdparty:libuninameslist${ndkVersionSuffix}-static:20230916-beta-2")
-    implementation("com.viliussutkus89.ndk.thirdparty:libxml2${ndkVersionSuffix}-static:2.11.5-beta-2")
+    implementation("com.viliussutkus89.ndk.thirdparty:libxml2${ndkVersionSuffix}-static:2.11.5-beta-3")
     implementation("com.viliussutkus89.ndk.thirdparty:spiro${ndkVersionSuffix}-static:20221101-beta-2")
 
     if (minSupportedSdk >= 21)
