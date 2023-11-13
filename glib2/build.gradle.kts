@@ -6,7 +6,7 @@ import org.gradle.jvm.tasks.Jar
 val portVersion = "2.78.1"
 
 group = rootProject.group
-version = "${portVersion}-beta-3"
+version = "${portVersion}-beta-4"
 
 plugins {
     id("maven-publish")
@@ -119,6 +119,13 @@ tasks.prefabPackage {
     version.set(CMakeCompatibleVersion.parse(portVersion))
 
     licensePath.set("COPYING")
+
+    dependencies.set(mapOf(
+        "libiconv" to "1",
+        "proxy-libintl" to "1",
+        "libffi" to "1",
+        "pcre2" to "1",
+    ))
 
     modules {
         val isStatic = project.findProperty("libraryType") == "static"

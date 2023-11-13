@@ -8,19 +8,19 @@ group = rootProject.group
 // Hardcode a list of available versions
 val portVersion = when(project.findProperty("packageVersion")) {
     "0.81.0" -> {
-        version = "0.81.0-beta-2"
+        version = "0.81.0-beta-3"
         "0.81.0"
     }
     "0.89.0" -> {
-        version = "0.89.0-beta-2"
+        version = "0.89.0-beta-3"
         "0.89.0"
     }
     "21.02.0" -> {
-        version = "21.02.0-beta-2"
+        version = "21.02.0-beta-3"
         "21.02.0"
     }
     else /* "23.10.0" */ -> {
-        version = "23.10.0-beta-2"
+        version = "23.10.0-beta-3"
         "23.10.0"
     }
 }
@@ -33,19 +33,19 @@ plugins {
 
 dependencies {
     val ndkVersionSuffix = rootProject.extra.get("ndkVersionSuffix")
-    implementation("com.viliussutkus89.ndk.thirdparty:freetype${ndkVersionSuffix}-static:2.13.2-beta-4")
+    implementation("com.viliussutkus89.ndk.thirdparty:freetype${ndkVersionSuffix}-static:2.13.2-beta-5")
     implementation("com.viliussutkus89.ndk.thirdparty:libiconv${ndkVersionSuffix}-static:1.17-beta-2")
     implementation("com.viliussutkus89.ndk.thirdparty:libpng${ndkVersionSuffix}-static:1.6.40-beta-5")
     implementation("com.viliussutkus89.ndk.thirdparty:libjpeg-turbo${ndkVersionSuffix}-static:3.0.1-beta-2")
-    implementation("com.viliussutkus89.ndk.thirdparty:libtiff${ndkVersionSuffix}-static:4.6.0-beta-3")
+    implementation("com.viliussutkus89.ndk.thirdparty:libtiff${ndkVersionSuffix}-static:4.6.0-beta-4")
     implementation("com.viliussutkus89.ndk.thirdparty:openjpeg${ndkVersionSuffix}-static:2.5.0-beta-3")
-    implementation("com.viliussutkus89.ndk.thirdparty:glib2${ndkVersionSuffix}-static:2.78.1-beta-3")
-    implementation("com.viliussutkus89.ndk.thirdparty:cairo${ndkVersionSuffix}-static:1.18.0-beta-2")
-    implementation("com.viliussutkus89.ndk.thirdparty:lcms2${ndkVersionSuffix}-static:2.15-beta-3")
+    implementation("com.viliussutkus89.ndk.thirdparty:glib2${ndkVersionSuffix}-static:2.78.1-beta-4")
+    implementation("com.viliussutkus89.ndk.thirdparty:cairo${ndkVersionSuffix}-static:1.18.0-beta-3")
+    implementation("com.viliussutkus89.ndk.thirdparty:lcms2${ndkVersionSuffix}-static:2.15-beta-4")
 
     if (listOf("0.81.0", "0.89.0", "21.02.0").contains(portVersion)) {
         // 23.10.0 supports Android's native alternative of fontconfig
-        implementation("com.viliussutkus89.ndk.thirdparty:fontconfig${ndkVersionSuffix}-static:2.14.2-beta-2")
+        implementation("com.viliussutkus89.ndk.thirdparty:fontconfig${ndkVersionSuffix}-static:2.14.2-beta-3")
     }
 }
 
@@ -162,10 +162,26 @@ tasks.prefabPackage {
 
     licensePath.set("COPYING")
 
+    dependencies.set(mutableMapOf(
+        "freetype" to "1",
+        "libiconv" to "1",
+        "libpng" to "1",
+        "libjpeg-turbo" to "1",
+        "libtiff" to "1",
+        "openjpeg" to "1",
+        "glib2" to "1",
+        "cairo" to "1",
+        "lcms2" to "1",
+    ).apply {
+        if (listOf("0.81.0", "0.89.0", "21.02.0").contains(portVersion)) {
+            put("fontconfig", "1")
+        }
+    })
+
     modules {
         create("poppler") {
             static.set(project.findProperty("libraryType") == "static")
-            dependencies.set(listOf(
+            dependencies.set(mutableListOf(
                 "//freetype:freetype",
                 "//libpng:png16",
                 "//libjpeg-turbo:turbojpeg",
@@ -174,8 +190,11 @@ tasks.prefabPackage {
                 "//glib2:glib-2.0",
                 "//cairo:cairo",
                 "//lcms2:lcms2",
-                "//fontconfig:fontconfig",
-            ))
+            ).apply {
+                if (listOf("0.81.0", "0.89.0", "21.02.0").contains(portVersion)) {
+                    add("//fontconfig:fontconfig")
+                }
+            })
         }
         create("poppler-cpp") {
             static.set(project.findProperty("libraryType") == "static")

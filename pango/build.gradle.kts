@@ -8,11 +8,11 @@ group = rootProject.group
 // Hardcode a list of available versions
 val portVersion = when(project.findProperty("packageVersion")) {
     "1.49.4" -> {
-        version = "1.49.4-beta-2"
+        version = "1.49.4-beta-3"
         "1.49.4"
     }
     else /* "1.51.0" */-> {
-        version = "1.51.0-beta-2"
+        version = "1.51.0-beta-3"
         "1.51.0"
     }
 }
@@ -25,17 +25,17 @@ plugins {
 
 dependencies {
     val ndkVersionSuffix = rootProject.extra.get("ndkVersionSuffix")
-    implementation("com.viliussutkus89.ndk.thirdparty:cairo${ndkVersionSuffix}-static:1.18.0-beta-2")
-    implementation("com.viliussutkus89.ndk.thirdparty:fontconfig${ndkVersionSuffix}-static:2.14.2-beta-2")
-    implementation("com.viliussutkus89.ndk.thirdparty:freetype${ndkVersionSuffix}-static:2.13.2-beta-4")
+    implementation("com.viliussutkus89.ndk.thirdparty:cairo${ndkVersionSuffix}-static:1.18.0-beta-3")
+    implementation("com.viliussutkus89.ndk.thirdparty:fontconfig${ndkVersionSuffix}-static:2.14.2-beta-3")
+    implementation("com.viliussutkus89.ndk.thirdparty:freetype${ndkVersionSuffix}-static:2.13.2-beta-5")
     implementation("com.viliussutkus89.ndk.thirdparty:fribidi${ndkVersionSuffix}-static:1.0.13-beta-2")
-    implementation("com.viliussutkus89.ndk.thirdparty:glib2${ndkVersionSuffix}-static:2.78.1-beta-3")
-    implementation("com.viliussutkus89.ndk.thirdparty:harfbuzz${ndkVersionSuffix}-static:8.2.2-beta-2")
+    implementation("com.viliussutkus89.ndk.thirdparty:glib2${ndkVersionSuffix}-static:2.78.1-beta-4")
+    implementation("com.viliussutkus89.ndk.thirdparty:harfbuzz${ndkVersionSuffix}-static:8.2.2-beta-3")
 
     // Only needed for 1.49.4
     // https://gitlab.gnome.org/GNOME/pango/-/commit/32115334662799c77d49b0e26161c44e580d5dd4
     if (portVersion == "1.49.4") {
-        implementation("com.viliussutkus89.ndk.thirdparty:json-glib${ndkVersionSuffix}-static:1.8.0-beta-2")
+        implementation("com.viliussutkus89.ndk.thirdparty:json-glib${ndkVersionSuffix}-static:1.8.0-beta-3")
     }
 }
 
@@ -62,6 +62,19 @@ tasks.prefabPackage {
     version.set(CMakeCompatibleVersion.parse(portVersion))
 
     licensePath.set("COPYING")
+
+    dependencies.set(mutableMapOf(
+        "cairo" to "1",
+        "fontconfig" to "1",
+        "freetype" to "1",
+        "fribidi" to "1",
+        "glib2" to "1",
+        "harfbuzz" to "1",
+    ).apply {
+        if (portVersion == "1.49.4") {
+            put("json-glib", "1")
+        }
+    })
 
     modules {
         create("pango-1.0") {

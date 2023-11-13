@@ -6,7 +6,7 @@ import org.gradle.jvm.tasks.Jar
 val portVersion = "1.8.0"
 
 group = rootProject.group
-version = "${portVersion}-beta-2"
+version = "${portVersion}-beta-3"
 
 plugins {
     id("maven-publish")
@@ -16,7 +16,7 @@ plugins {
 
 dependencies {
     val ndkVersionSuffix = rootProject.extra.get("ndkVersionSuffix")
-    implementation("com.viliussutkus89.ndk.thirdparty:glib2${ndkVersionSuffix}-static:2.78.1-beta-3")
+    implementation("com.viliussutkus89.ndk.thirdparty:glib2${ndkVersionSuffix}-static:2.78.1-beta-4")
 }
 
 ndkPorts {
@@ -37,6 +37,8 @@ tasks.prefabPackage {
     version.set(CMakeCompatibleVersion.parse(portVersion))
 
     licensePath.set("COPYING")
+
+    dependencies.set(mapOf("glib2" to "1"))
 
     modules {
         create("json-glib-1.0") {

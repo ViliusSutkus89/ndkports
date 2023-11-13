@@ -11,15 +11,15 @@ group = rootProject.group
 // Hardcode a list of available versions
 val portVersion = when(project.findProperty("packageVersion")) {
     "20170731" -> {
-        version = "20170731-beta-3"
+        version = "20170731-beta-4"
         "20170731"
     }
     "20200314" -> {
-        version = "20200314-beta-3"
+        version = "20200314-beta-4"
         "20200314"
     }
     else /* "20230101" */ -> {
-        version = "20230101-beta-3"
+        version = "20230101-beta-4"
         "20230101"
     }
 }
@@ -39,26 +39,26 @@ val minSupportedSdk = when (portVersion) {
 
 dependencies {
     val ndkVersionSuffix = rootProject.extra.get("ndkVersionSuffix")
-    implementation("com.viliussutkus89.ndk.thirdparty:cairo${ndkVersionSuffix}-static:1.18.0-beta-2")
-    implementation("com.viliussutkus89.ndk.thirdparty:freetype${ndkVersionSuffix}-static:2.13.2-beta-4")
+    implementation("com.viliussutkus89.ndk.thirdparty:cairo${ndkVersionSuffix}-static:1.18.0-beta-3")
+    implementation("com.viliussutkus89.ndk.thirdparty:freetype${ndkVersionSuffix}-static:2.13.2-beta-5")
     implementation("com.viliussutkus89.ndk.thirdparty:proxy-libintl${ndkVersionSuffix}-static:0.4.1.1")
-    implementation("com.viliussutkus89.ndk.thirdparty:glib2${ndkVersionSuffix}-static:2.78.1-beta-3")
+    implementation("com.viliussutkus89.ndk.thirdparty:glib2${ndkVersionSuffix}-static:2.78.1-beta-4")
     implementation("com.viliussutkus89.ndk.thirdparty:libjpeg-turbo${ndkVersionSuffix}-static:3.0.1-beta-2")
     implementation("com.viliussutkus89.ndk.thirdparty:libtool${ndkVersionSuffix}-static:2.4.6-beta-2")
     implementation("com.viliussutkus89.ndk.thirdparty:libpng${ndkVersionSuffix}-static:1.6.40-beta-5")
     implementation("com.viliussutkus89.ndk.thirdparty:libuninameslist${ndkVersionSuffix}-static:20230916-beta-2")
-    implementation("com.viliussutkus89.ndk.thirdparty:libxml2${ndkVersionSuffix}-static:2.11.5-beta-3")
+    implementation("com.viliussutkus89.ndk.thirdparty:libxml2${ndkVersionSuffix}-static:2.11.5-beta-4")
     implementation("com.viliussutkus89.ndk.thirdparty:spiro${ndkVersionSuffix}-static:20221101-beta-2")
 
     if (minSupportedSdk >= 21)
-        implementation("com.viliussutkus89.ndk.thirdparty:pango${ndkVersionSuffix}-static:1.51.0-beta-2")
+        implementation("com.viliussutkus89.ndk.thirdparty:pango${ndkVersionSuffix}-static:1.51.0-beta-3")
     else
-        implementation("com.viliussutkus89.ndk.thirdparty:pango${ndkVersionSuffix}-static:1.49.4-beta-2")
+        implementation("com.viliussutkus89.ndk.thirdparty:pango${ndkVersionSuffix}-static:1.49.4-beta-3")
 
     if (portVersion != "20170731") {
         // libfontforge checks for TIFFRewriteField , which was deprecated in libtiff-4
         // http://www.simplesystems.org/libtiff/v4.0.0.html
-        implementation("com.viliussutkus89.ndk.thirdparty:libtiff${ndkVersionSuffix}-static:4.6.0-beta-3")
+        implementation("com.viliussutkus89.ndk.thirdparty:libtiff${ndkVersionSuffix}-static:4.6.0-beta-4")
     }
 
     // -- Could NOT find GIF (missing: GIF_LIBRARY GIF_INCLUDE_DIR)
@@ -302,17 +302,35 @@ when (portVersion) {
     }
 }
 
-
 tasks.prefabPackage {
     version.set(CMakeCompatibleVersion.parse(portVersion))
 
     licensePath.set("LICENSE")
 
+    dependencies.set(mutableMapOf(
+        "cairo" to "1",
+        "freetype" to "1",
+        "proxy-libintl" to "1",
+        "glib2" to "1",
+        "libjpeg-turbo" to "1",
+        "libtool" to "1",
+        "libpng" to "1",
+        "libuninameslist" to "1",
+        "libxml2" to "1",
+        "spiro" to "1",
+        "pango" to "1",
+    ).apply {
+        if (portVersion != "20170731") {
+            put("libtiff", "1")
+        }
+    })
+
     modules {
+        val isStatic = project.findProperty("libraryType") == "static"
         when (portVersion) {
             "20170731" -> {
                 create("fontforge") {
-                    static.set(project.findProperty("libraryType") == "static")
+                    static.set(isStatic)
                     includesPerAbi.set(true)
                     dependencies.set(listOf(
                         ":gioftp",
@@ -320,7 +338,7 @@ tasks.prefabPackage {
                         ":gunicode",
                         "z",
                         "m",
-                        "//libtool:tool",
+                        "//libtool:ltdl",
                         "//libjpeg-turbo:jpeg",
                         "//libpng:png16",
                         "//spiro:spiro",
@@ -328,13 +346,13 @@ tasks.prefabPackage {
                         "//freetype:freetype",
                         "//proxy-libintl:intl",
                         "//glib2:gio-2.0",
-                        "//libxml2:xml-2.0",
-                        "//pango:pango",
+                        "//libxml2:xml2",
+                        "//pango:pango-1.0",
                         "//cairo:cairo",
                     ))
                 }
                 create("fontforgeexe") {
-                    static.set(project.findProperty("libraryType") == "static")
+                    static.set(isStatic)
                     includesPerAbi.set(true)
                     dependencies.set(listOf(
                         ":fontforge",
@@ -343,7 +361,7 @@ tasks.prefabPackage {
                         ":gunicode",
                         "z",
                         "m",
-                        "//libtool:tool",
+                        "//libtool:ltdl",
                         "//libjpeg-turbo:jpeg",
                         "//libpng:png16",
                         "//spiro:spiro",
@@ -351,33 +369,33 @@ tasks.prefabPackage {
                         "//freetype:freetype",
                         "//proxy-libintl:intl",
                         "//glib2:gio-2.0",
-                        "//libxml2:xml-2.0",
-                        "//pango:pango",
+                        "//libxml2:xml2",
+                        "//pango:pango-1.0",
                         "//cairo:cairo",
                     ))
                 }
                 create("gioftp") {
-                    static.set(project.findProperty("libraryType") == "static")
+                    static.set(isStatic)
                     includesPerAbi.set(true)
                 }
                 create("gunicode") {
-                    static.set(project.findProperty("libraryType") == "static")
+                    static.set(isStatic)
                     includesPerAbi.set(true)
                 }
                 create("gutils") {
-                    static.set(project.findProperty("libraryType") == "static")
+                    static.set(isStatic)
                     includesPerAbi.set(true)
                 }
             }
             "20200314" -> {
                 // @TODO: this could be wrong, because no pkg-config.pc to verify
                 create("fontforge") {
-                    static.set(project.findProperty("libraryType") == "static")
+                    static.set(isStatic)
                     includesPerAbi.set(true)
                     dependencies.set(listOf(
                         "z",
                         "m",
-                        "//libtool:tool",
+                        "//libtool:ltdl",
                         "//libjpeg-turbo:jpeg",
                         "//libpng:png16",
                         "//spiro:spiro",
@@ -385,8 +403,8 @@ tasks.prefabPackage {
                         "//freetype:freetype",
                         "//proxy-libintl:intl",
                         "//glib2:gio-2.0",
-                        "//libxml2:xml-2.0",
-                        "//pango:pango",
+                        "//libxml2:xml2",
+                        "//pango:pango-1.0",
                         "//cairo:cairo",
                         "//libtiff:tiff",
                     ))
@@ -395,12 +413,12 @@ tasks.prefabPackage {
             "20230101" -> {
                 // @TODO: this could be wrong, because no pkg-config.pc to verify
                 create("fontforge") {
-                    static.set(project.findProperty("libraryType") == "static")
+                    static.set(isStatic)
                     includesPerAbi.set(true)
                     dependencies.set(listOf(
                         "z",
                         "m",
-                        "//libtool:tool",
+                        "//libtool:ltdl",
                         "//libjpeg-turbo:jpeg",
                         "//libpng:png16",
                         "//spiro:spiro",
@@ -408,8 +426,8 @@ tasks.prefabPackage {
                         "//freetype:freetype",
                         "//proxy-libintl:intl",
                         "//glib2:gio-2.0",
-                        "//libxml2:xml-2.0",
-                        "//pango:pango",
+                        "//libxml2:xml2",
+                        "//pango:pango-1.0",
                         "//cairo:cairo",
                         "//libtiff:tiff",
                     ))

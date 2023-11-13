@@ -6,7 +6,7 @@ import org.gradle.jvm.tasks.Jar
 val portVersion = "4.6.0"
 
 group = rootProject.group
-version = "${portVersion}-beta-3"
+version = "${portVersion}-beta-4"
 
 plugins {
     id("maven-publish")
@@ -44,6 +44,7 @@ tasks.prefabPackage {
 
     licensePath.set("LICENSE.md")
 
+    dependencies.set(mapOf("libjpeg-turbo" to "1"))
     modules {
         val isStatic = project.findProperty("libraryType") == "static"
         create("tiff") {

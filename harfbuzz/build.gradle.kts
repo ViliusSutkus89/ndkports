@@ -6,7 +6,7 @@ import org.gradle.jvm.tasks.Jar
 val portVersion = "8.2.2"
 
 group = rootProject.group
-version = "${portVersion}-beta-2"
+version = "${portVersion}-beta-3"
 
 plugins {
     id("maven-publish")
@@ -16,10 +16,10 @@ plugins {
 
 dependencies {
     val ndkVersionSuffix = rootProject.extra.get("ndkVersionSuffix")
-    implementation("com.viliussutkus89.ndk.thirdparty:cairo${ndkVersionSuffix}-static:1.18.0-beta-2")
-    implementation("com.viliussutkus89.ndk.thirdparty:fontconfig${ndkVersionSuffix}-static:2.14.2-beta-2")
-    implementation("com.viliussutkus89.ndk.thirdparty:freetype${ndkVersionSuffix}-static:2.13.2-beta-4")
-    implementation("com.viliussutkus89.ndk.thirdparty:glib2${ndkVersionSuffix}-static:2.78.1-beta-3")
+    implementation("com.viliussutkus89.ndk.thirdparty:cairo${ndkVersionSuffix}-static:1.18.0-beta-3")
+    implementation("com.viliussutkus89.ndk.thirdparty:fontconfig${ndkVersionSuffix}-static:2.14.2-beta-3")
+    implementation("com.viliussutkus89.ndk.thirdparty:freetype${ndkVersionSuffix}-static:2.13.2-beta-5")
+    implementation("com.viliussutkus89.ndk.thirdparty:glib2${ndkVersionSuffix}-static:2.78.1-beta-4")
 }
 
 ndkPorts {
@@ -61,9 +61,17 @@ tasks.prefabPackage {
 
     licensePath.set("COPYING")
 
+    dependencies.set(mapOf(
+        "cairo" to "1",
+        "fontconfig" to "1",
+        "freetype" to "1",
+        "glib2" to "1",
+    ))
+
     modules {
+        val isStatic = project.findProperty("libraryType") == "static"
         create("harfbuzz") {
-            static.set(project.findProperty("libraryType") == "static")
+            static.set(isStatic)
             dependencies.set(listOf(
                 "m",
                 "//freetype:freetype",
@@ -71,7 +79,7 @@ tasks.prefabPackage {
             ))
         }
         create("harfbuzz-cairo") {
-            static.set(project.findProperty("libraryType") == "static")
+            static.set(isStatic)
             dependencies.set(listOf(
                 "m",
                 ":harfbuzz",
@@ -81,7 +89,7 @@ tasks.prefabPackage {
             ))
         }
         create("harfbuzz-gobject") {
-            static.set(project.findProperty("libraryType") == "static")
+            static.set(isStatic)
             dependencies.set(listOf(
                 ":harfbuzz",
                 "//glib2:glib-2.0",
@@ -89,7 +97,7 @@ tasks.prefabPackage {
             ))
         }
         create("harfbuzz-subset") {
-            static.set(project.findProperty("libraryType") == "static")
+            static.set(isStatic)
             dependencies.set(listOf(
                 "m",
                 ":harfbuzz",

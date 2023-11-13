@@ -6,7 +6,7 @@ import org.gradle.jvm.tasks.Jar
 val portVersion = "2.13.2"
 
 group = rootProject.group
-version = "${portVersion}-beta-4"
+version = "${portVersion}-beta-5"
 
 plugins {
     id("maven-publish")
@@ -41,6 +41,8 @@ tasks.prefabPackage {
     version.set(CMakeCompatibleVersion.parse(portVersion))
 
     licensePath.set("LICENSE.TXT")
+
+    dependencies.set(mapOf("libpng" to "1"))
 
     modules {
         create("freetype") {

@@ -6,7 +6,7 @@ import org.gradle.jvm.tasks.Jar
 val portVersion = "2.11.5"
 
 group = rootProject.group
-version = "${portVersion}-beta-3"
+version = "${portVersion}-beta-4"
 
 plugins {
     id("maven-publish")
@@ -46,6 +46,7 @@ tasks.prefabPackage {
     version.set(CMakeCompatibleVersion.parse(portVersion))
 
     licensePath.set("Copyright")
+    dependencies.set(mapOf("libiconv" to "1"))
 
     modules {
         create("xml2") {
