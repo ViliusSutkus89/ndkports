@@ -5,9 +5,9 @@ tooling to build them.
 
 Buildscripts are based on Google's [ndkports](https://android.googlesource.com/platform/tools/ndkports/).
 
-Compiled binaries are (will be) distributed through MavenCentral.
+Compiled binaries are distributed through MavenCentral.
 
-Most packages aim to deliver up-to-date version, unless specified otherwise.
+Most packages aim to deliver up-to-date versions, unless specified otherwise.
 
 ## Matrix
 
@@ -37,13 +37,13 @@ Run unit tests provided by upstream packages.
 
 ## Ports
 
-#### [GNU FriBidi](https://github.com/fribidi/fribidi)
+#### [GLib](https://gitlab.gnome.org/GNOME/glib/)
 
-[![fribidi](https://github.com/ViliusSutkus89/ndkports/actions/workflows/fribidi.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/fribidi.yml)
-[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/fribidi-ndk25-static.svg?label=Maven%20Central%20fribidi-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:fribidi-ndk25-static)
-[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/fribidi-ndk25-shared.svg?label=Maven%20Central%20fribidi-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:fribidi-ndk25-shared)
-[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/fribidi-ndk26-static.svg?label=Maven%20Central%20fribidi-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:fribidi-ndk26-static)
-[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/fribidi-ndk26-shared.svg?label=Maven%20Central%20fribidi-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:fribidi-ndk26-shared)
+[![glib2](https://github.com/ViliusSutkus89/ndkports/actions/workflows/glib2.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/glib2.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/glib2-ndk25-static.svg?label=Maven%20Central%20glib2-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:glib2-ndk25-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/glib2-ndk25-shared.svg?label=Maven%20Central%20glib2-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:glib2-ndk25-shared)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/glib2-ndk26-static.svg?label=Maven%20Central%20glib2-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:glib2-ndk26-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/glib2-ndk26-shared.svg?label=Maven%20Central%20glib2-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:glib2-ndk26-shared)
 
 #### [libpng](http://libpng.org/pub/png/libpng.html)
 
@@ -52,6 +52,58 @@ Run unit tests provided by upstream packages.
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libpng-ndk25-shared.svg?label=Maven%20Central%20libpng-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libpng-ndk25-shared)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libpng-ndk26-static.svg?label=Maven%20Central%20libpng-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libpng-ndk26-static)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libpng-ndk26-shared.svg?label=Maven%20Central%20libpng-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libpng-ndk26-shared)
+
+#### [libjpeg-turbo](https://libjpeg-turbo.org)
+
+[![libjpeg-turbo](https://github.com/ViliusSutkus89/ndkports/actions/workflows/libjpeg-turbo.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/libjpeg-turbo.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libjpeg-turbo-ndk25-static.svg?label=Maven%20Central%20libjpeg-turbo-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libjpeg-turbo-ndk25-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libjpeg-turbo-ndk25-shared.svg?label=Maven%20Central%20libjpeg-turbo-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libjpeg-turbo-ndk25-shared)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libjpeg-turbo-ndk26-static.svg?label=Maven%20Central%20libjpeg-turbo-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libjpeg-turbo-ndk26-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libjpeg-turbo-ndk26-shared.svg?label=Maven%20Central%20libjpeg-turbo-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libjpeg-turbo-ndk26-shared)
+
+#### [Fontconfig](https://www.freedesktop.org/wiki/Software/fontconfig/)
+
+[![fontconfig](https://github.com/ViliusSutkus89/ndkports/actions/workflows/fontconfig.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/fontconfig.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/fontconfig-ndk25-static.svg?label=Maven%20Central%20fontconfig-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:fontconfig-ndk25-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/fontconfig-ndk25-shared.svg?label=Maven%20Central%20fontconfig-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:fontconfig-ndk25-shared)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/fontconfig-ndk26-static.svg?label=Maven%20Central%20fontconfig-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:fontconfig-ndk26-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/fontconfig-ndk26-shared.svg?label=Maven%20Central%20fontconfig-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:fontconfig-ndk26-shared)
+
+#### [Poppler](https://poppler.freedesktop.org)
+
+Available versions:
+
+- 23.10.0
+- 21.02.0
+- 0.89.0
+- 0.81.0
+
+[![poppler](https://github.com/ViliusSutkus89/ndkports/actions/workflows/poppler.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/poppler.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/poppler-ndk25-static.svg?label=Maven%20Central%20poppler-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:poppler-ndk25-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/poppler-ndk25-shared.svg?label=Maven%20Central%20poppler-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:poppler-ndk25-shared)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/poppler-ndk26-static.svg?label=Maven%20Central%20poppler-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:poppler-ndk26-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/poppler-ndk26-shared.svg?label=Maven%20Central%20poppler-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:poppler-ndk26-shared)
+
+#### [pdf2htmlEX](https://github.com/pdf2htmlEX/pdf2htmlEX)
+
+Available versions:
+
+- v0.18.8.rc1 (not yet available) - Min API level 24
+- v0.18.7-poppler-0.81.0 - Min API level 19 (or 21, depending on NDK version)
+
+[![pdf2htmlEX](https://github.com/ViliusSutkus89/ndkports/actions/workflows/pdf2htmlEX.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/pdf2htmlEX.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/pdf2htmlEX-ndk25-static.svg?label=Maven%20Central%20pdf2htmlEX-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:pdf2htmlEX-ndk25-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/pdf2htmlEX-ndk25-shared.svg?label=Maven%20Central%20pdf2htmlEX-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:pdf2htmlEX-ndk25-shared)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/pdf2htmlEX-ndk26-static.svg?label=Maven%20Central%20pdf2htmlEX-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:pdf2htmlEX-ndk26-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/pdf2htmlEX-ndk26-shared.svg?label=Maven%20Central%20pdf2htmlEX-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:pdf2htmlEX-ndk26-shared)
+
+#### [GNU FriBidi](https://github.com/fribidi/fribidi)
+
+[![fribidi](https://github.com/ViliusSutkus89/ndkports/actions/workflows/fribidi.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/fribidi.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/fribidi-ndk25-static.svg?label=Maven%20Central%20fribidi-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:fribidi-ndk25-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/fribidi-ndk25-shared.svg?label=Maven%20Central%20fribidi-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:fribidi-ndk25-shared)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/fribidi-ndk26-static.svg?label=Maven%20Central%20fribidi-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:fribidi-ndk26-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/fribidi-ndk26-shared.svg?label=Maven%20Central%20fribidi-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:fribidi-ndk26-shared)
 
 #### [FreeType](https://freetype.org)
 
@@ -68,14 +120,6 @@ Run unit tests provided by upstream packages.
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/pcre2-ndk25-shared.svg?label=Maven%20Central%20pcre2-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:pcre2-ndk25-shared)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/pcre2-ndk26-static.svg?label=Maven%20Central%20pcre2-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:pcre2-ndk26-static)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/pcre2-ndk26-shared.svg?label=Maven%20Central%20pcre2-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:pcre2-ndk26-shared)
-
-#### [libjpeg-turbo](https://libjpeg-turbo.org)
-
-[![libjpeg-turbo](https://github.com/ViliusSutkus89/ndkports/actions/workflows/libjpeg-turbo.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/libjpeg-turbo.yml)
-[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libjpeg-turbo-ndk25-static.svg?label=Maven%20Central%20libjpeg-turbo-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libjpeg-turbo-ndk25-static)
-[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libjpeg-turbo-ndk25-shared.svg?label=Maven%20Central%20libjpeg-turbo-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libjpeg-turbo-ndk25-shared)
-[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libjpeg-turbo-ndk26-static.svg?label=Maven%20Central%20libjpeg-turbo-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libjpeg-turbo-ndk26-static)
-[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libjpeg-turbo-ndk26-shared.svg?label=Maven%20Central%20libjpeg-turbo-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libjpeg-turbo-ndk26-shared)
 
 #### [libffi](https://sourceware.org/libffi/)
 
@@ -149,14 +193,6 @@ Run unit tests provided by upstream packages.
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libiconv-ndk26-static.svg?label=Maven%20Central%20libiconv-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libiconv-ndk26-static)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libiconv-ndk26-shared.svg?label=Maven%20Central%20libiconv-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libiconv-ndk26-shared)
 
-#### [Fontconfig](https://www.freedesktop.org/wiki/Software/fontconfig/)
-
-[![fontconfig](https://github.com/ViliusSutkus89/ndkports/actions/workflows/fontconfig.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/fontconfig.yml)
-[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/fontconfig-ndk25-static.svg?label=Maven%20Central%20fontconfig-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:fontconfig-ndk25-static)
-[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/fontconfig-ndk25-shared.svg?label=Maven%20Central%20fontconfig-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:fontconfig-ndk25-shared)
-[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/fontconfig-ndk26-static.svg?label=Maven%20Central%20fontconfig-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:fontconfig-ndk26-static)
-[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/fontconfig-ndk26-shared.svg?label=Maven%20Central%20fontconfig-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:fontconfig-ndk26-shared)
-
 #### [libxml2](https://gitlab.gnome.org/GNOME/libxml2)
 
 [![libxml2](https://github.com/ViliusSutkus89/ndkports/actions/workflows/libxml2.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/libxml2.yml)
@@ -172,14 +208,6 @@ Run unit tests provided by upstream packages.
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/proxy-libintl-ndk25-shared.svg?label=Maven%20Central%20proxy-libintl-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:proxy-libintl-ndk25-shared)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/proxy-libintl-ndk26-static.svg?label=Maven%20Central%20proxy-libintl-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:proxy-libintl-ndk26-static)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/proxy-libintl-ndk26-shared.svg?label=Maven%20Central%20proxy-libintl-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:proxy-libintl-ndk26-shared)
-
-#### [GLib](https://gitlab.gnome.org/GNOME/glib/)
-
-[![glib2](https://github.com/ViliusSutkus89/ndkports/actions/workflows/glib2.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/glib2.yml)
-[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/glib2-ndk25-static.svg?label=Maven%20Central%20glib2-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:glib2-ndk25-static)
-[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/glib2-ndk25-shared.svg?label=Maven%20Central%20glib2-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:glib2-ndk25-shared)
-[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/glib2-ndk26-static.svg?label=Maven%20Central%20glib2-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:glib2-ndk26-static)
-[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/glib2-ndk26-shared.svg?label=Maven%20Central%20glib2-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:glib2-ndk26-shared)
 
 #### [Cairo](https://cairographics.org)
 
@@ -223,9 +251,10 @@ Run unit tests provided by upstream packages.
 
 #### [Pango](https://pango.gnome.org)
 
-Pango-1.49.4 supports API level 19
+Available versions:
 
-Pango-1.51.0 requires API level 21
+- Pango-1.51.0 - Min API level 21
+- Pango-1.49.4 - Min API level 19 (or 21, depending on NDK version)
 
 [![pango](https://github.com/ViliusSutkus89/ndkports/actions/workflows/pango.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/pango.yml)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/pango-ndk25-static.svg?label=Maven%20Central%20pango-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:pango-ndk25-static)
@@ -235,42 +264,14 @@ Pango-1.51.0 requires API level 21
 
 #### [FontForge](https://fontforge.org)
 
-FontForge-20170731 supports API level 19
+Available versions:
 
-FontForge-20200314 supports API level 24
-
-FontForge-20230101 supports API level 24
+- FontForge-20230101 - Min API level 24
+- FontForge-20200314 - Min API level 24
+- FontForge-20170731 - Min API level 19 (or 21, depending on NDK version)
 
 [![fontforge](https://github.com/ViliusSutkus89/ndkports/actions/workflows/fontforge.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/fontforge.yml)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/fontforge-ndk25-static.svg?label=Maven%20Central%20fontforge-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:fontforge-ndk25-static)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/fontforge-ndk25-shared.svg?label=Maven%20Central%20fontforge-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:fontforge-ndk25-shared)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/fontforge-ndk26-static.svg?label=Maven%20Central%20fontforge-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:fontforge-ndk26-static)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/fontforge-ndk26-shared.svg?label=Maven%20Central%20fontforge-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:fontforge-ndk26-shared)
-
-#### [Poppler](https://poppler.freedesktop.org)
-
-Available versions:
-
-- 23.10.0
-- 21.02.0
-- 0.89.0
-- 0.81.0
-
-[![poppler](https://github.com/ViliusSutkus89/ndkports/actions/workflows/poppler.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/poppler.yml)
-[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/poppler-ndk25-static.svg?label=Maven%20Central%20poppler-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:poppler-ndk25-static)
-[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/poppler-ndk25-shared.svg?label=Maven%20Central%20poppler-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:poppler-ndk25-shared)
-[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/poppler-ndk26-static.svg?label=Maven%20Central%20poppler-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:poppler-ndk26-static)
-[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/poppler-ndk26-shared.svg?label=Maven%20Central%20poppler-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:poppler-ndk26-shared)
-
-#### [pdf2htmlEX](https://github.com/pdf2htmlEX/pdf2htmlEX)
-
-Available versions:
-
-- v0.18.8.rc1
-- v0.18.7-poppler-0.81.0
-
-[![pdf2htmlEX](https://github.com/ViliusSutkus89/ndkports/actions/workflows/pdf2htmlEX.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/pdf2htmlEX.yml)
-[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/pdf2htmlEX-ndk25-static.svg?label=Maven%20Central%20pdf2htmlEX-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:pdf2htmlEX-ndk25-static)
-[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/pdf2htmlEX-ndk25-shared.svg?label=Maven%20Central%20pdf2htmlEX-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:pdf2htmlEX-ndk25-shared)
-[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/pdf2htmlEX-ndk26-static.svg?label=Maven%20Central%20pdf2htmlEX-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:pdf2htmlEX-ndk26-static)
-[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/pdf2htmlEX-ndk26-shared.svg?label=Maven%20Central%20pdf2htmlEX-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:pdf2htmlEX-ndk26-shared)
