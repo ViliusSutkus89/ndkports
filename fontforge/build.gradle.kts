@@ -15,11 +15,11 @@ val portVersion = when(project.findProperty("packageVersion")) {
         "20170731"
     }
     "20200314" -> {
-        version = "20200314-beta-4"
+        version = "20200314-beta-5"
         "20200314"
     }
     else /* "20230101" */ -> {
-        version = "20230101-beta-4"
+        version = "20230101-beta-5"
         "20230101"
     }
 }
@@ -279,13 +279,23 @@ when (portVersion) {
     }
     "20200314" -> {
         tasks.register<CMakePortTask>("buildPort") {
-            val generatedDependencies = prefabGenerated.get().asFile
             cmake {
                 args(
                     "-DENABLE_GUI=OFF",
                     "-DENABLE_PYTHON_SCRIPTING=OFF",
                     "-DENABLE_PYTHON_EXTENSION=OFF",
                 )
+            }
+            doLast {
+                val pkgconfig = projectDir.resolve("patches/$portVersion/libfontforge.pc")
+                com.android.ndkports.Abi.values().forEach { abi ->
+                    pkgconfig.copyTo(
+                        target = installDirectoryFor(abi)
+                            .resolve("lib/pkgconfig").apply { mkdir() }
+                            .resolve("libfontforge.pc"),
+                        overwrite = true
+                    )
+                }
             }
         }
     }
@@ -297,6 +307,17 @@ when (portVersion) {
                     "-DENABLE_PYTHON_SCRIPTING=OFF",
                     "-DENABLE_PYTHON_EXTENSION=OFF",
                 )
+            }
+            doLast {
+                val pkgconfig = projectDir.resolve("patches/$portVersion/libfontforge.pc")
+                com.android.ndkports.Abi.values().forEach { abi ->
+                    pkgconfig.copyTo(
+                        target = installDirectoryFor(abi)
+                            .resolve("lib/pkgconfig").apply { mkdir() }
+                            .resolve("libfontforge.pc"),
+                        overwrite = true
+                    )
+                }
             }
         }
     }
