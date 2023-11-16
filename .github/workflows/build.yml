@@ -52,10 +52,10 @@ jobs:
           path: "${{ inputs.package }}/build/port/logs"
 
       - run: tar --use-compress-program=lz4 -cf "${{ inputs.package }}-${{ inputs.version }}-${{ matrix.ndk }}-${{ matrix.libraryType }}-build.tar.lz4" "${{ inputs.package }}/build"
-        if: always()
+        if: failure()
       - uses: actions/upload-artifact@v3
         name: Artifact build
-        if: always()
+        if: failure()
         with:
           name: "${{ inputs.package }}-${{ inputs.version }}-${{ matrix.ndk }}-${{ matrix.libraryType }}-build.tar.lz4"
           path: "${{ inputs.package }}-${{ inputs.version }}-${{ matrix.ndk }}-${{ matrix.libraryType }}-build.tar.lz4"
