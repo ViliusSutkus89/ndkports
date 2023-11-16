@@ -1,0 +1,17 @@
+--- pdf2htmlEX/CMakeLists.txt	2020-08-19 23:43:25.000000000 +0300
++++ pdf2htmlEX/CMakeLists.txt	2023-11-14 03:29:50.860000000 +0200
+@@ -280,8 +280,9 @@
+ file(MAKE_DIRECTORY ${PDF2HTMLEX_DATDIR})
+ file(MAKE_DIRECTORY ${PDF2HTMLEX_PNGDIR})
+ file(MAKE_DIRECTORY ${PDF2HTMLEX_OUTDIR})
+-configure_file(${CMAKE_SOURCE_DIR}/test/test.py.in ${CMAKE_SOURCE_DIR}/test/test.py)
+-
+-include(CTest)
+-add_test(test_basic   python ${CMAKE_SOURCE_DIR}/test/test_output.py)
+-add_test(test_browser python ${CMAKE_SOURCE_DIR}/test/test_local_browser.py)
++# test files are missing from release tarball
++# configure_file(${CMAKE_SOURCE_DIR}/test/test.py.in ${CMAKE_SOURCE_DIR}/test/test.py)
++#
++# include(CTest)
++# add_test(test_basic   python ${CMAKE_SOURCE_DIR}/test/test_output.py)
++# add_test(test_browser python ${CMAKE_SOURCE_DIR}/test/test_local_browser.py)

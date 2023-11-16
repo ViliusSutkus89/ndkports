@@ -88,7 +88,7 @@ Available versions:
 
 Available versions:
 
-- v0.18.8.rc1 (not yet available) - Min API level 24
+- v0.18.8.rc1 - Min API level 24
 - v0.18.7-poppler-0.81.0 - Min API level 19 (or 21, depending on NDK version)
 
 [![pdf2htmlEX](https://github.com/ViliusSutkus89/ndkports/actions/workflows/pdf2htmlEX.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/pdf2htmlEX.yml)

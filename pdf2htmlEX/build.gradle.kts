@@ -60,8 +60,8 @@ fun File.patch(patch: String): File {
 
 fun File.patch(patch: File): File {
     val pb = ProcessBuilder(
-        if (isFile) listOf("patch", "-p0", absolutePath)
-        else listOf("patch", "-p0")
+        if (isFile) listOf("patch", "--ignore-whitespace", "-p0", absolutePath)
+        else listOf("patch", "--ignore-whitespace", "-p0")
     )
 
     if (isDirectory)
@@ -91,6 +91,13 @@ tasks.extractSrc {
                 srcDir.resolve("CMakeLists.txt")
                     .patch("find-libraries.patch")
                     .patch("cflags.patch")
+                srcDir.patch("make-a-library.patch")
+            }
+            "0.18.8.rc1" -> {
+                srcDir.resolve("pdf2htmlEX/CMakeLists.txt")
+                    .patch("find-libraries.patch")
+                    .patch("cflags.patch")
+                    .patch("missing-tests.patch")
                 srcDir.patch("make-a-library.patch")
             }
         }
@@ -128,7 +135,7 @@ tasks.register<CMakePortTask>("buildPort") {
 tasks.prefabPackage {
     version.set(CMakeCompatibleVersion.parse(when(portVersion) {
         "0.18.7-poppler-0.81.0" -> "0.18.7.0810"
-        "0.18.8.rc1" -> "0.18.8.1"
+        "0.18.8.rc1" -> "0.18.8.0"
         else -> portVersion
     }))
 

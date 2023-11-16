@@ -1,0 +1,18 @@
+--- pdf2htmlEX/CMakeLists.txt	2023-11-15 02:31:51.534000000 +0200
++++ pdf2htmlEX/CMakeLists.txt	2023-11-15 02:31:58.159000000 +0200
+@@ -39,15 +39,6 @@
+ pkg_search_module(FONTFORGE REQUIRED IMPORTED_TARGET libfontforge=20200314)
+ set(PDF2HTMLEX_LIBS ${PDF2HTMLEX_LIBS} PkgConfig::FONTFORGE)
+
+-# debug build flags (overwrite default cmake debug flags)
+-set(CMAKE_C_FLAGS_DEBUG "-ggdb -pg")
+-set(CMAKE_CXX_FLAGS_DEBUG "-ggdb -pg")
+-set(CMAKE_EXE_LINKER_FLAGS_DEBUG "-pg")
+-
+-# release build flags (overwrite default cmake release flags)
+-set(CMAKE_C_FLAGS_RELEASE "-O2 -DNDEBUG")
+-set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
+-
+ # generic flags
+ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
+ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Woverloaded-virtual")
