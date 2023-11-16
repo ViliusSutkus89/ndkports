@@ -96,7 +96,7 @@
 -  -lz
 -  -lm
 -)
-+pkg_search_module(FONTFORGE REQUIRED IMPORTED_TARGET libfontforge=20200314)
++pkg_search_module(FONTFORGE REQUIRED IMPORTED_TARGET libfontforge)
 +set(PDF2HTMLEX_LIBS ${PDF2HTMLEX_LIBS} PkgConfig::FONTFORGE)
 +include_directories(${FONTFORGE_INCLUDEDIR}/private)
 
