@@ -15,7 +15,7 @@ val portVersion = when(project.findProperty("packageVersion")) {
         "20170731"
     }
     "20200314" -> {
-        version = "20200314-beta-5"
+        version = "20200314-beta-6"
         "20200314"
     }
     else /* "20230101" */ -> {
@@ -191,7 +191,7 @@ tasks.extractSrc {
 
                 srcDir.patch("FindGLib.patch")
 
-                srcDir.resolve("fontforge/CMakeLists.txt").patch("InstallLibrary.patch")
+                srcDir.patch("InstallLibrary.patch")
             }
             "20230101" -> {
                 srcDir.patch("pie.patch")

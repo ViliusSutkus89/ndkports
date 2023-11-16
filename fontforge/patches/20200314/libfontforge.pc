@@ -9,4 +9,4 @@ Requires: libturbojpeg libpng16 libspiro libuninameslist freetype2 intl gio-2.0 
 Requires.private:  cairo zlib
 Libs: -L${exec_prefix}/lib -lfontforge
 Libs.private: -L${libdir} -lltdl -lm
-Cflags: -I${includedir}
+Cflags: -I${includedir}/fontforge -I${includedir}/fontforge/inc
