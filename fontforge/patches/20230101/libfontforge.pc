@@ -1,5 +1,5 @@
 prefix=/__PREFAB__PACKAGE__PATH__
-libdir=${exec_prefix}/lib
+libdir=${prefix}/lib
 includedir=${prefix}/include
 
 Name: libfontforge
@@ -7,6 +7,6 @@ Description: a font manipulation library.
 Version: 20230101
 Requires: libturbojpeg libpng16 libspiro libuninameslist freetype2 intl gio-2.0 libxml-2.0 pango libtiff-4
 Requires.private:  cairo zlib
-Libs: -L${exec_prefix}/lib -lfontforge
+Libs: -L${libdir} -lfontforge
 Libs.private: -L${libdir} -lltdl -lm
 Cflags: -I${includedir}
