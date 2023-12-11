@@ -11,15 +11,15 @@ group = rootProject.group
 // Hardcode a list of available versions
 val portVersion = when(project.findProperty("packageVersion")) {
     "20170731" -> {
-        version = "20170731-beta-4"
+        version = "20170731-beta-5"
         "20170731"
     }
     "20200314" -> {
-        version = "20200314-beta-7"
+        version = "20200314-beta-8"
         "20200314"
     }
     else /* "20230101" */ -> {
-        version = "20230101-beta-6"
+        version = "20230101-beta-7"
         "20230101"
     }
 }
@@ -49,11 +49,7 @@ dependencies {
     implementation("com.viliussutkus89.ndk.thirdparty:libuninameslist${ndkVersionSuffix}-static:20230916-beta-2")
     implementation("com.viliussutkus89.ndk.thirdparty:libxml2${ndkVersionSuffix}-static:2.11.5-beta-4")
     implementation("com.viliussutkus89.ndk.thirdparty:spiro${ndkVersionSuffix}-static:20221101-beta-2")
-
-    if (minSupportedSdk >= 21)
-        implementation("com.viliussutkus89.ndk.thirdparty:pango${ndkVersionSuffix}-static:1.51.0-beta-3")
-    else
-        implementation("com.viliussutkus89.ndk.thirdparty:pango${ndkVersionSuffix}-static:1.49.4-beta-3")
+    implementation("com.viliussutkus89.ndk.thirdparty:pango${ndkVersionSuffix}-static:1.51.0-beta-4")
 
     if (portVersion != "20170731") {
         // libfontforge checks for TIFFRewriteField , which was deprecated in libtiff-4

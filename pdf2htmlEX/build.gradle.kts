@@ -8,11 +8,11 @@ group = rootProject.group
 // Hardcode a list of available versions
 val portVersion = when(project.findProperty("packageVersion")) {
     "0.18.7-poppler-0.81.0" -> {
-        version = "0.18.7-poppler-0.81.0-beta-2"
+        version = "0.18.7-poppler-0.81.0-beta-3"
         "0.18.7-poppler-0.81.0"
     }
     else /* "0.18.8.rc1" */ -> {
-        version = "0.18.8.rc1-beta-1"
+        version = "0.18.8.rc1-beta-2"
         "0.18.8.rc1"
     }
 }
@@ -30,11 +30,11 @@ dependencies {
 
     when (portVersion) {
         "0.18.7-poppler-0.81.0" -> {
-            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}-static:20170731-beta-4")
+            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}-static:20170731-beta-5")
             implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}-static:0.81.0-beta-3")
         }
         "0.18.8.rc1" -> {
-            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}-static:20200314-beta-7")
+            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}-static:20200314-beta-8")
             implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}-static:0.89.0-beta-3")
         }
     }
