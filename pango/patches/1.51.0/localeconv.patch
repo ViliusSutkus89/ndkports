@@ -6,7 +6,7 @@
    if (layout->decimal == 0)
 -    layout->decimal = g_utf8_get_char (localeconv ()->decimal_point);
 +  #if __ANDROID_API__ >= 21
-+    layout->decimal = (localeconv ()->decimal_point);
++    layout->decimal = g_utf8_get_char (localeconv ()->decimal_point);
 +  #else
 +    layout->decimal = g_utf8_get_char (".");
 +  #endif
