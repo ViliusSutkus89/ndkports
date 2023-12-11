@@ -1,0 +1,15 @@
+--- pango/pango-layout.c 2023-12-11 02:20:38.698000000 +0200
++++ pango/pango-layout.c 2023-12-11 02:23:50.322000000 +0200
+@@ -3466,7 +3466,11 @@
+ ensure_decimal (PangoLayout *layout)
+ {
+   if (layout->decimal == 0)
+-    layout->decimal = g_utf8_get_char (localeconv ()->decimal_point);
++  #if __ANDROID_API__ >= 21
++    layout->decimal = (localeconv ()->decimal_point);
++  #else
++    layout->decimal = g_utf8_get_char (".");
++  #endif
+ }
+
+ struct _LastTabState {

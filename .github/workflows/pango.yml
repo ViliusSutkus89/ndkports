@@ -9,16 +9,8 @@ on:
       - '.github/workflows/pango.yml'
 
 jobs:
-  build-pango-current:
-    name: pango 1.51.0
+  build:
+    name: pango
     uses: ./.github/workflows/build.yml
     with:
       package: pango
-      version: 1.51.0
-
-  build-pango-legacy:
-    name: pango 1.49.4
-    uses: ./.github/workflows/build.yml
-    with:
-      package: pango
-      version: 1.49.4

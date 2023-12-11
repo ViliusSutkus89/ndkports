@@ -5,17 +5,8 @@ import org.gradle.jvm.tasks.Jar
 
 group = rootProject.group
 
-// Hardcode a list of available versions
-val portVersion = when(project.findProperty("packageVersion")) {
-    "1.49.4" -> {
-        version = "1.49.4-beta-3"
-        "1.49.4"
-    }
-    else /* "1.51.0" */-> {
-        version = "1.51.0-beta-3"
-        "1.51.0"
-    }
-}
+val portVersion = "1.51.0"
+version = "1.51.0-beta-4"
 
 plugins {
     id("maven-publish")
@@ -31,23 +22,48 @@ dependencies {
     implementation("com.viliussutkus89.ndk.thirdparty:fribidi${ndkVersionSuffix}-static:1.0.13-beta-2")
     implementation("com.viliussutkus89.ndk.thirdparty:glib2${ndkVersionSuffix}-static:2.78.1-beta-4")
     implementation("com.viliussutkus89.ndk.thirdparty:harfbuzz${ndkVersionSuffix}-static:8.2.2-beta-3")
-
-    // Only needed for 1.49.4
-    // https://gitlab.gnome.org/GNOME/pango/-/commit/32115334662799c77d49b0e26161c44e580d5dd4
-    if (portVersion == "1.49.4") {
-        implementation("com.viliussutkus89.ndk.thirdparty:json-glib${ndkVersionSuffix}-static:1.8.0-beta-3")
-    }
 }
 
 ndkPorts {
     ndkPath.set(File(project.findProperty("ndkPath") as String))
-    if (portVersion == "1.49.4") {
-        minSdkVersion.set(rootProject.extra.get("minSdkSupportedByNdk").toString().toInt())
-    } else {
-        // pango 1.50.0 uses localeconv, which requires sdk 21
-        minSdkVersion.set(21)
-    }
+    minSdkVersion.set(rootProject.extra.get("minSdkSupportedByNdk").toString().toInt())
     source.set(project.file("${name}-${portVersion}.tar.xz"))
+}
+
+fun File.patch(patch: String): File {
+    return patch(projectDir.resolve("patches/$portVersion").resolve(patch))
+}
+
+fun File.patch(patch: File): File {
+    val pb = ProcessBuilder(
+        if (isFile) listOf("patch", "--ignore-whitespace", "-p0", absolutePath)
+        else listOf("patch", "--ignore-whitespace", "-p0")
+    )
+
+    if (isDirectory)
+        pb.directory(absoluteFile)
+
+    val process = pb.start()
+    process.outputStream.writer().use {
+        it.write(patch.readText())
+    }
+    process.errorStream.bufferedReader().use {
+        println(it.readText())
+    }
+    process.inputStream.bufferedReader().use {
+        println(it.readText())
+    }
+    if (process.waitFor() != 0) {
+        throw RuntimeException("Patch failed!\n")
+    }
+    return this
+}
+
+tasks.extractSrc {
+    doLast {
+        outDir.get().asFile.resolve("pango/pango-layout.c")
+            .patch("localeconv.patch")
+    }
 }
 
 tasks.prefab {
@@ -70,11 +86,7 @@ tasks.prefabPackage {
         "fribidi" to "1",
         "glib2" to "1",
         "harfbuzz" to "1",
-    ).apply {
-        if (portVersion == "1.49.4") {
-            put("json-glib", "1")
-        }
-    })
+    ))
 
     modules {
         create("pango-1.0") {
@@ -85,7 +97,6 @@ tasks.prefabPackage {
                 "//glib2:gobject-2.0",
                 "//glib2:gio-2.0",
                 "//fribidi:fribidi",
-            ) + if (portVersion == "1.49.4") listOf("//json-glib:json-glib") else emptyList<String>() + listOf(
                 "//harfbuzz:harfbuzz",
                 "//fontconfig:fontconfig",
                 "//freetype:freetype",
@@ -102,7 +113,6 @@ tasks.prefabPackage {
                 "//glib2:gobject-2.0",
                 "//glib2:gio-2.0",
                 "//fribidi:fribidi",
-            ) + if (portVersion == "1.49.4") listOf("//json-glib:json-glib") else emptyList<String>() + listOf(
                 "//harfbuzz:harfbuzz",
                 "//fontconfig:fontconfig",
                 "//freetype:freetype",
@@ -118,7 +128,6 @@ tasks.prefabPackage {
                 "//glib2:gobject-2.0",
                 "//glib2:gio-2.0",
                 "//fribidi:fribidi",
-            ) + if (portVersion == "1.49.4") listOf("//json-glib:json-glib") else emptyList<String>() + listOf(
                 "//harfbuzz:harfbuzz",
                 "//fontconfig:fontconfig",
                 "//freetype:freetype",
@@ -148,13 +157,13 @@ publishing {
                 licenses {
                     license {
                         name.set("LGPLv2")
-                        url.set("https://gitlab.gnome.org/GNOME/pango/-/raw/1.49.4/COPYING")
+                        url.set("https://gitlab.gnome.org/GNOME/pango/-/raw/1.51.1/COPYING")
                         distribution.set("repo")
                     }
                 }
                 developers {
                     // Developer list obtained from:
-                    // https://gitlab.gnome.org/GNOME/pango/-/blob/1.49.4/THANKS
+                    // https://gitlab.gnome.org/GNOME/pango/-/blob/1.51.1/THANKS
                     developer {
                         name.set("Abigail Brady")
                     }
