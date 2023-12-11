@@ -251,11 +251,6 @@ Available versions:
 
 #### [Pango](https://pango.gnome.org)
 
-Available versions:
-
-- Pango-1.51.0 - Min API level 21
-- Pango-1.49.4 - Min API level 19 (or 21, depending on NDK version)
-
 [![pango](https://github.com/ViliusSutkus89/ndkports/actions/workflows/pango.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/pango.yml)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/pango-ndk25-static.svg?label=Maven%20Central%20pango-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:pango-ndk25-static)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/pango-ndk25-shared.svg?label=Maven%20Central%20pango-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:pango-ndk25-shared)
