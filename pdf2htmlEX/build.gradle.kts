@@ -12,7 +12,7 @@ val portVersion = when(project.findProperty("packageVersion")) {
         "0.18.7-poppler-0.81.0"
     }
     else /* "0.18.8.rc1" */ -> {
-        version = "0.18.8.rc1-beta-2"
+        version = "0.18.8.rc1-beta-3"
         "0.18.8.rc1"
     }
 }
@@ -34,7 +34,7 @@ dependencies {
             implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}-static:0.81.0-beta-3")
         }
         "0.18.8.rc1" -> {
-            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}-static:20200314-beta-8")
+            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}-static:20200314-beta-9")
             implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}-static:0.89.0-beta-3")
         }
     }
@@ -42,11 +42,7 @@ dependencies {
 
 ndkPorts {
     ndkPath.set(File(project.findProperty("ndkPath") as String))
-    minSdkVersion.set(when(portVersion) {
-        "0.18.7-poppler-0.81.0" -> rootProject.extra.get("minSdkSupportedByNdk").toString().toInt()
-        // fontforge-20200314 and newer requires Android API 24
-        else -> 24
-    })
+    minSdkVersion.set(rootProject.extra.get("minSdkSupportedByNdk").toString().toInt())
     source.set(project.file("v${portVersion}.tar.gz"))
 }
 
@@ -119,7 +115,7 @@ tasks.register<CMakePortTask>("buildPort") {
 
     doLast {
         // @TODO: verify other ABIs have matching assets
-        val dst = project.buildDir.resolve("assets/pdf2htmlEX/share/pdf2htmlEX").apply { mkdirs() }
+        val dst = layout.buildDirectory.asFile.get().resolve("assets/pdf2htmlEX/share/pdf2htmlEX").apply { mkdirs() }
         installDirectoryFor(com.android.ndkports.Abi.Arm).resolve("share/pdf2htmlEX").copyRecursively(dst) { file, exception ->
             if (exception !is FileAlreadyExistsException) {
                 throw exception

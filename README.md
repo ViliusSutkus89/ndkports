@@ -88,8 +88,8 @@ Available versions:
 
 Available versions:
 
-- v0.18.8.rc1 - Min API level 24
-- v0.18.7-poppler-0.81.0 - Min API level 19 (or 21, depending on NDK version)
+- v0.18.8.rc1
+- v0.18.7-poppler-0.81.0
 
 [![pdf2htmlEX](https://github.com/ViliusSutkus89/ndkports/actions/workflows/pdf2htmlEX.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/pdf2htmlEX.yml)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/pdf2htmlEX-ndk25-static.svg?label=Maven%20Central%20pdf2htmlEX-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:pdf2htmlEX-ndk25-static)
