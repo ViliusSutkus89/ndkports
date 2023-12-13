@@ -1,0 +1,9 @@
+--- openlibm.pc.in	2022-01-20 01:43:52.000000000 +0200
++++ openlibm.pc.in	2023-12-13 04:26:59.695000000 +0200
+@@ -6,5 +6,5 @@
+ Version: ${version}
+ URL: https://github.com/JuliaMath/openlibm
+ Description: High quality system independent, open source libm.
+-Cflags: -I${includedir}
++Cflags: -I${includedir}/openlibm
+ Libs: -L${libdir} -lopenlibm

@@ -1,0 +1,11 @@
+--- Make.inc	2022-01-20 01:43:52.000000000 +0200
++++ Make.inc	2023-12-13 04:04:04.386000000 +0200
+@@ -60,7 +60,7 @@
+ ifeq ($(findstring arm,$(ARCH)),arm)
+ override ARCH := arm
+ MARCH ?= armv7-a
+-CFLAGS_add += -mhard-float
++# CFLAGS_add += -mhard-float # no hard float on 32bit arm Android
+ endif
+ ifeq ($(findstring powerpc,$(ARCH)),powerpc)
+ override ARCH := powerpc

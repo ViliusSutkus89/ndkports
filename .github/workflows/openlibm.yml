@@ -1,0 +1,16 @@
+name: OpenLibm
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'buildSrc/**'
+      - 'openlibm/**'
+      - '.github/workflows/build.yml'
+      - '.github/workflows/openlibm.yml'
+
+jobs:
+  build:
+    name: OpenLibm
+    uses: ./.github/workflows/build.yml
+    with:
+      package: openlibm

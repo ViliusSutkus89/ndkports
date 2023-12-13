@@ -270,3 +270,11 @@ Available versions:
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/fontforge-ndk25-shared.svg?label=Maven%20Central%20fontforge-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:fontforge-ndk25-shared)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/fontforge-ndk26-static.svg?label=Maven%20Central%20fontforge-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:fontforge-ndk26-static)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/fontforge-ndk26-shared.svg?label=Maven%20Central%20fontforge-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:fontforge-ndk26-shared)
+
+#### [OpenLibm](https://openlibm.org)
+
+[![openlibm](https://github.com/ViliusSutkus89/ndkports/actions/workflows/openlibm.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/openlibm.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/openlibm-ndk25-static.svg?label=Maven%20Central%20openlibm-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:openlibm-ndk25-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/openlibm-ndk25-shared.svg?label=Maven%20Central%20openlibm-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:openlibm-ndk25-shared)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/openlibm-ndk26-static.svg?label=Maven%20Central%20openlibm-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:openlibm-ndk26-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/openlibm-ndk26-shared.svg?label=Maven%20Central%20openlibm-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:openlibm-ndk26-shared)

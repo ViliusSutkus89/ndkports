@@ -1,0 +1,52 @@
+#!/bin/sh
+THIS_FILE=$(readlink -f "$0")
+SRCDIR=$(dirname "$THIS_FILE")
+BUILDDIR=.
+cp -R $SRCDIR/* $BUILDDIR/
+rm $BUILDDIR/configure $BUILDDIR/Makefile
+
+for i in AR CC CXX RANLIB STRIP PKG_CONFIG_LIBDIR PATH CFLAGS CXXFLAGS LDFLAGS
+do
+  echo $i="${!i}" >> $BUILDDIR/Makefile
+done
+
+OPTS=$(getopt --longoptions 'prefix:,host:,enable-static,disable-static,enable-shared,disable-shared' -- configure $@)
+eval set -- "$OPTS"
+while [ -n "@" ]; do
+  case "$1" in
+    --)
+      break
+      ;;
+    --prefix)
+      echo "DESTDIR=$2" >> $BUILDDIR/Makefile
+      echo "prefix=$2" >> $BUILDDIR/Makefile
+      shift 2
+      ;;
+    --host)
+      echo "HOST=$2" >> $BUILDDIR/Makefile
+      shift 2
+      ;;
+    --disable-static)
+      DISABLE_STATIC=1
+      shift
+      ;;
+    --disable-shared)
+      DISABLE_SHARED=1
+      shift
+      ;;
+    *)
+      echo "Unhandled argument: $1"
+      shift
+      ;;
+  esac
+done
+
+cat $SRCDIR/Makefile >> $BUILDDIR/Makefile
+
+if [ $DISABLE_STATIC ]; then
+  sed -i 's/ install-static / /g' $BUILDDIR/Makefile
+fi
+
+if [ $DISABLE_SHARED ]; then
+  sed -i 's/ install-shared / /g' $BUILDDIR/Makefile
+fi
