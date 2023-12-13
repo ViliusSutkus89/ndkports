@@ -30,12 +30,7 @@ plugins {
     id("com.android.ndkports.NdkPorts")
 }
 
-val minSupportedSdk = when (portVersion) {
-    "20170731" -> rootProject.extra.get("minSdkSupportedByNdk").toString().toInt()
-    "20200314" -> 21
-    "20230101" -> 21
-    else -> rootProject.extra.get("minSdkSupportedByNdk").toString().toInt()
-}
+val minSupportedSdk = rootProject.extra.get("minSdkSupportedByNdk").toString().toInt()
 
 // 20200314 and later requires complex math functions ( csqrt/csqrt/creal/cimag )
 // that are available only from API level 24 . Use OpenLibm instead
@@ -204,6 +199,23 @@ tasks.extractSrc {
                         overwrite = true
                     )
                 }
+
+                if (minSupportedSdk < 21) {
+                    // fontforge uses newlocale and localeconv, which are not available on Android pre 21 (Lollipop)
+                    // locale_t is available, we should not redefine it while using the BAD_LOCALE_HACK in splinefont.h
+                    //
+                    // From /usr/include/locale.h:
+                    // #if __ANDROID_API__ >= 21
+                    // locale_t duplocale(locale_t __l) __INTRODUCED_IN(21);
+                    // void freelocale(locale_t __l) __INTRODUCED_IN(21);
+                    // locale_t newlocale(int __category_mask, const char* __locale_name, locale_t __base) __INTRODUCED_IN(21);
+                    // #endif /* __ANDROID_API__ >= 21 */
+                    // ...
+                    // #if __ANDROID_API__ >= 21
+                    // struct lconv* localeconv(void) __INTRODUCED_IN(21);
+                    // #endif /* __ANDROID_API__ >= 21 */
+                    srcDir.patch("localeconv.patch")
+                }
             }
             "20230101" -> {
                 srcDir.patch("pie.patch")
@@ -226,6 +238,23 @@ tasks.extractSrc {
                         target = srcDir.resolve("cmake/packages/FindMathLib.cmake"),
                         overwrite = true
                     )
+                }
+
+                if (minSupportedSdk < 21) {
+                    // fontforge uses newlocale and localeconv, which are not available on Android pre 21 (Lollipop)
+                    // locale_t is available, we should not redefine it while using the BAD_LOCALE_HACK in splinefont.h
+                    //
+                    // From /usr/include/locale.h:
+                    // #if __ANDROID_API__ >= 21
+                    // locale_t duplocale(locale_t __l) __INTRODUCED_IN(21);
+                    // void freelocale(locale_t __l) __INTRODUCED_IN(21);
+                    // locale_t newlocale(int __category_mask, const char* __locale_name, locale_t __base) __INTRODUCED_IN(21);
+                    // #endif /* __ANDROID_API__ >= 21 */
+                    // ...
+                    // #if __ANDROID_API__ >= 21
+                    // struct lconv* localeconv(void) __INTRODUCED_IN(21);
+                    // #endif /* __ANDROID_API__ >= 21 */
+                    srcDir.patch("localeconv.patch")
                 }
             }
         }
