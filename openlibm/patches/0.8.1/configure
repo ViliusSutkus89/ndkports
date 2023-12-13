@@ -1,4 +1,6 @@
 #!/bin/sh
+set -eu
+
 THIS_FILE=$(readlink -f "$0")
 SRCDIR=$(dirname "$THIS_FILE")
 BUILDDIR=.
@@ -7,9 +9,11 @@ rm $BUILDDIR/configure $BUILDDIR/Makefile
 
 for i in AR CC CXX RANLIB STRIP PKG_CONFIG_LIBDIR PATH CFLAGS CXXFLAGS LDFLAGS
 do
-  echo $i="${!i}" >> $BUILDDIR/Makefile
+  eval "echo $i=\$$i" >> $BUILDDIR/Makefile
 done
 
+ENABLE_STATIC=true
+ENABLE_SHARED=true
 OPTS=$(getopt --longoptions 'prefix:,host:,enable-static,disable-static,enable-shared,disable-shared' -- configure $@)
 eval set -- "$OPTS"
 while [ -n "@" ]; do
@@ -27,11 +31,11 @@ while [ -n "@" ]; do
       shift 2
       ;;
     --disable-static)
-      DISABLE_STATIC=1
+      ENABLE_STATIC=false
       shift
       ;;
     --disable-shared)
-      DISABLE_SHARED=1
+      ENABLE_SHARED=false
       shift
       ;;
     *)
@@ -43,10 +47,10 @@ done
 
 cat $SRCDIR/Makefile >> $BUILDDIR/Makefile
 
-if [ $DISABLE_STATIC ]; then
+if [ "$ENABLE_STATIC" = false ]; then
   sed -i 's/ install-static / /g' $BUILDDIR/Makefile
 fi
 
-if [ $DISABLE_SHARED ]; then
+if [ "$ENABLE_SHARED" = false ]; then
   sed -i 's/ install-shared / /g' $BUILDDIR/Makefile
 fi
