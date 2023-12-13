@@ -1,0 +1,11 @@
+--- fontforge/splinestroke.c	2023-01-01 07:25:39.000000000 +0200
++++ fontforge/splinestroke.c	2023-12-13 04:21:53.293000000 +0200
+@@ -41,7 +41,7 @@
+ #include "utanvec.h"
+
+ #include <assert.h>
+-#include <complex.h>
++#include <openlibm.h>
+ #include <math.h>
+
+ #define CIRCOFF 0.551915

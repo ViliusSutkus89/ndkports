@@ -15,11 +15,11 @@ val portVersion = when(project.findProperty("packageVersion")) {
         "20170731"
     }
     "20200314" -> {
-        version = "20200314-beta-8"
+        version = "20200314-beta-9"
         "20200314"
     }
     else /* "20230101" */ -> {
-        version = "20230101-beta-7"
+        version = "20230101-beta-8"
         "20230101"
     }
 }
@@ -32,10 +32,14 @@ plugins {
 
 val minSupportedSdk = when (portVersion) {
     "20170731" -> rootProject.extra.get("minSdkSupportedByNdk").toString().toInt()
-    "20200314" -> 24 // complex.h missing functions: csqrt/csqrt/creal/cimag
-    "20230101" -> 24 // complex.h missing functions: csqrt/csqrt/creal/cimag
+    "20200314" -> 21
+    "20230101" -> 21
     else -> rootProject.extra.get("minSdkSupportedByNdk").toString().toInt()
 }
+
+// 20200314 and later requires complex math functions ( csqrt/csqrt/creal/cimag )
+// that are available only from API level 24 . Use OpenLibm instead
+val usingOpenLibm = portVersion != "20170731" && minSupportedSdk < 24
 
 dependencies {
     val ndkVersionSuffix = rootProject.extra.get("ndkVersionSuffix")
@@ -55,6 +59,10 @@ dependencies {
         // libfontforge checks for TIFFRewriteField , which was deprecated in libtiff-4
         // http://www.simplesystems.org/libtiff/v4.0.0.html
         implementation("com.viliussutkus89.ndk.thirdparty:libtiff${ndkVersionSuffix}-static:4.6.0-beta-4")
+    }
+
+    if (usingOpenLibm) {
+        implementation("com.viliussutkus89.ndk.thirdparty:openlibm${ndkVersionSuffix}-static:0.8.1-beta-1")
     }
 
     // -- Could NOT find GIF (missing: GIF_LIBRARY GIF_INCLUDE_DIR)
@@ -188,6 +196,14 @@ tasks.extractSrc {
                 srcDir.patch("FindGLib.patch")
 
                 srcDir.patch("InstallLibrary.patch")
+
+                if (usingOpenLibm) {
+                    srcDir.resolve("fontforge/splinestroke.c").patch("splinestroke-complex-math.patch")
+                    projectDir.resolve("patches/$portVersion/FindMathLib.cmake").copyTo(
+                        target = srcDir.resolve("cmake/packages/FindMathLib.cmake"),
+                        overwrite = true
+                    )
+                }
             }
             "20230101" -> {
                 srcDir.patch("pie.patch")
@@ -203,6 +219,14 @@ tasks.extractSrc {
                 srcDir.resolve("gutils/fsys.c").patch("gutils-fsys.patch")
 
                 srcDir.resolve("fontforge/CMakeLists.txt").patch("InstallLibrary.patch")
+
+                if (usingOpenLibm) {
+                    srcDir.resolve("fontforge/splinestroke.c").patch("splinestroke-complex-math.patch")
+                    projectDir.resolve("patches/$portVersion/FindMathLib.cmake").copyTo(
+                        target = srcDir.resolve("cmake/packages/FindMathLib.cmake"),
+                        overwrite = true
+                    )
+                }
             }
         }
     }
@@ -340,6 +364,9 @@ tasks.prefabPackage {
         if (portVersion != "20170731") {
             put("libtiff", "1")
         }
+        if (usingOpenLibm) {
+            put("openlibm", "1")
+        }
     })
 
     modules {
@@ -411,7 +438,7 @@ tasks.prefabPackage {
                     includesPerAbi.set(true)
                     dependencies.set(listOf(
                         "z",
-                        "m",
+                        "//openlibm:openlibm",
                         "//libtool:ltdl",
                         "//libjpeg-turbo:jpeg",
                         "//libpng:png16",
@@ -434,7 +461,7 @@ tasks.prefabPackage {
                     includesPerAbi.set(true)
                     dependencies.set(listOf(
                         "z",
-                        "m",
+                        "//openlibm:openlibm",
                         "//libtool:ltdl",
                         "//libjpeg-turbo:jpeg",
                         "//libpng:png16",
