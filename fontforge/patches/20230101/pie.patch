@@ -1,7 +1,7 @@
 --- gutils/CMakeLists.txt	2019-11-13 11:00:19.000000000 +0200
 +++ gutils/CMakeLists.txt	2023-11-03 08:16:14.105000000 +0200
-@@ -33,9 +33,7 @@
-   unicodelibinfo.c
+@@ -27,9 +27,7 @@
+   prefs.c
  )
 
 -if(BUILD_SHARED_LIBS)
@@ -9,13 +9,13 @@
 -endif()
 +set_property(TARGET gutils PROPERTY POSITION_INDEPENDENT_CODE ON)
 
+ list(APPEND gutils_LIBRARIES Intl::Intl)
  if(ENABLE_LIBGIF_RESULT)
-   list(APPEND gutils_LIBRARIES GIF::GIF)
 
 --- Unicode/CMakeLists.txt	2020-03-03 11:24:02.000000000 +0200
 +++ Unicode/CMakeLists.txt	2023-11-03 07:33:25.986000000 +0200
-@@ -43,9 +43,7 @@
-   charset/ZapfDingbats.c
+@@ -11,9 +11,7 @@
+   utype.c
  )
  
 -if(BUILD_SHARED_LIBS)

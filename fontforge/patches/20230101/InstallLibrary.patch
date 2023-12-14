@@ -1,6 +1,6 @@
 --- fontforge/CMakeLists.txt	2020-01-27 10:39:51.000000000 +0200
 +++ fontforge/CMakeLists.txt	2023-11-03 10:04:11.517000000 +0200
-@@ -112,8 +112,6 @@
+@@ -114,8 +114,6 @@
  )
  
  add_library(fontforge
@@ -9,7 +9,7 @@
    activeinui.c
    asmfpst.c
    autohint.c
-@@ -209,6 +207,9 @@
+@@ -212,6 +210,9 @@
    zapfnomen.c
  )
  
@@ -19,7 +19,7 @@
  if(ENABLE_WOFF2_RESULT)
    target_sources(fontforge PRIVATE woff2.cc)
  endif()
-@@ -269,11 +270,13 @@
+@@ -271,11 +272,14 @@
    target_link_libraries(fontforge PRIVATE gunicode gutils)
  endif()
  
@@ -37,6 +37,46 @@
 +    RUNTIME DESTINATION ${CMAKE_INSTALL_LIBDIR}
 +    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 +    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
++    PRIVATE_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/private/fontforge
++    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fontforge
 +  )
  endif()
+
+--- inc/CMakeLists.txt
++++ inc/CMakeLists.txt
+@@ -23,3 +23,35 @@
+     Gcov::Gcov
+ )
+ endif()
++
++set(FONTFORGE_COMMON_INST_HEADERS
++  "${CMAKE_CURRENT_BINARY_DIR}/../inc/fontforge-config.h"
++  "${CMAKE_CURRENT_BINARY_DIR}/../inc/fontforge-version-extras.h"
++  ../inc/basics.h
++  ../inc/carbon.h
++  ../inc/dlist.h
++  ../inc/ffgdk.h
++  ../inc/ffglib.h
++  ../inc/gdraw.h
++  ../inc/gfile.h
++  ../inc/ggadget.h
++  ../inc/gicons.h
++  ../inc/gimage.h
++  ../inc/gkeysym.h
++  ../inc/gprogress.h
++  ../inc/gresedit.h
++  ../inc/gresource.h
++  ../inc/gutils.h
++  ../inc/gwidget.h
++  ../inc/gwwiconv.h
++  ../inc/hotkeys.h
++  ../inc/intl.h
++  ../inc/prefs.h
++  ../inc/ustring.h
++  ../inc/utype.h
++)
++set_target_properties(fontforge_common_headers PROPERTIES PUBLIC_HEADER "${FONTFORGE_COMMON_INST_HEADERS}")
++
++install(TARGETS fontforge_common_headers
++    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fontforge/inc
++)

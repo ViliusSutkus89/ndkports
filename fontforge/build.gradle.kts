@@ -230,7 +230,7 @@ tasks.extractSrc {
                 // #endif /* __ANDROID_API__ >= 26 */
                 srcDir.resolve("gutils/fsys.c").patch("gutils-fsys.patch")
 
-                srcDir.resolve("fontforge/CMakeLists.txt").patch("InstallLibrary.patch")
+                srcDir.patch("InstallLibrary.patch")
 
                 if (usingOpenLibm) {
                     srcDir.resolve("fontforge/splinestroke.c").patch("splinestroke-complex-math.patch")
@@ -461,7 +461,6 @@ tasks.prefabPackage {
                 }
             }
             "20200314" -> {
-                // @TODO: this could be wrong, because no pkg-config.pc to verify
                 create("fontforge") {
                     static.set(isStatic)
                     includesPerAbi.set(true)
@@ -484,7 +483,6 @@ tasks.prefabPackage {
                 }
             }
             "20230101" -> {
-                // @TODO: this could be wrong, because no pkg-config.pc to verify
                 create("fontforge") {
                     static.set(isStatic)
                     includesPerAbi.set(true)
