@@ -16,7 +16,7 @@ on:
         required: false
 
 env:
-  REPO_DESCRIPTION: ${{ inputs.PACKAGE }}-${{ inputs.VERSION }}-${{ github.run_id }}-${{ github.run_attempt }}
+  REPO_DESCRIPTION: ${{ inputs.PACKAGE }}-${{ inputs.VERSION }}-${{ github.run_id }}
 
 jobs:
   openSonatype:
