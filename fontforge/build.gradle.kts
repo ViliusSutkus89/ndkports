@@ -4,22 +4,20 @@ import com.android.ndkports.CMakeCompatibleVersion
 import com.android.ndkports.PrefabSysrootPlugin
 import org.gradle.jvm.tasks.Jar
 
-// @TODO: bundle assets
-
 group = rootProject.group
 
 // Hardcode a list of available versions
 val portVersion = when(project.findProperty("packageVersion")) {
     "20170731" -> {
-        version = "20170731-beta-5"
+        version = "20170731-beta-6"
         "20170731"
     }
     "20200314" -> {
-        version = "20200314-beta-9"
+        version = "20200314-beta-10"
         "20200314"
     }
     else /* "20230101" */ -> {
-        version = "20230101-beta-8"
+        version = "20230101-beta-9"
         "20230101"
     }
 }
@@ -323,6 +321,18 @@ when (portVersion) {
                             "Requires: libturbojpeg libpng16 libspiro libuninameslist"
                         )
                 }
+
+                val dst = layout.buildDirectory.asFile.get().resolve("assets/fontforge/share").apply { mkdirs() }
+                // @TODO: check if different ABI has matching share contents
+                installDirectoryFor(com.android.ndkports.Abi.Arm).resolve("share").copyRecursively(dst) { file, exception ->
+                    if (exception !is FileAlreadyExistsException) {
+                        throw exception
+                    }
+                    if (!file.readBytes().contentEquals(exception.file.readBytes())) {
+                        throw exception
+                    }
+                    OnErrorAction.SKIP
+                }
             }
         }
     }
@@ -345,6 +355,18 @@ when (portVersion) {
                         overwrite = true
                     )
                 }
+
+                val dst = layout.buildDirectory.asFile.get().resolve("assets/fontforge/share").apply { mkdirs() }
+                // @TODO: check if different ABI has matching share contents
+                installDirectoryFor(com.android.ndkports.Abi.Arm).resolve("share").copyRecursively(dst) { file, exception ->
+                    if (exception !is FileAlreadyExistsException) {
+                        throw exception
+                    }
+                    if (!file.readBytes().contentEquals(exception.file.readBytes())) {
+                        throw exception
+                    }
+                    OnErrorAction.SKIP
+                }
             }
         }
     }
@@ -366,6 +388,18 @@ when (portVersion) {
                             .resolve("libfontforge.pc"),
                         overwrite = true
                     )
+                }
+
+                val dst = layout.buildDirectory.asFile.get().resolve("assets/fontforge/share").apply { mkdirs() }
+                // @TODO: check if different ABI has matching share contents
+                installDirectoryFor(com.android.ndkports.Abi.Arm).resolve("share").copyRecursively(dst) { file, exception ->
+                    if (exception !is FileAlreadyExistsException) {
+                        throw exception
+                    }
+                    if (!file.readBytes().contentEquals(exception.file.readBytes())) {
+                        throw exception
+                    }
+                    OnErrorAction.SKIP
                 }
             }
         }
