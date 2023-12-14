@@ -37,6 +37,10 @@ dependencies {
             implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}-static:20200314-beta-9")
             implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}-static:0.89.0-beta-3")
         }
+//        "0.18.8.rc2" -> {
+//            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}-static:20230101-beta-8")
+//            implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}-static:21.02.0-beta-3")
+//        }
     }
 }
 
@@ -95,6 +99,9 @@ tasks.extractSrc {
                     .patch("cflags.patch")
                     .patch("missing-tests.patch")
                 srcDir.patch("make-a-library.patch")
+
+                srcDir.resolve("pdf2htmlEX/src/util/ffw.c")
+                    .patch("fontforge-share.patch")
             }
         }
     }
@@ -114,7 +121,6 @@ tasks.register<CMakePortTask>("buildPort") {
     cmake { }
 
     doLast {
-        // @TODO: verify other ABIs have matching assets
         val dst = layout.buildDirectory.asFile.get().resolve("assets/pdf2htmlEX/share/pdf2htmlEX").apply { mkdirs() }
         installDirectoryFor(com.android.ndkports.Abi.Arm).resolve("share/pdf2htmlEX").copyRecursively(dst) { file, exception ->
             if (exception !is FileAlreadyExistsException) {
