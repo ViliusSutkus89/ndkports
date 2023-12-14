@@ -1,0 +1,15 @@
+--- pdf2htmlEX/src/util/ffw.c  2023-12-14 07:45:44.994000000 +0200
++++ pdf2htmlEX/src/util/ffw.c  2023-12-14 07:46:21.870000000 +0200
+@@ -70,7 +70,9 @@
+ void ffw_init(const char* progPath, int debug)
+ {
+     ffwSetAction("initialize");
+-    char *localProgPath = strdup(progPath);
+-    FindProgDir(localProgPath);
++    char *localProgPath = NULL;
++    if (progPath != NULL)
++        localProgPath = strdup(progPath);
++    FindProgRoot(localProgPath);
+     InitSimpleStuff();
+     if ( default_encoding==NULL )
+        default_encoding=FindOrMakeEncoding("ISO8859-1");

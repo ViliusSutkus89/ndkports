@@ -11,9 +11,14 @@ val portVersion = when(project.findProperty("packageVersion")) {
         version = "0.18.7-poppler-0.81.0-beta-4"
         "0.18.7-poppler-0.81.0"
     }
-    else /* "0.18.8.rc1" */ -> {
+    "0.18.8.rc1" -> {
         version = "0.18.8.rc1-beta-4"
         "0.18.8.rc1"
+    }
+    // https://github.com/pdf2htmlEX/pdf2htmlEX/pull/145 Will probably be named rc2
+    else /* "0.18.8.rc2" */ -> {
+        version = "0.18.8.rc2-beta-1"
+        "0.18.8.rc2"
     }
 }
 
@@ -30,24 +35,28 @@ dependencies {
 
     when (portVersion) {
         "0.18.7-poppler-0.81.0" -> {
-            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}-static:20170731-beta-5")
+            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}-static:20170731-beta-6")
             implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}-static:0.81.0-beta-3")
         }
         "0.18.8.rc1" -> {
-            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}-static:20200314-beta-9")
+            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}-static:20200314-beta-10")
             implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}-static:0.89.0-beta-3")
         }
-//        "0.18.8.rc2" -> {
-//            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}-static:20230101-beta-8")
-//            implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}-static:21.02.0-beta-3")
-//        }
+        "0.18.8.rc2" -> {
+            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}-static:20230101-beta-9")
+            implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}-static:21.02.0-beta-3")
+        }
     }
 }
 
 ndkPorts {
     ndkPath.set(File(project.findProperty("ndkPath") as String))
     minSdkVersion.set(rootProject.extra.get("minSdkSupportedByNdk").toString().toInt())
-    source.set(project.file("v${portVersion}.tar.gz"))
+    if (portVersion == "0.18.7-poppler-0.81.0") {
+        source.set(project.file("v${portVersion}.tar.gz"))
+    } else {
+        source.set(project.file("v0.18.8.rc1.tar.gz"))
+    }
 }
 
 fun File.replace(oldValue: String, newValue: String, ignoreCase: Boolean = false) {
@@ -101,7 +110,17 @@ tasks.extractSrc {
                 srcDir.patch("make-a-library.patch")
 
                 srcDir.resolve("pdf2htmlEX/src/util/ffw.c")
-                    .patch("fontforge-share.patch")
+                    .patch("ffw.patch")
+            }
+            "0.18.8.rc2" -> {
+                srcDir.resolve("pdf2htmlEX/CMakeLists.txt")
+                    .patch("find-libraries.patch")
+                    .patch("cflags.patch")
+                    .patch("missing-tests.patch")
+                srcDir.patch("make-a-library.patch")
+
+                srcDir.resolve("pdf2htmlEX/src/util/ffw.c")
+                    .patch("ffw.patch")
             }
         }
     }
@@ -112,10 +131,8 @@ tasks.prefab {
 }
 
 tasks.register<CMakePortTask>("buildPort") {
-    when (portVersion) {
-        "0.18.8.rc1" -> {
-            sourceSubDirectory.set("pdf2htmlEX")
-        }
+    if (portVersion != "0.18.7-poppler-0.81.0") {
+        sourceSubDirectory.set("pdf2htmlEX")
     }
 
     cmake { }
@@ -137,7 +154,9 @@ tasks.register<CMakePortTask>("buildPort") {
 tasks.prefabPackage {
     version.set(CMakeCompatibleVersion.parse(when(portVersion) {
         "0.18.7-poppler-0.81.0" -> "0.18.7.0810"
+        // rc versions are 0
         "0.18.8.rc1" -> "0.18.8.0"
+        "0.18.8.rc2" -> "0.18.8.0"
         else -> portVersion
     }))
 
@@ -185,17 +204,17 @@ publishing {
                     // Poppler licenses
                     license {
                         name.set("GPLv3-or-later")
-                        url.set("https://raw.githubusercontent.com/pdf2htmlEX/pdf2htmlEX/$portVersion/LICENSE")
+                        url.set("https://raw.githubusercontent.com/pdf2htmlEX/pdf2htmlEX/v0.18.8.rc1/LICENSE")
                         distribution.set("repo")
                     }
                     license {
                         name.set("MIT")
-                        url.set("https://raw.githubusercontent.com/pdf2htmlEX/pdf2htmlEX/$portVersion/share/LICENSE")
+                        url.set("https://raw.githubusercontent.com/pdf2htmlEX/pdf2htmlEX/v0.18.8.rc1/pdf2htmlEX/share/LICENSE")
                         distribution.set("repo")
                     }
                     license {
                         name.set("CC-BY-3.0")
-                        url.set("https://raw.githubusercontent.com/pdf2htmlEX/pdf2htmlEX/$portVersion/logo/LICENSE")
+                        url.set("https://raw.githubusercontent.com/pdf2htmlEX/pdf2htmlEX/v0.18.8.rc1/pdf2htmlEX/logo/LICENSE")
                         distribution.set("repo")
                     }
                 }
