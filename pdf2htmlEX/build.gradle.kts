@@ -8,11 +8,11 @@ group = rootProject.group
 // Hardcode a list of available versions
 val portVersion = when(project.findProperty("packageVersion")) {
     "0.18.7-poppler-0.81.0" -> {
-        version = "0.18.7-poppler-0.81.0-beta-3"
+        version = "0.18.7-poppler-0.81.0-beta-4"
         "0.18.7-poppler-0.81.0"
     }
     else /* "0.18.8.rc1" */ -> {
-        version = "0.18.8.rc1-beta-3"
+        version = "0.18.8.rc1-beta-4"
         "0.18.8.rc1"
     }
 }
@@ -151,7 +151,7 @@ tasks.prefabPackage {
                 "//cairo:cairo",
                 "//freetype:freetype",
                 "//fontforge:fontforge",
-                "//poppler:poppler",
+                "//poppler:poppler-glib",
             ))
         }
     }
