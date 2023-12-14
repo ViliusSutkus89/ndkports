@@ -1,8 +1,8 @@
 --- pdf2htmlEX/CMakeLists.txt	2023-11-15 02:31:51.534000000 +0200
 +++ pdf2htmlEX/CMakeLists.txt	2023-11-15 02:31:58.159000000 +0200
-@@ -39,15 +39,6 @@
- pkg_search_module(FONTFORGE REQUIRED IMPORTED_TARGET libfontforge=20200314)
+@@ -40,15 +40,6 @@
  set(PDF2HTMLEX_LIBS ${PDF2HTMLEX_LIBS} PkgConfig::FONTFORGE)
+ include_directories(${FONTFORGE_INCLUDEDIR}/private)
 
 -# debug build flags (overwrite default cmake debug flags)
 -set(CMAKE_C_FLAGS_DEBUG "-ggdb -pg")
