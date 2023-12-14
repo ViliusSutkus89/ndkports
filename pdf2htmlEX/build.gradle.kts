@@ -8,11 +8,11 @@ group = rootProject.group
 // Hardcode a list of available versions
 val portVersion = when(project.findProperty("packageVersion")) {
     "0.18.7-poppler-0.81.0" -> {
-        version = "0.18.7-poppler-0.81.0-beta-4"
+        version = "0.18.7-poppler-0.81.0-beta-5"
         "0.18.7-poppler-0.81.0"
     }
     "0.18.8.rc1" -> {
-        version = "0.18.8.rc1-beta-4"
+        version = "0.18.8.rc1-beta-5"
         "0.18.8.rc1"
     }
     // https://github.com/pdf2htmlEX/pdf2htmlEX/pull/145 Will probably be named rc2
