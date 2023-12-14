@@ -17,7 +17,7 @@ val portVersion = when(project.findProperty("packageVersion")) {
         "20200314"
     }
     else /* "20230101" */ -> {
-        version = "20230101-beta-9"
+        version = "20230101-beta-10"
         "20230101"
     }
 }

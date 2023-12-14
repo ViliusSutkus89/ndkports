@@ -43,7 +43,7 @@ dependencies {
             implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}-static:0.89.0-beta-3")
         }
         "0.18.8.rc2" -> {
-            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}-static:20230101-beta-9")
+            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}-static:20230101-beta-10")
             implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}-static:21.02.0-beta-3")
         }
     }
