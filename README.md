@@ -73,6 +73,7 @@ Run unit tests provided by upstream packages.
 
 Available versions:
 
+- 23.12.0
 - 23.10.0
 - 21.02.0
 - 0.89.0

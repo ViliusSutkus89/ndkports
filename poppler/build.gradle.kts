@@ -19,9 +19,13 @@ val portVersion = when(project.findProperty("packageVersion")) {
         version = "21.02.0-beta-3"
         "21.02.0"
     }
-    else /* "23.10.0" */ -> {
+    "23.10.0" -> {
         version = "23.10.0-beta-3"
         "23.10.0"
+    }
+    else /* "23.12.0" */ -> {
+        version = "23.12.0-beta-1"
+        "23.12.0"
     }
 }
 
@@ -42,7 +46,6 @@ dependencies {
     implementation("com.viliussutkus89.ndk.thirdparty:glib2${ndkVersionSuffix}-static:2.78.1-beta-4")
     implementation("com.viliussutkus89.ndk.thirdparty:cairo${ndkVersionSuffix}-static:1.18.0-beta-3")
     implementation("com.viliussutkus89.ndk.thirdparty:lcms2${ndkVersionSuffix}-static:2.15-beta-4")
-
     if (listOf("0.81.0", "0.89.0", "21.02.0").contains(portVersion)) {
         // 23.10.0 supports Android's native alternative of fontconfig
         implementation("com.viliussutkus89.ndk.thirdparty:fontconfig${ndkVersionSuffix}-static:2.14.2-beta-3")
@@ -58,7 +61,7 @@ ndkPorts {
 tasks.findByName("extractSrc")?.dependsOn(
     tasks.register("extractAssets", com.android.ndkports.SourceExtractTask::class.java) {
         source.set(project.file("poppler-data-0.4.12.tar.gz"))
-        outDir.set(buildDir.resolve("assets/poppler"))
+        outDir.set(layout.buildDirectory.get().asFile.resolve("assets/poppler"))
     }
 )
 
@@ -105,7 +108,7 @@ tasks.extractSrc {
                 srcDir.resolve("CMakeLists.txt").patch("FindCairo.patch")
                 srcDir.patch("glib-boxed-type.patch")
             }
-            "23.10.0" -> {
+            "23.10.0", "23.12.0" -> {
                 srcDir.resolve("CMakeLists.txt").patch("FindCairo.patch")
                 srcDir.resolve("cmake/modules/CheckFileOffsetBits.cmake").patch("CheckFileOffsetBits.patch")
             }
@@ -132,7 +135,7 @@ tasks.register<CMakePortTask>("buildPort") {
                 }
             }
         }
-        "23.10.0" -> {
+        "23.10.0", "23.12.0" -> {
             cmake {
                 args(
                     "-DENABLE_UNSTABLE_API_ABI_HEADERS=ON",
@@ -267,6 +270,7 @@ publishing {
                     // https://gitlab.freedesktop.org/poppler/poppler/-/raw/poppler-0.89.0/AUTHORS
                     // https://gitlab.freedesktop.org/poppler/poppler/-/raw/poppler-21.02.0/AUTHORS
                     // https://gitlab.freedesktop.org/poppler/poppler/-/raw/poppler-23.10.0/AUTHORS
+                    // https://gitlab.freedesktop.org/poppler/poppler/-/raw/poppler-23.12.0/AUTHORS
                     // https://gitlab.freedesktop.org/poppler/poppler-data/-/blob/POPPLER_DATA_0_4_12/README
                     developer {
                         name.set("Derek Noonburg")
