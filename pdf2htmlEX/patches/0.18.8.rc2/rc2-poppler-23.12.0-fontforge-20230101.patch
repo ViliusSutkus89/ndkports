@@ -1,0 +1,342 @@
+--- pdf2htmlEX/CMakeLists.txt	2020-08-19 23:43:25.000000000 +0300
++++ pdf2htmlEX/CMakeLists.txt	2023-12-17 10:10:29.400000000 +0200
+@@ -121,37 +121,14 @@
+ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
+ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Woverloaded-virtual")
+
+-# clang compiler need c++11 flag
+-#if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+-#  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+-#endif()
+-
+-# CYGWIN or GCC 4.5.x bug
+-if(CYGWIN)
+-# was: set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
+-# the following change is untested:
+-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++14")
+-else()
+-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -pthread")
+-endif()
+-
+-# check the C++11 features we need
+-include(CheckCXXSourceCompiles)
+-check_cxx_source_compiles("
+-#include <vector>
+-int main()
+-{
+-  char * ptr = nullptr;
+-  std::vector<int> v;
+-  auto f = [&](){ for(auto & i : v) ++i; };
+-  f();
+-}
+-" CXX0X_SUPPORT)
+-if(NOT CXX0X_SUPPORT)
+-    message(FATAL_ERROR "Error: your compiler does not support C++0x/C++11, please update it.")
++# Poppler-23.12.0 requires CXX17
++set(CMAKE_CXX_STANDARD 17)
++set(CMAKE_CXX_STANDARD_REQUIRED ON)
++if(NOT CYGWIN)
++    set(CMAKE_CXX_EXTENSIONS OFF)
++    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+ endif()
+
+-
+ configure_file (${CMAKE_SOURCE_DIR}/src/pdf2htmlEX-config.h.in ${CMAKE_SOURCE_DIR}/src/pdf2htmlEX-config.h)
+ configure_file (${CMAKE_SOURCE_DIR}/pdf2htmlEX.1.in ${CMAKE_SOURCE_DIR}/pdf2htmlEX.1)
+
+--- pdf2htmlEX/src/pdf2htmlEX.cc	2020-08-19 23:43:25.000000000 +0300
++++ pdf2htmlEX/src/pdf2htmlEX.cc	2023-12-17 10:00:41.798000000 +0200
+@@ -412,21 +412,23 @@
+       !param.poppler_data_dir.empty() ? param.poppler_data_dir.c_str() : NULL
+     );
+
+-    // open PDF file
+-    PDFDoc * doc = nullptr;
+     try
+     {
+-        {
+-            GooString * ownerPW = (param.owner_password == "") ? (nullptr) : (new GooString(param.owner_password.c_str()));
+-            GooString * userPW = (param.user_password == "") ? (nullptr) : (new GooString(param.user_password.c_str()));
+-            GooString fileName(param.input_filename.c_str());
+-
+-            doc = PDFDocFactory().createPDFDoc(fileName, ownerPW, userPW);
++        std::optional<GooString> ownerPW;
++        if (!param.owner_password.empty()) {
++          ownerPW = GooString(param.owner_password);
++        }
+
+-            delete userPW;
+-            delete ownerPW;
++        std::optional<GooString> userPW;
++        if (!param.user_password.empty()) {
++          userPW = GooString(param.user_password);
+         }
+
++        GooString fileName(param.input_filename);
++
++        // open PDF file
++        std::unique_ptr<PDFDoc> doc(PDFDocFactory().createPDFDoc(fileName, ownerPW, userPW));
++
+         if (!doc->isOk())
+             throw "Cannot read the file";
+
+@@ -445,7 +447,7 @@
+                    doc->getNumPages());
+
+
+-        unique_ptr<HTMLRenderer>(new HTMLRenderer(argv[0], param))->process(doc);
++        unique_ptr<HTMLRenderer>(new HTMLRenderer(argv[0], param))->process(doc.get());
+
+         finished = true;
+     }
+@@ -459,7 +461,6 @@
+     }
+
+     // clean up
+-    delete doc;
+     globalParams.reset();
+
+     // check for memory leaks
+
+--- pdf2htmlEX/src/Preprocessor.cc	2020-08-19 23:43:25.000000000 +0300
++++ pdf2htmlEX/src/Preprocessor.cc	2023-12-17 08:51:10.280000000 +0200
+@@ -67,8 +67,7 @@
+       double originX, double originY,
+       CharCode code, int nBytes, const Unicode *u, int uLen)
+ {
+-    GfxFont * font = state->getFont();
+-    if(!font) return;
++    std::shared_ptr<GfxFont> font = state->getFont();
+
+     long long fn_id = hash_ref(font->getID());
+
+--- pdf2htmlEX/src/HTMLRenderer/font.cc	2020-08-19 23:43:25.000000000 +0300
++++ pdf2htmlEX/src/HTMLRenderer/font.cc	2023-12-17 10:22:46.152000000 +0200
+@@ -200,8 +200,10 @@
+
+     FT_Library ft_lib;
+     FT_Init_FreeType(&ft_lib);
+-    CairoFontEngine font_engine(ft_lib);
+-    auto * cur_font = font_engine.getFont(font, cur_doc, true, xref);
++    CairoFontEngine font_engine(ft_lib);
++//    std::shared_ptr<GfxFont> fontCopy(font);
++    // @TODO: this will garbage collect font, but I shouldn't do this
++    std::shared_ptr<CairoFont> cur_font = font_engine.getFont(std::shared_ptr<GfxFont>(font), cur_doc, true, xref);
+     auto used_map = preprocessor.get_code_map(hash_ref(font->getID()));
+
+     //calculate transformed metrics
+@@ -486,11 +488,10 @@
+             else
+             {
+                 ffw_reencode_glyph_order();
+-                if(FoFiTrueType * fftt = FoFiTrueType::load((char*)filepath.c_str()))
++                if(std::unique_ptr<FoFiTrueType> fftt = FoFiTrueType::load((char*)filepath.c_str()))
+                 {
+-                    code2GID = font_8bit->getCodeToGIDMap(fftt);
++                    code2GID = font_8bit->getCodeToGIDMap(fftt.get());
+                     code2GID_len = 256;
+-                    delete fftt;
+                 }
+             }
+         }
+@@ -553,10 +554,9 @@
+             else
+             {
+                 // use the mapping stored in the file
+-                if(FoFiTrueType * fftt = FoFiTrueType::load((char*)filepath.c_str()))
++                if(std::unique_ptr<FoFiTrueType> fftt = FoFiTrueType::load((char*)filepath.c_str()))
+                 {
+-                    code2GID = _font->getCodeToGIDMap(fftt, &code2GID_len);
+-                    delete fftt;
++                    code2GID = _font->getCodeToGIDMap(fftt.get(), &code2GID_len);
+                 }
+             }
+         }
+@@ -878,7 +878,7 @@
+     {
+         cerr << "Install font " << hex << new_fn_id << dec
+             << ": (" << (font->getID()->num) << ' ' << (font->getID()->gen) << ") "
+-            << (font->getName() ? font->getName()->toStr() : "")
++            << font->getName().value_or("")
+             << endl;
+     }
+
+@@ -910,7 +910,8 @@
+      * which does not make much sense in our case
+      * If we specify false here, font_loc->locType cannot be gfxFontLocResident
+      */
+-    if(auto * font_loc = font->locateFont(xref, nullptr))
++    auto font_loc = font->locateFont(xref, nullptr);
++    if(font_loc.has_value())
+     {
+         switch(font_loc -> locType)
+         {
+@@ -927,8 +928,7 @@
+                 cerr << "TODO: other font loc" << endl;
+                 export_remote_default_font(new_fn_id);
+                 break;
+-        }
+-        delete font_loc;
++        }
+     }
+     else
+     {
+@@ -955,7 +955,7 @@
+
+ void HTMLRenderer::install_external_font(GfxFont * font, FontInfo & info)
+ {
+-    string fontname(font->getName()->toStr());
++    string fontname(font->getName().value_or(""));
+
+     // resolve bad encodings in GB
+     auto iter = GB_ENCODED_FONT_NAME_MAP.find(fontname);
+@@ -965,15 +965,14 @@
+         cerr << "Warning: workaround for font names in bad encodings." << endl;
+     }
+
+-    GfxFontLoc * localfontloc = font->locateFont(xref, nullptr);
++    std::optional<GfxFontLoc> localfontloc = font->locateFont(xref, nullptr);
+
+     if(param.embed_external_font)
+     {
+-        if(localfontloc != nullptr)
++        if(localfontloc.has_value())
+         {
+-            embed_font(string(localfontloc->path->toStr()), font, info);
++            embed_font(string(localfontloc.value().path), font, info);
+             export_remote_font(info, param.font_format, font);
+-            delete localfontloc;
+             return;
+         }
+         else
+@@ -984,11 +983,10 @@
+     }
+
+     // still try to get an idea of read ascent/descent
+-    if(localfontloc != nullptr)
++    if(localfontloc.has_value())
+     {
+         // fill in ascent/descent only, do not embed
+-        embed_font(string(localfontloc->path->toStr()), font, info, true);
+-        delete localfontloc;
++        embed_font(string(localfontloc.value().path), font, info, true);
+     }
+     else
+     {
+
+--- pdf2htmlEX/src/HTMLRenderer/form.cc	2020-08-19 23:43:25.000000000 +0300
++++ pdf2htmlEX/src/HTMLRenderer/form.cc	2023-12-15 13:43:36.905000000 +0200
+@@ -22,7 +22,7 @@
+
+ void HTMLRenderer::process_form(ofstream & out)
+ {
+-    FormPageWidgets * widgets = cur_catalog->getPage(pageNum)->getFormWidgets();
++    auto widgets = cur_catalog->getPage(pageNum)->getFormWidgets();
+     int num = widgets->getNumWidgets();
+
+     for(int i = 0; i < num; i++)
+
+--- pdf2htmlEX/src/HTMLRenderer/link.cc	2020-08-19 23:43:25.000000000 +0300
++++ pdf2htmlEX/src/HTMLRenderer/link.cc	2023-12-16 16:00:09.687000000 +0200
+@@ -148,7 +148,7 @@
+                         dynamic_cast<const LinkGoTo*>(action);
+                     std::unique_ptr<LinkDest> dest = nullptr;
+                     if(auto _ = real_action->getDest())
+-                        dest = std::unique_ptr<LinkDest>( _->copy() );
++                        dest = std::unique_ptr<LinkDest>(new LinkDest(*_));
+                     else if (auto _ = real_action->getNamedDest())
+                         dest = cur_catalog->findDest(_);
+                     if(dest)
+
+--- pdf2htmlEX/src/HTMLRenderer/outline.cc	2020-08-19 23:43:25.000000000 +0300
++++ pdf2htmlEX/src/HTMLRenderer/outline.cc	2023-12-17 08:48:40.341000000 +0200
+@@ -52,7 +52,6 @@
+         {
+             process_outline_items(item->getKids());
+         }
+-        item->close();
+         f_outline.fs << "</li>";
+     }
+
+--- pdf2htmlEX/src/HTMLRenderer/state.cc	2020-08-19 23:43:25.000000000 +0300
++++ pdf2htmlEX/src/HTMLRenderer/state.cc	2023-12-17 08:41:33.213000000 +0200
+@@ -207,7 +207,7 @@
+     // font name & size
+     if(all_changed || font_changed)
+     {
+-        const FontInfo * new_font_info = install_font(state->getFont());
++        const FontInfo * new_font_info = install_font(state->getFont().get());
+
+         if(!(new_font_info->id == cur_text_state.font_info->id))
+         {
+
+--- pdf2htmlEX/src/HTMLRenderer/text.cc	2020-08-19 23:43:25.000000000 +0300
++++ pdf2htmlEX/src/HTMLRenderer/text.cc	2023-12-17 08:43:37.205000000 +0200
+@@ -95,9 +95,9 @@
+             char buf[2];
+             buf[0] = (code >> 8) & 0xff;
+             buf[1] = (code & 0xff);
+-            width = ((GfxCIDFont *)font)->getWidth(buf, 2);
++            width = ((GfxCIDFont *)font.get())->getWidth(buf, 2);
+         } else {
+-            width = ((Gfx8BitFont *)font)->getWidth(code);
++            width = ((Gfx8BitFont *)font.get())->getWidth(code);
+         }
+
+         if (width == 0 || height == 0) {
+@@ -151,11 +151,11 @@
+                 Unicode uu;
+                 if(cur_text_state.font_info->use_tounicode)
+                 {
+-                    uu = check_unicode(u, uLen, code, font);
++                    uu = check_unicode(u, uLen, code, font.get());
+                 }
+                 else
+                 {
+-                    uu = unicode_from_font(code, font);
++                    uu = unicode_from_font(code, font.get());
+                 }
+                 html_text_page.get_cur_line()->append_unicodes(&uu, 1, ddx);
+                 /*
+
+--- pdf2htmlEX/src/util/ffw.c	2020-08-19 23:43:25.000000000 +0300
++++ pdf2htmlEX/src/util/ffw.c	2023-12-17 10:40:47.807000000 +0200
+@@ -19,7 +19,7 @@
+ #include "SignalHandler.h"
+
+ #include "ffw.h"                      // needed for:
+-#include "gfile.h"                    //   FindProgDir
++#include "gfile.h"                    //   FindProgRoot
+ #include "fontforge/autowidth.h"      //   FVRemoveKerns
+ #include "fontforge/bitmapchar.h"     //   SFReplaceEncodingBDFProps
+ #include "fontforge/cvimages.h"       //   FVImportImages
+@@ -70,8 +70,9 @@
+ void ffw_init(const char* progPath, int debug)
+ {
+     ffwSetAction("initialize");
+-    char *localProgPath = strdup(progPath);
+-    FindProgDir(localProgPath);
++    char *localProgPath = strcopy(progPath);
++    FindProgRoot(localProgPath);
++    free(localProgPath);
+     InitSimpleStuff();
+     if ( default_encoding==NULL )
+         default_encoding=FindOrMakeEncoding("ISO8859-1");
+@@ -288,7 +289,7 @@
+     ffwClearAction();
+ }
+
+-void ffw_reencode_raw(int32 * mapping, int mapping_len, int force)
++void ffw_reencode_raw(int32_t * mapping, int mapping_len, int force)
+ {
+     ffwSetAction("re-encode (raw1)");
+     Encoding * enc = calloc(1, sizeof(Encoding));
+@@ -572,7 +573,7 @@
+ void ffw_override_fstype(void)
+ {
+     ffwSetAction("override the fstype of");
+-    *(int16 *)(&cur_fv->sf->pfminfo.fstype) = 0;
++    *(int16_t *)(&cur_fv->sf->pfminfo.fstype) = 0;
+     cur_fv->sf->pfminfo.pfmset = true;
+     cur_fv->sf->changed = true;
+     ffwClearAction();

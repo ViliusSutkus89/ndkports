@@ -17,7 +17,7 @@ val portVersion = when(project.findProperty("packageVersion")) {
     }
     // https://github.com/pdf2htmlEX/pdf2htmlEX/pull/145 Will probably be named rc2
     else /* "0.18.8.rc2" */ -> {
-        version = "0.18.8.rc2-beta-1"
+        version = "0.18.8.rc2-beta-2"
         "0.18.8.rc2"
     }
 }
@@ -44,7 +44,7 @@ dependencies {
         }
         "0.18.8.rc2" -> {
             implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}-static:20230101-beta-10")
-            implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}-static:21.02.0-beta-3")
+            implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}-static:23.12.0-beta-1")
         }
     }
 }
@@ -113,14 +113,12 @@ tasks.extractSrc {
                     .patch("ffw.patch")
             }
             "0.18.8.rc2" -> {
+                srcDir.patch("rc2-poppler-23.10.0-fontforge-20230101.patch")
                 srcDir.resolve("pdf2htmlEX/CMakeLists.txt")
                     .patch("find-libraries.patch")
                     .patch("cflags.patch")
                     .patch("missing-tests.patch")
                 srcDir.patch("make-a-library.patch")
-
-                srcDir.resolve("pdf2htmlEX/src/util/ffw.c")
-                    .patch("ffw.patch")
             }
         }
     }

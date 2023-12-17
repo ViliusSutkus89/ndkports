@@ -24,7 +24,7 @@
 -  ${CMAKE_SOURCE_DIR}/../poppler/build/libpoppler.a
 -)
 -
-+pkg_search_module(POPPLER-GLIB REQUIRED IMPORTED_TARGET poppler-glib=21.02.0)
++pkg_search_module(POPPLER-GLIB REQUIRED IMPORTED_TARGET poppler-glib=23.12.0)
 +set(PDF2HTMLEX_LIBS ${PDF2HTMLEX_LIBS} PkgConfig::POPPLER-GLIB)
 
  if(ENABLE_SVG)
