@@ -113,7 +113,7 @@ tasks.extractSrc {
                     .patch("ffw.patch")
             }
             "0.18.8.rc2" -> {
-                srcDir.patch("rc2-poppler-23.10.0-fontforge-20230101.patch")
+                srcDir.patch("rc2-poppler-23.12.0-fontforge-20230101.patch")
                 srcDir.resolve("pdf2htmlEX/CMakeLists.txt")
                     .patch("find-libraries.patch")
                     .patch("cflags.patch")
