@@ -1,6 +1,6 @@
 --- pdf2htmlEX/CMakeLists.txt	2023-11-15 02:31:58.159000000 +0200
 +++ pdf2htmlEX/CMakeLists.txt	2023-12-17 08:09:48.771000000 +0200
-@@ -63,7 +63,6 @@
+@@ -62,7 +62,6 @@
 
  set(PDF2HTMLEX_SRC ${PDF2HTMLEX_SRC}
      src/Param.h
@@ -8,7 +8,7 @@
      src/pdf2htmlEX-config.h
      src/HTMLRenderer/HTMLRenderer.h
      src/HTMLRenderer/draw.cc
-@@ -124,8 +123,11 @@
+@@ -123,8 +122,11 @@
      src/TmpFiles.cc
      )
 
@@ -22,7 +22,7 @@
 
  add_custom_target(pdf2htmlEX_resources ALL DEPENDS
      ${CMAKE_SOURCE_DIR}/share/base.min.css
-@@ -150,7 +152,14 @@
+@@ -149,7 +151,14 @@
          ${CMAKE_SOURCE_DIR}/share/fancy.css
      )
  
@@ -926,3 +926,16 @@ new file mode 100644
 +
 +} // namespace pdf2htmlEX
 \ No newline at end of file
+ --- pdf2htmlEX/src/util/ffw.c	2020-08-19 23:43:25.000000000 +0300
+ +++ pdf2htmlEX/src/util/ffw.c	2023-12-17 10:40:47.807000000 +0200
+@@ -70,8 +70,9 @@
+ void ffw_init(const char* progPath, int debug)
+ {
+     ffwSetAction("initialize");
+-    char *localProgPath = strdup(progPath);
++    char *localProgPath = strcopy(progPath);
+     FindProgRoot(localProgPath);
++    free(localProgPath);
+     InitSimpleStuff();
+     if ( default_encoding==NULL )
+         default_encoding=FindOrMakeEncoding("ISO8859-1");

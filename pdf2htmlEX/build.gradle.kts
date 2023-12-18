@@ -15,9 +15,9 @@ val portVersion = when(project.findProperty("packageVersion")) {
         version = "0.18.8.rc1-beta-5"
         "0.18.8.rc1"
     }
-    // https://github.com/pdf2htmlEX/pdf2htmlEX/pull/145 Will probably be named rc2
+    // https://github.com/pdf2htmlEX/pdf2htmlEX/pull/154 Hoping it will be named rc2
     else /* "0.18.8.rc2" */ -> {
-        version = "0.18.8.rc2-beta-2"
+        version = "0.18.8.rc2-beta-3"
         "0.18.8.rc2"
     }
 }
