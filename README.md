@@ -32,6 +32,7 @@ Libraries built with different NDK versions should not be used in the same appli
 
 - static (libfoo.a) with static dependencies
 - shared (libfoo.so) with static dependencies
+- shared (libfoo.so) with shared dependencies
 
 ## TODO
 
