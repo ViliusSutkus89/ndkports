@@ -6,7 +6,7 @@ import org.gradle.jvm.tasks.Jar
 val portVersion = "1.0.13"
 
 group = rootProject.group
-version = "${portVersion}-beta-2"
+version = "${portVersion}-beta-3"
 
 plugins {
     id("maven-publish")
@@ -55,10 +55,6 @@ publishing {
             artifactId += rootProject.extra.get("libraryTypeSuffix")
             artifact(packageSources)
             pom {
-                scm {
-                    url.set("https://github.com/ViliusSutkus89/ndkports")
-                    connection.set("scm:git:https://github.com/ViliusSutkus89/ndkports.git")
-                }
                 name.set("GNU FriBidi")
                 description.set("The Free Implementation of the Unicode Bidirectional Algorithm.")
                 url.set("https://github.com/fribidi/fribidi")
@@ -126,6 +122,10 @@ publishing {
                         name.set("Omer Zak")
                         email.set("w1@zak.co.il")
                     }
+                }
+                scm {
+                    url.set("https://github.com/ViliusSutkus89/ndkports")
+                    connection.set("scm:git:https://github.com/ViliusSutkus89/ndkports.git")
                 }
             }
         }

@@ -6,7 +6,7 @@ import org.gradle.jvm.tasks.Jar
 val portVersion = "2.5.0"
 
 group = rootProject.group
-version = "${portVersion}-beta-3"
+version = "${portVersion}-beta-4"
 
 plugins {
     id("maven-publish")
@@ -59,11 +59,11 @@ publishing {
             artifactId += rootProject.extra.get("libraryTypeSuffix")
             artifact(packageSources)
             pom {
-                name.set("Poppler")
+                name.set("OpenJPEG")
                 description.set("An open-source JPEG 2000 codec written in C.")
                 url.set("https://www.openjpeg.org")
                 licenses {
-                    // Poppler licenses
+                    // OpenJPEG licenses
                     license {
                         name.set("BSD-2-Clause")
                         url.set("https://raw.githubusercontent.com/uclouvain/openjpeg/v2.5.0/LICENSE")

@@ -3,10 +3,10 @@ import com.android.ndkports.CMakeCompatibleVersion
 import com.android.ndkports.PrefabSysrootPlugin
 import org.gradle.jvm.tasks.Jar
 
-val portVersion = "2.15"
+val portVersion = "2.16"
 
 group = rootProject.group
-version = "${portVersion}-beta-4"
+version = "${portVersion}-beta-1"
 
 plugins {
     id("maven-publish")
@@ -16,8 +16,9 @@ plugins {
 
 dependencies {
     val ndkVersionSuffix = rootProject.extra.get("ndkVersionSuffix")
-    implementation("com.viliussutkus89.ndk.thirdparty:libjpeg-turbo${ndkVersionSuffix}-static:3.0.1-beta-2")
-    implementation("com.viliussutkus89.ndk.thirdparty:libtiff${ndkVersionSuffix}-static:4.6.0-beta-4")
+    val libraryTypeSuffix = rootProject.extra.get("libraryTypeSuffix")
+    implementation("com.viliussutkus89.ndk.thirdparty:libjpeg-turbo${ndkVersionSuffix}${libraryTypeSuffix}:3.0.1-beta-3")
+    implementation("com.viliussutkus89.ndk.thirdparty:libtiff${ndkVersionSuffix}${libraryTypeSuffix}:4.6.0-beta-5")
 }
 
 ndkPorts {
@@ -37,7 +38,7 @@ tasks.register<MesonPortTask>("buildPort") {
 tasks.prefabPackage {
     version.set(CMakeCompatibleVersion.parse(portVersion))
 
-    licensePath.set("COPYING")
+    licensePath.set("LICENSE")
 
     dependencies.set(mapOf(
         "libjpeg-turbo" to "1",
@@ -72,13 +73,13 @@ publishing {
                 licenses {
                     license {
                         name.set("MIT")
-                        url.set("https://github.com/mm2/Little-CMS/blob/lcms2.15/COPYING")
+                        url.set("https://raw.githubusercontent.com/mm2/Little-CMS/lcms${portVersion}/LICENSE")
                         distribution.set("repo")
                     }
                 }
                 developers {
                     // Developer list obtained from:
-                    // https://raw.githubusercontent.com/mm2/Little-CMS/lcms2.15/AUTHORS
+                    // https://raw.githubusercontent.com/mm2/Little-CMS/lcms2.16/AUTHORS
                     developer {
                         name.set("Marti Maria")
                     }
@@ -189,6 +190,9 @@ publishing {
                     }
                     developer {
                         name.set("Eli Schwartz")
+                    }
+                    developer {
+                        name.set("Diogo Teles Sant'Anna")
                     }
                     developer {
                         name.set("Artifex software")

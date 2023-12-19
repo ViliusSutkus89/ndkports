@@ -3,10 +3,10 @@ import com.android.ndkports.MesonPortTask
 import com.android.ndkports.PrefabSysrootPlugin
 import org.gradle.jvm.tasks.Jar
 
-val portVersion = "8.2.2"
+val portVersion = "8.3.0"
 
 group = rootProject.group
-version = "${portVersion}-beta-3"
+version = "${portVersion}-beta-1"
 
 plugins {
     id("maven-publish")
@@ -16,10 +16,11 @@ plugins {
 
 dependencies {
     val ndkVersionSuffix = rootProject.extra.get("ndkVersionSuffix")
-    implementation("com.viliussutkus89.ndk.thirdparty:cairo${ndkVersionSuffix}-static:1.18.0-beta-3")
-    implementation("com.viliussutkus89.ndk.thirdparty:fontconfig${ndkVersionSuffix}-static:2.14.2-beta-3")
-    implementation("com.viliussutkus89.ndk.thirdparty:freetype${ndkVersionSuffix}-static:2.13.2-beta-5")
-    implementation("com.viliussutkus89.ndk.thirdparty:glib2${ndkVersionSuffix}-static:2.78.1-beta-4")
+    val libraryTypeSuffix = rootProject.extra.get("libraryTypeSuffix")
+    implementation("com.viliussutkus89.ndk.thirdparty:cairo${ndkVersionSuffix}${libraryTypeSuffix}:1.18.0-beta-4")
+    implementation("com.viliussutkus89.ndk.thirdparty:fontconfig${ndkVersionSuffix}${libraryTypeSuffix}:2.14.2-beta-4")
+    implementation("com.viliussutkus89.ndk.thirdparty:freetype${ndkVersionSuffix}${libraryTypeSuffix}:2.13.2-beta-6")
+    implementation("com.viliussutkus89.ndk.thirdparty:glib2${ndkVersionSuffix}${libraryTypeSuffix}:2.78.3-beta-1")
 }
 
 ndkPorts {
@@ -126,29 +127,29 @@ publishing {
                 licenses {
                     license {
                         name.set("Old MIT")
-                        url.set("https://github.com/harfbuzz/harfbuzz/blob/3.2.0/COPYING")
+                        url.set("https://github.com/harfbuzz/harfbuzz/blob/${portVersion}/COPYING")
                         distribution.set("repo")
                     }
                     license {
                         name.set("OFL-1.1")
-                        url.set("https://raw.githubusercontent.com/harfbuzz/harfbuzz/8.2.2/test/COPYING")
+                        url.set("https://raw.githubusercontent.com/harfbuzz/harfbuzz/${portVersion}/test/COPYING")
                         distribution.set("repo")
                     }
                     license {
                         name.set("Apache-2.0")
-                        url.set("https://raw.githubusercontent.com/harfbuzz/harfbuzz/8.2.2/test/shape/data/aots/COPYING")
+                        url.set("https://raw.githubusercontent.com/harfbuzz/harfbuzz/${portVersion}/test/shape/data/aots/COPYING")
                         distribution.set("repo")
                     }
                     license {
                         name.set("Apache-2.0")
-                        url.set("https://raw.githubusercontent.com/harfbuzz/harfbuzz/8.2.2/test/shape/data/text-rendering-tests/COPYING")
+                        url.set("https://raw.githubusercontent.com/harfbuzz/harfbuzz/${portVersion}/test/shape/data/text-rendering-tests/COPYING")
                         distribution.set("repo")
                     }
                 }
                 developers {
                     // Developer list obtained from:
-                    // https://raw.githubusercontent.com/harfbuzz/harfbuzz/8.2.2/AUTHORS
-                    // https://raw.githubusercontent.com/harfbuzz/harfbuzz/8.2.2/THANKS
+                    // https://raw.githubusercontent.com/harfbuzz/harfbuzz/8.3.0/AUTHORS
+                    // https://raw.githubusercontent.com/harfbuzz/harfbuzz/8.3.0/THANKS
                     developer {
                         name.set("Behdad Esfahbod")
                     }

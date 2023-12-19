@@ -3,10 +3,10 @@ import com.android.ndkports.CMakeCompatibleVersion
 import com.android.ndkports.PrefabSysrootPlugin
 import org.gradle.jvm.tasks.Jar
 
-val portVersion = "2.78.1"
+val portVersion = "2.78.3"
 
 group = rootProject.group
-version = "${portVersion}-beta-4"
+version = "${portVersion}-beta-1"
 
 plugins {
     id("maven-publish")
@@ -16,10 +16,11 @@ plugins {
 
 dependencies {
     val ndkVersionSuffix = rootProject.extra.get("ndkVersionSuffix")
-    implementation("com.viliussutkus89.ndk.thirdparty:libiconv${ndkVersionSuffix}-static:1.17-beta-2")
-    implementation("com.viliussutkus89.ndk.thirdparty:proxy-libintl${ndkVersionSuffix}-static:0.4.1.1")
-    implementation("com.viliussutkus89.ndk.thirdparty:libffi${ndkVersionSuffix}-static:3.4.4-beta-2")
-    implementation("com.viliussutkus89.ndk.thirdparty:pcre2${ndkVersionSuffix}-static:10.42-beta-3")
+    val libraryTypeSuffix = rootProject.extra.get("libraryTypeSuffix")
+    implementation("com.viliussutkus89.ndk.thirdparty:libiconv${ndkVersionSuffix}${libraryTypeSuffix}:1.17-beta-3")
+    implementation("com.viliussutkus89.ndk.thirdparty:proxy-libintl${ndkVersionSuffix}${libraryTypeSuffix}:0.4.1.2")
+    implementation("com.viliussutkus89.ndk.thirdparty:libffi${ndkVersionSuffix}${libraryTypeSuffix}:3.4.4-beta-3")
+    implementation("com.viliussutkus89.ndk.thirdparty:pcre2${ndkVersionSuffix}${libraryTypeSuffix}:10.42-beta-4")
 }
 
 ndkPorts {
@@ -199,18 +200,18 @@ publishing {
                 licenses {
                     license {
                         name.set("LGPL-2.1-or-later")
-                        url.set("https://gitlab.gnome.org/GNOME/glib/-/raw/2.78.1/COPYING")
+                        url.set("https://gitlab.gnome.org/GNOME/glib/-/raw/${portVersion}/COPYING")
                         distribution.set("repo")
                     }
                     license {
                         name.set("LGPL-2.1-or-later")
-                        url.set("https://gitlab.gnome.org/GNOME/glib/-/raw/2.78.1/LICENSES/LGPL-2.1-or-later.txt")
+                        url.set("https://gitlab.gnome.org/GNOME/glib/-/raw/${portVersion}/LICENSES/LGPL-2.1-or-later.txt")
                         distribution.set("repo")
                     }
                 }
                 developers {
                     // Developer list obtained from:
-                    // https://gitlab.gnome.org/GNOME/glib/-/raw/2.78.1/docs/CODEOWNERS
+                    // https://gitlab.gnome.org/GNOME/glib/-/raw/2.78.3/docs/CODEOWNERS
                     developer {
                         id.set("pwithnall")
                     }

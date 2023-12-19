@@ -6,7 +6,7 @@ import org.gradle.jvm.tasks.Jar
 val portVersion = "4.6.0"
 
 group = rootProject.group
-version = "${portVersion}-beta-4"
+version = "${portVersion}-beta-5"
 
 plugins {
     id("maven-publish")
@@ -16,7 +16,8 @@ plugins {
 
 dependencies {
     val ndkVersionSuffix = rootProject.extra.get("ndkVersionSuffix")
-    implementation("com.viliussutkus89.ndk.thirdparty:libjpeg-turbo${ndkVersionSuffix}-static:3.0.1-beta-2")
+    val libraryTypeSuffix = rootProject.extra.get("libraryTypeSuffix")
+    implementation("com.viliussutkus89.ndk.thirdparty:libjpeg-turbo${ndkVersionSuffix}${libraryTypeSuffix}:3.0.1-beta-3")
 //    -- Could NOT find Deflate (missing: Deflate_LIBRARY Deflate_INCLUDE_DIR)
 //    -- Could NOT find JBIG (missing: JBIG_LIBRARY JBIG_INCLUDE_DIR)
 //    -- Could NOT find LERC (missing: LERC_LIBRARY LERC_INCLUDE_DIR)

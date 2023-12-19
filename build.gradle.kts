@@ -14,12 +14,19 @@ buildscript {
         set("ndkVersionSuffix", "-ndk${majorNdkVersion}")
         set("minSdkSupportedByNdk", minSdkSupportedByNdk)
 
-        if (project.findProperty("libraryType") == "shared") {
-            set("libraryType", "shared")
-            set("libraryTypeSuffix", "-shared")
-        } else {
-            set("libraryType", "static")
-            set("libraryTypeSuffix", "-static")
+        when (project.findProperty("libraryType")) {
+            "shared" -> {
+                set("libraryType", "shared")
+                set("libraryTypeSuffix", "-shared")
+            }
+            "shared-with-shared-deps" -> {
+                set("libraryType", "shared-with-shared-deps")
+                set("libraryTypeSuffix", "-shared-with-shared-deps")
+            }
+            /* static */ else -> {
+                set("libraryType", "static")
+                set("libraryTypeSuffix", "-static")
+            }
         }
     }
 }

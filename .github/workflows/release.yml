@@ -48,8 +48,9 @@ jobs:
           - "26.1.10909125"
           - "25.2.9519653"
         libraryType:
-          - "shared"
           - "static"
+          - "shared"
+          - "shared-with-shared-deps"
     steps:
       - uses: actions/setup-java@v3
         with:

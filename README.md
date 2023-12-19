@@ -15,8 +15,10 @@ Each port is built on a matrix of NDK versions and library type.
 
 - com.viliussutkus89.ndk.thirdparty:libfoo-ndk26-static:0.4.1
 - com.viliussutkus89.ndk.thirdparty:libfoo-ndk26-shared:0.4.1
+- com.viliussutkus89.ndk.thirdparty:libfoo-ndk26-shared-with-shared-deps:0.4.1
 - com.viliussutkus89.ndk.thirdparty:libfoo-ndk25-static:0.4.1
 - com.viliussutkus89.ndk.thirdparty:libfoo-ndk25-shared:0.4.1
+- com.viliussutkus89.ndk.thirdparty:libfoo-ndk25-shared-with-shared-deps:0.4.1
 
 #### Min SDK Version:
 

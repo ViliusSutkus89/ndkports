@@ -3,10 +3,10 @@ import com.android.ndkports.CMakeCompatibleVersion
 import com.android.ndkports.PrefabSysrootPlugin
 import org.gradle.jvm.tasks.Jar
 
-val portVersion = "2.11.5"
+val portVersion = "2.12.3"
 
 group = rootProject.group
-version = "${portVersion}-beta-4"
+version = "${portVersion}-beta-1"
 
 plugins {
     id("maven-publish")
@@ -16,7 +16,8 @@ plugins {
 
 dependencies {
     val ndkVersionSuffix = rootProject.extra.get("ndkVersionSuffix")
-    implementation("com.viliussutkus89.ndk.thirdparty:libiconv${ndkVersionSuffix}-static:1.17-beta-2")
+    val libraryTypeSuffix = rootProject.extra.get("libraryTypeSuffix")
+    implementation("com.viliussutkus89.ndk.thirdparty:libiconv${ndkVersionSuffix}${libraryTypeSuffix}:1.17-beta-3")
 }
 
 ndkPorts {

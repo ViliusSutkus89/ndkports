@@ -23,10 +23,10 @@ abstract class PortTask(objects: ObjectFactory) : DefaultTask() {
     @get:Input
     val libraryType: Property<LibraryType> =
         objects.property(LibraryType::class.java).convention(
-            if (project.findProperty("libraryType") as String == "shared") {
-                LibraryType.Shared
-            } else {
+            if (project.findProperty("libraryType") as String == "static") {
                 LibraryType.Static
+            } else {
+                LibraryType.Shared
             }
         )
 

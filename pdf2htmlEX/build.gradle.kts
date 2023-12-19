@@ -8,16 +8,16 @@ group = rootProject.group
 // Hardcode a list of available versions
 val portVersion = when(project.findProperty("packageVersion")) {
     "0.18.7-poppler-0.81.0" -> {
-        version = "0.18.7-poppler-0.81.0-beta-5"
+        version = "0.18.7-poppler-0.81.0-beta-6"
         "0.18.7-poppler-0.81.0"
     }
     "0.18.8.rc1" -> {
-        version = "0.18.8.rc1-beta-5"
+        version = "0.18.8.rc1-beta-6"
         "0.18.8.rc1"
     }
     // https://github.com/pdf2htmlEX/pdf2htmlEX/pull/154 Hoping it will be named rc2
     else /* "0.18.8.rc2" */ -> {
-        version = "0.18.8.rc2-beta-3"
+        version = "0.18.8.rc2-beta-4"
         "0.18.8.rc2"
     }
 }
@@ -30,21 +30,22 @@ plugins {
 
 dependencies {
     val ndkVersionSuffix = rootProject.extra.get("ndkVersionSuffix")
-    implementation("com.viliussutkus89.ndk.thirdparty:cairo${ndkVersionSuffix}-static:1.18.0-beta-3")
-    implementation("com.viliussutkus89.ndk.thirdparty:freetype${ndkVersionSuffix}-static:2.13.2-beta-5")
+    val libraryTypeSuffix = rootProject.extra.get("libraryTypeSuffix")
+    implementation("com.viliussutkus89.ndk.thirdparty:cairo${ndkVersionSuffix}${libraryTypeSuffix}:1.18.0-beta-4")
+    implementation("com.viliussutkus89.ndk.thirdparty:freetype${ndkVersionSuffix}${libraryTypeSuffix}:2.13.2-beta-6")
 
     when (portVersion) {
         "0.18.7-poppler-0.81.0" -> {
-            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}-static:20170731-beta-6")
-            implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}-static:0.81.0-beta-3")
+            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}${libraryTypeSuffix}:20170731-beta-7")
+            implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}${libraryTypeSuffix}:0.81.0-beta-4")
         }
         "0.18.8.rc1" -> {
-            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}-static:20200314-beta-10")
-            implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}-static:0.89.0-beta-3")
+            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}${libraryTypeSuffix}:20200314-beta-11")
+            implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}${libraryTypeSuffix}:0.89.0-beta-4")
         }
         "0.18.8.rc2" -> {
-            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}-static:20230101-beta-10")
-            implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}-static:23.12.0-beta-1")
+            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}${libraryTypeSuffix}:20230101-beta-11")
+            implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}${libraryTypeSuffix}:23.12.0-beta-2")
         }
     }
 }
