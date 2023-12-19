@@ -235,14 +235,6 @@ Available versions:
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/harfbuzz-ndk26-static.svg?label=Maven%20Central%20harfbuzz-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:harfbuzz-ndk26-static)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/harfbuzz-ndk26-shared.svg?label=Maven%20Central%20harfbuzz-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:harfbuzz-ndk26-shared)
 
-#### [JSON-GLib](https://wiki.gnome.org/Projects/JsonGlib)
-
-[![json-glib](https://github.com/ViliusSutkus89/ndkports/actions/workflows/json-glib.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/json-glib.yml)
-[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/json-glib-ndk25-static.svg?label=Maven%20Central%20json-glib-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:json-glib-ndk25-static)
-[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/json-glib-ndk25-shared.svg?label=Maven%20Central%20json-glib-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:json-glib-ndk25-shared)
-[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/json-glib-ndk26-static.svg?label=Maven%20Central%20json-glib-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:json-glib-ndk26-static)
-[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/json-glib-ndk26-shared.svg?label=Maven%20Central%20json-glib-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:json-glib-ndk26-shared)
-
 #### [libuninameslist](https://github.com/fontforge/libuninameslist)
 
 [![libuninameslist](https://github.com/ViliusSutkus89/ndkports/actions/workflows/libuninameslist.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/libuninameslist.yml)
