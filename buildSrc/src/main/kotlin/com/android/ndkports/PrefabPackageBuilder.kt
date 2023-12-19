@@ -220,11 +220,9 @@ class PrefabPackageBuilder(
                     .replace(generatedDir, "/__PREFAB__PACKAGE__PATH__")
                     .replace(ndkPath, "/__NDK__PATH__")
 
-                // Some dependencies link against static libraries,
-                // but don't pick up private dependencies.
-                // Workaround this issue by marking all private
-                // dependencies as public dependencies in pkg-config.
-                if (module.static && dstFile.extension == "pc") {
+                // Some pkg-config file parsers don't like when "Libs" and "Requires" appear multiple times
+                // Merge them.
+                if (dstFile.extension == "pc") {
                     val sb = StringBuilder()
                     val libs = mutableListOf<String>()
                     val libsPrivate = mutableListOf<String>()
@@ -248,14 +246,27 @@ class PrefabPackageBuilder(
                             sb.appendLine(line)
                         }
                     }
-                    (libs + libsPrivate).joinToString(" ").trim().let { libsWithPrivates ->
-                        if (libsWithPrivates.isNotEmpty()) {
-                            sb.appendLine("Libs: $libsWithPrivates")
-                        }
+
+                    // Some dependencies link against static libraries,
+                    // but don't pick up private dependencies.
+                    // Workaround this issue by marking all private
+                    // dependencies as public dependencies in pkg-config.
+                    if (module.static && dstFile.extension == "pc") {
+                        libs.addAll(libsPrivate)
+                        libsPrivate.clear()
+                        requires.addAll(requiresPrivate)
+                        requiresPrivate.clear()
                     }
-                    (requires + requiresPrivate).joinToString(" ").trim().let { requiresWithPrivates ->
-                        if (requiresWithPrivates.isNotEmpty()) {
-                            sb.appendLine("Requires: $requiresWithPrivates")
+                    listOf(
+                        Pair("Requires", requires),
+                        Pair("Requires.private", requiresPrivate),
+                        Pair("Libs", libs),
+                        Pair("Libs.private", libsPrivate),
+                    ).forEach { deps ->
+                        deps.second.joinToString(" ").trim().let { depsJoined ->
+                            if (depsJoined.isNotEmpty()) {
+                                sb.appendLine("${deps.first}: $depsJoined")
+                            }
                         }
                     }
                     configFileContent = sb.toString()
