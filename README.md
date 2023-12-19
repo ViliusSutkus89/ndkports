@@ -89,7 +89,7 @@ Available versions:
 
 Available versions:
 
-- v0.18.8.rc2 (unofficial release, https://github.com/pdf2htmlEX/pdf2htmlEX/pull/145)
+- v0.18.8.rc2 (unofficial release, https://github.com/pdf2htmlEX/pdf2htmlEX/pull/154)
 - v0.18.8.rc1
 - v0.18.7-poppler-0.81.0
 
