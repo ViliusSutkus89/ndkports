@@ -34,10 +34,6 @@ Libraries built with different NDK versions should not be used in the same appli
 - shared (libfoo.so) with static dependencies
 - shared (libfoo.so) with shared dependencies
 
-## TODO
-
-Run unit tests provided by upstream packages.
-
 ## Ports
 
 #### [GLib](https://gitlab.gnome.org/GNOME/glib/)
