@@ -21,7 +21,7 @@ buildscript {
             }
             "shared-with-shared-deps" -> {
                 set("libraryTypeSuffix", "-shared-with-shared-deps")
-                set("dependencyLibraryTypeSuffix", "-shared")
+                set("dependencyLibraryTypeSuffix", "-shared-with-shared-deps")
             }
             /* static */ else -> {
                 set("libraryTypeSuffix", "-static")
