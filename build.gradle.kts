@@ -16,16 +16,16 @@ buildscript {
 
         when (project.findProperty("libraryType")) {
             "shared" -> {
-                set("libraryType", "shared")
                 set("libraryTypeSuffix", "-shared")
+                set("dependencyLibraryTypeSuffix", "-static")
             }
             "shared-with-shared-deps" -> {
-                set("libraryType", "shared-with-shared-deps")
                 set("libraryTypeSuffix", "-shared-with-shared-deps")
+                set("dependencyLibraryTypeSuffix", "-shared")
             }
             /* static */ else -> {
-                set("libraryType", "static")
                 set("libraryTypeSuffix", "-static")
+                set("dependencyLibraryTypeSuffix", "-static")
             }
         }
     }

@@ -30,9 +30,9 @@ Libraries built with different NDK versions should not be used in the same appli
 
 #### Libraries are built as:
 
-- static (libfoo.a) with static dependencies
-- shared (libfoo.so) with static dependencies
-- shared (libfoo.so) with shared dependencies
+- static (libfoo.a) with all dependencies linked as static libraries too,
+- shared (libfoo.so) with all dependencies linked as static libraries,
+- shared-with-shared-deps (libfoo.so) with all dependencies linked as shared libraries too.
 
 ## Ports
 

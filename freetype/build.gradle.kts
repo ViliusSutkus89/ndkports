@@ -6,7 +6,7 @@ import org.gradle.jvm.tasks.Jar
 val portVersion = "2.13.2"
 
 group = rootProject.group
-version = "${portVersion}-beta-6"
+version = "${portVersion}-beta-7"
 
 plugins {
     id("maven-publish")
@@ -16,8 +16,8 @@ plugins {
 
 dependencies {
     val ndkVersionSuffix = rootProject.extra.get("ndkVersionSuffix")
-    val libraryTypeSuffix = rootProject.extra.get("libraryTypeSuffix")
-    implementation("com.viliussutkus89.ndk.thirdparty:libpng${ndkVersionSuffix}${libraryTypeSuffix}:1.6.40-beta-6")
+    val dependencyLibraryTypeSuffix = rootProject.extra.get("dependencyLibraryTypeSuffix")
+    implementation("com.viliussutkus89.ndk.thirdparty:libpng${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:1.6.40-beta-6")
 
     // Library bz2 found: NO
     // Run-time dependency harfbuzz found: NO (tried pkgconfig and cmake)

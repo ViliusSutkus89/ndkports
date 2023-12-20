@@ -30,22 +30,22 @@ plugins {
 
 dependencies {
     val ndkVersionSuffix = rootProject.extra.get("ndkVersionSuffix")
-    val libraryTypeSuffix = rootProject.extra.get("libraryTypeSuffix")
-    implementation("com.viliussutkus89.ndk.thirdparty:cairo${ndkVersionSuffix}${libraryTypeSuffix}:1.18.0-beta-4")
-    implementation("com.viliussutkus89.ndk.thirdparty:freetype${ndkVersionSuffix}${libraryTypeSuffix}:2.13.2-beta-6")
+    val dependencyLibraryTypeSuffix = rootProject.extra.get("dependencyLibraryTypeSuffix")
+    implementation("com.viliussutkus89.ndk.thirdparty:cairo${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:1.18.0-beta-5")
+    implementation("com.viliussutkus89.ndk.thirdparty:freetype${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:2.13.2-beta-7")
 
     when (portVersion) {
         "0.18.7-poppler-0.81.0" -> {
-            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}${libraryTypeSuffix}:20170731-beta-7")
-            implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}${libraryTypeSuffix}:0.81.0-beta-4")
+            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:20170731-beta-8")
+            implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:0.81.0-beta-5")
         }
         "0.18.8.rc1" -> {
-            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}${libraryTypeSuffix}:20200314-beta-11")
-            implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}${libraryTypeSuffix}:0.89.0-beta-4")
+            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:20200314-beta-12")
+            implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:0.89.0-beta-5")
         }
         "0.18.8.rc2" -> {
-            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}${libraryTypeSuffix}:20230101-beta-11")
-            implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}${libraryTypeSuffix}:23.12.0-beta-2")
+            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:20230101-beta-12")
+            implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:23.12.0-beta-3")
         }
     }
 }

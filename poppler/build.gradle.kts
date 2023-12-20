@@ -8,23 +8,23 @@ group = rootProject.group
 // Hardcode a list of available versions
 val portVersion = when(project.findProperty("packageVersion")) {
     "0.81.0" -> {
-        version = "0.81.0-beta-4"
+        version = "0.81.0-beta-5"
         "0.81.0"
     }
     "0.89.0" -> {
-        version = "0.89.0-beta-4"
+        version = "0.89.0-beta-5"
         "0.89.0"
     }
     "21.02.0" -> {
-        version = "21.02.0-beta-4"
+        version = "21.02.0-beta-5"
         "21.02.0"
     }
     "23.10.0" -> {
-        version = "23.10.0-beta-4"
+        version = "23.10.0-beta-6"
         "23.10.0"
     }
     else /* "23.12.0" */ -> {
-        version = "23.12.0-beta-2"
+        version = "23.12.0-beta-3"
         "23.12.0"
     }
 }
@@ -37,19 +37,19 @@ plugins {
 
 dependencies {
     val ndkVersionSuffix = rootProject.extra.get("ndkVersionSuffix")
-    val libraryTypeSuffix = rootProject.extra.get("libraryTypeSuffix")
-    implementation("com.viliussutkus89.ndk.thirdparty:freetype${ndkVersionSuffix}${libraryTypeSuffix}:2.13.2-beta-6")
-    implementation("com.viliussutkus89.ndk.thirdparty:libiconv${ndkVersionSuffix}${libraryTypeSuffix}:1.17-beta-3")
-    implementation("com.viliussutkus89.ndk.thirdparty:libpng${ndkVersionSuffix}${libraryTypeSuffix}:1.6.40-beta-6")
-    implementation("com.viliussutkus89.ndk.thirdparty:libjpeg-turbo${ndkVersionSuffix}${libraryTypeSuffix}:3.0.1-beta-3")
-    implementation("com.viliussutkus89.ndk.thirdparty:libtiff${ndkVersionSuffix}${libraryTypeSuffix}:4.6.0-beta-5")
-    implementation("com.viliussutkus89.ndk.thirdparty:openjpeg${ndkVersionSuffix}${libraryTypeSuffix}:2.5.0-beta-4")
-    implementation("com.viliussutkus89.ndk.thirdparty:glib2${ndkVersionSuffix}${libraryTypeSuffix}:2.78.3-beta-1")
-    implementation("com.viliussutkus89.ndk.thirdparty:cairo${ndkVersionSuffix}${libraryTypeSuffix}:1.18.0-beta-4")
-    implementation("com.viliussutkus89.ndk.thirdparty:lcms2${ndkVersionSuffix}${libraryTypeSuffix}:2.16-beta-1")
+    val dependencyLibraryTypeSuffix = rootProject.extra.get("dependencyLibraryTypeSuffix")
+    implementation("com.viliussutkus89.ndk.thirdparty:freetype${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:2.13.2-beta-7")
+    implementation("com.viliussutkus89.ndk.thirdparty:libiconv${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:1.17-beta-3")
+    implementation("com.viliussutkus89.ndk.thirdparty:libpng${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:1.6.40-beta-6")
+    implementation("com.viliussutkus89.ndk.thirdparty:libjpeg-turbo${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:3.0.1-beta-3")
+    implementation("com.viliussutkus89.ndk.thirdparty:libtiff${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:4.6.0-beta-6")
+    implementation("com.viliussutkus89.ndk.thirdparty:openjpeg${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:2.5.0-beta-4")
+    implementation("com.viliussutkus89.ndk.thirdparty:glib2${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:2.78.3-beta-2")
+    implementation("com.viliussutkus89.ndk.thirdparty:cairo${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:1.18.0-beta-5")
+    implementation("com.viliussutkus89.ndk.thirdparty:lcms2${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:2.16-beta-2")
     if (listOf("0.81.0", "0.89.0", "21.02.0").contains(portVersion)) {
         // 23.10.0 supports Android's native alternative of fontconfig
-        implementation("com.viliussutkus89.ndk.thirdparty:fontconfig${ndkVersionSuffix}${libraryTypeSuffix}:2.14.2-beta-4")
+        implementation("com.viliussutkus89.ndk.thirdparty:fontconfig${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:2.14.2-beta-5")
     }
 }
 
