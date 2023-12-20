@@ -17,10 +17,10 @@
 - spiro
 
 #### Ports with dependencies:
-- glib2 (depends on: libiconv, proxy-libintl, libffi, pcre2)
 - libtiff (depends on: libjpeg-turbo)
+- freetype (depends on: libpng)
+- glib2 (depends on: libiconv, proxy-libintl, libffi, pcre2)
 - libxml2 (depends on: libiconv)
-- freetype(depends on: libpng)
 
 - lcms2 (depends on: libtiff)
 - fontconfig (depends on: freetype, libexpat)
