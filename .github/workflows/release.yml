@@ -23,7 +23,7 @@ jobs:
     environment: SonatypeAccess
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
@@ -52,7 +52,7 @@ jobs:
           - "shared"
           - "shared-with-shared-deps"
     steps:
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
@@ -92,7 +92,7 @@ jobs:
     environment: SonatypeAccess
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
