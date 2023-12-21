@@ -48,7 +48,7 @@ tasks.register<MesonPortTask>("buildPort") {
 
     doLast {
         // @TODO: verify other ABIs have matching assets
-        val dst = project.buildDir.resolve("assets/fontconfig").apply { mkdirs() }
+        val dst = project.layout.buildDirectory.get().asFile.resolve("assets/fontconfig").apply { mkdirs() }
         val iDir = installDirectoryFor(com.android.ndkports.Abi.Arm)
         listOf(iDir.resolve("etc"), iDir.resolve("share")).forEach {
             it.copyRecursively(dst.resolve(it.name)) { file, exception ->
