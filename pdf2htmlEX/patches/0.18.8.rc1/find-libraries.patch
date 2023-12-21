@@ -1,6 +1,6 @@
 --- pdf2htmlEX/CMakeLists.txt	2023-11-14 03:32:25.260000000 +0200
 +++ pdf2htmlEX/CMakeLists.txt	2023-11-15 02:28:10.440000000 +0200
-@@ -23,90 +23,22 @@
+@@ -23,90 +23,23 @@
 
  find_package(PkgConfig)
 
@@ -25,7 +25,8 @@
 -)
 -
 +pkg_search_module(POPPLER-GLIB REQUIRED IMPORTED_TARGET poppler-glib=0.89.0)
-+set(PDF2HTMLEX_LIBS ${PDF2HTMLEX_LIBS} PkgConfig::POPPLER-GLIB)
++pkg_search_module(POPPLER REQUIRED IMPORTED_TARGET poppler=0.89.0)
++set(PDF2HTMLEX_LIBS ${PDF2HTMLEX_LIBS} PkgConfig::POPPLER-GLIB PkgConfig::POPPLER)
 
  if(ENABLE_SVG)
 -    pkg_check_modules(CAIRO REQUIRED cairo>=1.10.0)

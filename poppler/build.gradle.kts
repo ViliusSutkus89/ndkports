@@ -12,7 +12,7 @@ val portVersion = when(project.findProperty("packageVersion")) {
         "0.81.0"
     }
     "0.89.0" -> {
-        version = "0.89.0-beta-5"
+        version = "0.89.0-beta-6"
         "0.89.0"
     }
     "21.02.0" -> {
@@ -109,7 +109,13 @@ tasks.extractSrc {
                 srcDir.resolve("ConfigureChecks.cmake").patch("have_unistd_h.patch")
                 srcDir.patch("glib-boxed-type.patch")
             }
-            "0.89.0", "21.02.0" -> {
+            "0.89.0" -> {
+                srcDir.resolve("CMakeLists.txt").patch("fontconfig.patch")
+                srcDir.resolve("CMakeLists.txt").patch("FindCairo.patch")
+                srcDir.patch("glib-boxed-type.patch")
+                srcDir.patch("ExportPrivatesForPdf2htmlEX.patch")
+            }
+            "21.02.0" -> {
                 srcDir.resolve("CMakeLists.txt").patch("fontconfig.patch")
                 srcDir.resolve("CMakeLists.txt").patch("FindCairo.patch")
                 srcDir.patch("glib-boxed-type.patch")

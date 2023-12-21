@@ -1,0 +1,68 @@
+--- poppler/OutputDev.h
++++ poppler/OutputDev.h	2023-12-21 22:27:48.186000000 +0200
+@@ -73,7 +73,7 @@
+ // OutputDev
+ //------------------------------------------------------------------------
+ 
+-class OutputDev {
++class __attribute__((visibility("default"))) OutputDev {
+ public:
+ 
+   // Constructor.
+
+--- poppler/PDFDoc.h
++++ poppler/PDFDoc.h	2023-12-21 22:28:58.597000000 +0200
+@@ -112,7 +112,7 @@
+ // PDFDoc
+ //------------------------------------------------------------------------
+ 
+-class PDFDoc {
++class __attribute__((visibility("default"))) PDFDoc {
+ public:
+ 
+   PDFDoc(const GooString *fileNameA, const GooString *ownerPassword = nullptr,
+
+--- poppler/CairoFontEngine.h
++++ poppler/CairoFontEngine.h
+@@ -40,7 +40,7 @@
+ 
+ class CairoFontEngine;
+ 
+-class CairoFont {
++class __attribute__((visibility("default"))) CairoFont {
+ public:
+   CairoFont(Ref refA,
+ 	    cairo_font_face_t *cairo_font_faceA,
+@@ -107,7 +107,7 @@ private:
+ // CairoFontEngine
+ //------------------------------------------------------------------------
+ 
+-class CairoFontEngine {
++class __attribute__((visibility("default"))) CairoFontEngine {
+ public:
+ 
+   // Create a font engine.
+
+--- poppler/CairoOutputDev.h
++++ poppler/CairoOutputDev.h
+@@ -85,7 +85,7 @@
+ // CairoOutputDev
+ //------------------------------------------------------------------------
+ 
+-class CairoOutputDev: public OutputDev {
++class __attribute__((visibility("default"))) CairoOutputDev: public OutputDev {
+ public:
+ 
+   // Constructor.
+
+--- poppler/GfxState.h
++++ poppler/GfxState.h
+@@ -54,7 +54,7 @@ class GfxState;
+ class GfxResources;
+ class GfxSeparationColorSpace;
+ 
+-class Matrix {
++class __attribute__((visibility("default"))) Matrix {
+ public:
+     double m[6];
+ 
