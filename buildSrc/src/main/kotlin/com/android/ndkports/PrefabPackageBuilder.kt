@@ -251,7 +251,7 @@ class PrefabPackageBuilder(
                     // but don't pick up private dependencies.
                     // Workaround this issue by marking all private
                     // dependencies as public dependencies in pkg-config.
-                    if (module.static && dstFile.extension == "pc") {
+                    if (module.static) {
                         libs.addAll(libsPrivate)
                         libsPrivate.clear()
                         requires.addAll(requiresPrivate)
