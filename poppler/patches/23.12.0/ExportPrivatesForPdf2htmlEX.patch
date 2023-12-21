@@ -1,0 +1,53 @@
+--- poppler/CairoFontEngine.h
++++ poppler/CairoFontEngine.h
+@@ -45,7 +45,7 @@
+ 
+ class CairoFontEngine;
+ 
+-class CairoFont
++class POPPLER_PRIVATE_EXPORT CairoFont
+ {
+ public:
+     CairoFont(Ref refA, cairo_font_face_t *cairo_font_faceA, std::vector<int> &&codeToGIDA, bool substituteA, bool printingA);
+@@ -112,7 +112,7 @@ private:
+ // CairoFontEngine
+ //------------------------------------------------------------------------
+ 
+-class CairoFontEngine
++class POPPLER_PRIVATE_EXPORT CairoFontEngine
+ {
+ public:
+     // Create a font engine.
+--- poppler/CairoOutputDev.h
++++ poppler/CairoOutputDev.h
+@@ -98,7 +98,7 @@ private:
+ // CairoOutputDev
+ //------------------------------------------------------------------------
+ 
+-class CairoOutputDev : public OutputDev
++class POPPLER_PRIVATE_EXPORT CairoOutputDev : public OutputDev
+ {
+ public:
+     // Constructor.
+--- poppler/CharCodeToUnicode.h
++++ poppler/CharCodeToUnicode.h
+@@ -42,7 +42,7 @@ class GooString;
+ 
+ //------------------------------------------------------------------------
+ 
+-class CharCodeToUnicode
++class POPPLER_PRIVATE_EXPORT CharCodeToUnicode
+ {
+     friend class UnicodeToCharCode;
+ 
+--- poppler/GfxState.h
++++ poppler/GfxState.h
+@@ -56,7 +56,7 @@ class GfxState;
+ class GfxResources;
+ class GfxSeparationColorSpace;
+ 
+-class Matrix
++class POPPLER_PRIVATE_EXPORT Matrix
+ {
+ public:
+     double m[6];

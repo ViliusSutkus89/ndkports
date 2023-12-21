@@ -20,11 +20,11 @@ val portVersion = when(project.findProperty("packageVersion")) {
         "21.02.0"
     }
     "23.10.0" -> {
-        version = "23.10.0-beta-6"
+        version = "23.10.0-beta-7"
         "23.10.0"
     }
     else /* "23.12.0" */ -> {
-        version = "23.12.0-beta-3"
+        version = "23.12.0-beta-4"
         "23.12.0"
     }
 }
@@ -117,6 +117,7 @@ tasks.extractSrc {
             "23.10.0", "23.12.0" -> {
                 srcDir.resolve("CMakeLists.txt").patch("FindCairo.patch")
                 srcDir.resolve("cmake/modules/CheckFileOffsetBits.cmake").patch("CheckFileOffsetBits.patch")
+                srcDir.patch("ExportPrivatesForPdf2htmlEX.patch")
             }
         }
     }
@@ -157,11 +158,7 @@ tasks.register<CMakePortTask>("buildPort") {
                 com.android.ndkports.Abi.values().forEach { abi ->
                     val pkgconfigdir = installDirectoryFor(abi).resolve("lib/pkgconfig")
                     pkgconfigdir.resolve("poppler.pc")
-                        .appendText("Requires: freetype2 libpng16 libturbojpeg libtiff-4 libopenjp2 glib-2.0 cairo lcms2")
-                    pkgconfigdir.resolve("poppler-cpp.pc")
-                        .replace("Requires.private:", "Requires:")
-                    pkgconfigdir.resolve("poppler-glib.pc")
-                        .replace("Requires.private:", "Requires:")
+                        .appendText("Requires: freetype2 libpng16 libturbojpeg libtiff-4 libopenjp2 glib-2.0 cairo lcms2\n")
                 }
             }
         }

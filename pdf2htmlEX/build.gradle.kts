@@ -45,7 +45,7 @@ dependencies {
         }
         "0.18.8.rc2" -> {
             implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:20230101-beta-12")
-            implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:23.12.0-beta-3")
+            implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:23.12.0-beta-4")
         }
     }
 }
