@@ -35,7 +35,12 @@ tasks.prefab {
 
 tasks.extractSrc {
     doLast {
-        outDir.get().asFile.resolve("glib/meson.build").apply {
+        val srcDir = outDir.get().asFile
+
+        // Make sure not to build proxy-libintl subproject, it's already used as regular dependency
+        srcDir.resolve("subprojects/proxy-libintl.wrap").delete()
+
+        srcDir.resolve("glib/meson.build").apply {
             writeText(
                 readText().replace(
                     "libraries : [libintl_deps],",
@@ -55,7 +60,7 @@ tasks.extractSrc {
             // Patch inspired by (taken from):
             // https://github.com/deltachat/deltachat-android/pull/2324
             // fcntl only if epoll created successfully
-            outDir.get().asFile.resolve("gio/giounix-private.c").let {
+            srcDir.resolve("gio/giounix-private.c").let {
                 it.writeText(it.readText().replace(
                     "#include <sys/epoll.h>",
                     """
