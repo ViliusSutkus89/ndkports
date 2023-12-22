@@ -6,7 +6,7 @@ import org.gradle.jvm.tasks.Jar
 val portVersion = "0.8.1"
 
 group = rootProject.group
-version = "${portVersion}-beta-2"
+version = "${portVersion}-beta-3"
 
 plugins {
     id("maven-publish")
@@ -60,6 +60,7 @@ tasks.extractSrc {
         targetConfigure.setExecutable(true)
         srcDir.resolve("Make.inc").patch("no-hard-float.patch")
         srcDir.resolve("Make.inc").patch("i387-long-double-not-double.patch")
+        srcDir.resolve("Makefile").patch("unversioned-soname.patch")
         srcDir.resolve("openlibm.pc.in").patch("pcfile-includesubdir.patch")
     }
 }
