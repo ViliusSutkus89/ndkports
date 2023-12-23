@@ -3,10 +3,10 @@ import com.android.ndkports.CMakeCompatibleVersion
 import com.android.ndkports.PrefabSysrootPlugin
 import org.gradle.jvm.tasks.Jar
 
-val portVersion = "2.78.3"
+val portVersion = "2.75.1"
 
 group = rootProject.group
-version = "${portVersion}-beta-2"
+version = "${portVersion}-beta-1"
 
 plugins {
     id("maven-publish")
@@ -33,55 +33,47 @@ tasks.prefab {
     generator.set(PrefabSysrootPlugin::class.java)
 }
 
+fun File.replace(oldValue: String, newValue: String, ignoreCase: Boolean = false): File {
+    writeText(readText().replace(oldValue, newValue, ignoreCase))
+    return this
+}
+
+fun File.patch(patch: String) {
+    patch(projectDir.resolve("patches/$portVersion").resolve(patch))
+}
+
+fun File.patch(patch: File) {
+    val pb = ProcessBuilder(
+        if (isFile) listOf("patch", "-p0", absolutePath)
+        else listOf("patch", "-p0")
+    )
+
+    if (isDirectory)
+        pb.directory(absoluteFile)
+
+    val process = pb.start()
+    process.outputStream.writer().use {
+        it.write(patch.readText())
+    }
+    process.errorStream.bufferedReader().use {
+        println(it.readText())
+    }
+    process.inputStream.bufferedReader().use {
+        println(it.readText())
+    }
+    if (process.waitFor() != 0) {
+        throw RuntimeException("Patch failed!\n")
+    }
+}
+
 tasks.extractSrc {
     doLast {
         val srcDir = outDir.get().asFile
-
         // Make sure not to build proxy-libintl subproject, it's already used as regular dependency
         srcDir.resolve("subprojects/proxy-libintl.wrap").delete()
-
-        srcDir.resolve("glib/meson.build").apply {
-            writeText(
-                readText().replace(
-                    "libraries : [libintl_deps],",
-                    "libraries : [libintl_deps, libffi_dep],",
-                )
-            )
-        }
-
-        val minSdkVersion = rootProject.extra.get("minSdkSupportedByNdk").toString().toInt()
-        if (minSdkVersion < 21) {
-            // usr/include/sys/epoll.h:
-            // int epoll_create(int __size);
-            // #if __ANDROID_API__ >= 21
-            // int epoll_create1(int __flags) __INTRODUCED_IN(21);
-            // #endif /* __ANDROID_API__ >= 21 */
-
-            // Patch inspired by (taken from):
-            // https://github.com/deltachat/deltachat-android/pull/2324
-            // fcntl only if epoll created successfully
-            srcDir.resolve("gio/giounix-private.c").let {
-                it.writeText(it.readText().replace(
-                    "#include <sys/epoll.h>",
-                    """
-                        #include <sys/epoll.h>
-                        #if __ANDROID_API__ < 21
-                        #include <fcntl.h>
-                        #define EPOLL_CLOEXEC O_CLOEXEC
-                        static int epoll_create1(int flags) {
-                            int fd = epoll_create(1);
-                            if (-1 != fd && flags & O_CLOEXEC) {
-                                int f = fcntl(fd, F_GETFD);
-                                fcntl(fd, F_SETFD, f | FD_CLOEXEC);
-                            }
-                            return fd;
-                        }
-                        #endif
-
-                    """.trimIndent()
-                ))
-            }
-        }
+        srcDir.resolve("glib/meson.build").patch("libffi-pkgconfig-pc.patch")
+        srcDir.resolve("gio/giounix-private.c").patch("epoll_create1.patch")
+        srcDir.resolve("meson.build").patch("ngettext.patch")
     }
 }
 
@@ -111,11 +103,8 @@ tasks.register<MesonPortTask>("buildPort") {
                     }
                 }
 
-                iDir.resolve("lib/pkgconfig/glib-2.0.pc").let {
-                    it.writeText(it.readText()
-                        .replace("-I\${libdir}/glib-2.0/include", "")
-                    )
-                }
+                iDir.resolve("lib/pkgconfig/glib-2.0.pc")
+                    .replace("-I\${libdir}/glib-2.0/include", "")
             }
         }
     }
@@ -188,6 +177,7 @@ tasks.prefabPackage {
 val packageSources = tasks.register<Jar>("packageSources") {
     archiveClassifier.set("sources")
     from(projectDir.resolve("build.gradle.kts"))
+    from(projectDir.resolve("patches/$portVersion"))
     from(ndkPorts.source)
 }
 

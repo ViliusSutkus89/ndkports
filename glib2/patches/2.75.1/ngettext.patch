@@ -1,0 +1,11 @@
+--- meson.build
++++ meson.build 2023-12-22 23:24:51.020000000 +0200.txt
+@@ -2097,7 +2097,7 @@
+   #
+   # Meson's builtin dependency lookup as of 0.60.0 doesn't check for
+   # pthread, so we do this manually here.
+-  if cc.has_function('ngettext', dependencies : libintl)
++  if cc.has_function('ngettext', dependencies : libintl, prefix : '#include <libintl.h>')
+     libintl_deps += [libintl]
+   else
+     libintl_pthread = cc.find_library('pthread', required : false)
