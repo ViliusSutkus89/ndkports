@@ -6,7 +6,7 @@ import org.gradle.jvm.tasks.Jar
 group = rootProject.group
 
 val portVersion = "1.51.0"
-version = "1.51.0-beta-6"
+version = "1.51.0-beta-7"
 
 plugins {
     id("maven-publish")
@@ -17,12 +17,12 @@ plugins {
 dependencies {
     val ndkVersionSuffix = rootProject.extra.get("ndkVersionSuffix")
     val dependencyLibraryTypeSuffix = rootProject.extra.get("dependencyLibraryTypeSuffix")
-    implementation("com.viliussutkus89.ndk.thirdparty:cairo${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:1.18.0-beta-5")
+    implementation("com.viliussutkus89.ndk.thirdparty:cairo${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:1.18.0-beta-6")
     implementation("com.viliussutkus89.ndk.thirdparty:fontconfig${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:2.14.2-beta-5")
     implementation("com.viliussutkus89.ndk.thirdparty:freetype${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:2.13.2-beta-7")
     implementation("com.viliussutkus89.ndk.thirdparty:fribidi${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:1.0.13-beta-3")
-    implementation("com.viliussutkus89.ndk.thirdparty:glib2${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:2.78.3-beta-2")
-    implementation("com.viliussutkus89.ndk.thirdparty:harfbuzz${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:8.3.0-beta-2")
+    implementation("com.viliussutkus89.ndk.thirdparty:glib2${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:2.75.0-beta-1")
+    implementation("com.viliussutkus89.ndk.thirdparty:harfbuzz${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:8.3.0-beta-3")
 }
 
 ndkPorts {

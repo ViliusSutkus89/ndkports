@@ -6,7 +6,7 @@ import org.gradle.jvm.tasks.Jar
 val portVersion = "1.18.0"
 
 group = rootProject.group
-version = "${portVersion}-beta-5"
+version = "${portVersion}-beta-6"
 
 plugins {
     id("maven-publish")
@@ -20,7 +20,7 @@ dependencies {
     implementation("com.viliussutkus89.ndk.thirdparty:freetype${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:2.13.2-beta-7")
     implementation("com.viliussutkus89.ndk.thirdparty:libpng${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:1.6.40-beta-6")
     implementation("com.viliussutkus89.ndk.thirdparty:pixman${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:0.42.2-beta-4")
-    implementation("com.viliussutkus89.ndk.thirdparty:glib2${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:2.78.3-beta-2")
+    implementation("com.viliussutkus89.ndk.thirdparty:glib2${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:2.75.0-beta-1")
     implementation("com.viliussutkus89.ndk.thirdparty:fontconfig${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:2.14.2-beta-5")
 
     // Test dependencies
