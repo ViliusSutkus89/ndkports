@@ -3,7 +3,7 @@ import com.android.ndkports.CMakeCompatibleVersion
 import com.android.ndkports.PrefabSysrootPlugin
 import org.gradle.jvm.tasks.Jar
 
-val portVersion = "2.75.1"
+val portVersion = "2.75.0"
 
 group = rootProject.group
 version = "${portVersion}-beta-1"
@@ -38,11 +38,12 @@ fun File.replace(oldValue: String, newValue: String, ignoreCase: Boolean = false
     return this
 }
 
-fun File.patch(patch: String) {
+fun File.patch(patch: String): File {
     patch(projectDir.resolve("patches/$portVersion").resolve(patch))
+    return this
 }
 
-fun File.patch(patch: File) {
+fun File.patch(patch: File): File {
     val pb = ProcessBuilder(
         if (isFile) listOf("patch", "-p0", absolutePath)
         else listOf("patch", "-p0")
@@ -64,6 +65,7 @@ fun File.patch(patch: File) {
     if (process.waitFor() != 0) {
         throw RuntimeException("Patch failed!\n")
     }
+    return this
 }
 
 tasks.extractSrc {
@@ -73,7 +75,9 @@ tasks.extractSrc {
         srcDir.resolve("subprojects/proxy-libintl.wrap").delete()
         srcDir.resolve("glib/meson.build").patch("libffi-pkgconfig-pc.patch")
         srcDir.resolve("gio/giounix-private.c").patch("epoll_create1.patch")
-        srcDir.resolve("meson.build").patch("ngettext.patch")
+        srcDir.resolve("meson.build")
+            .patch("ngettext.patch")
+            .patch("pointer-sign-error.patch")
     }
 }
 

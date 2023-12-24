@@ -39,7 +39,7 @@ Libraries built with different NDK versions should not be used in the same appli
 #### [GLib](https://gitlab.gnome.org/GNOME/glib/)
 
 Released versions 2.78.1 and 2.78.3 are problematic (issue #20).
-Usable version is 2.75.1
+Usable version is 2.75.0
 
 [![glib2](https://github.com/ViliusSutkus89/ndkports/actions/workflows/glib2.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/glib2.yml)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/glib2-ndk25-static.svg?label=Maven%20Central%20glib2-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:glib2-ndk25-static)
