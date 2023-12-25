@@ -76,8 +76,6 @@ Usable version is 2.75.0
 Available versions:
 
 - 23.12.0
-- 23.10.0
-- 21.02.0
 - 0.89.0
 - 0.81.0
 

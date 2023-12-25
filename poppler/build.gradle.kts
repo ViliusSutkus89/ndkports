@@ -15,14 +15,6 @@ val portVersion = when(project.findProperty("packageVersion")) {
         version = "0.89.0-beta-7"
         "0.89.0"
     }
-    "21.02.0" -> {
-        version = "21.02.0-beta-6"
-        "21.02.0"
-    }
-    "23.10.0" -> {
-        version = "23.10.0-beta-8"
-        "23.10.0"
-    }
     else /* "23.12.0" */ -> {
         version = "23.12.0-beta-5"
         "23.12.0"
@@ -47,7 +39,7 @@ dependencies {
     implementation("com.viliussutkus89.ndk.thirdparty:glib2${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:2.75.0-beta-1")
     implementation("com.viliussutkus89.ndk.thirdparty:cairo${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:1.18.0-beta-6")
     implementation("com.viliussutkus89.ndk.thirdparty:lcms2${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:2.16-beta-2")
-    if (listOf("0.81.0", "0.89.0", "21.02.0").contains(portVersion)) {
+    if (listOf("0.81.0", "0.89.0").contains(portVersion)) {
         // 23.10.0 supports Android's native alternative of fontconfig
         implementation("com.viliussutkus89.ndk.thirdparty:fontconfig${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:2.14.2-beta-5")
     }
@@ -115,12 +107,7 @@ tasks.extractSrc {
                 srcDir.patch("glib-boxed-type.patch")
                 srcDir.patch("ExportPrivatesForPdf2htmlEX.patch")
             }
-            "21.02.0" -> {
-                srcDir.resolve("CMakeLists.txt").patch("fontconfig.patch")
-                srcDir.resolve("CMakeLists.txt").patch("FindCairo.patch")
-                srcDir.patch("glib-boxed-type.patch")
-            }
-            "23.10.0", "23.12.0" -> {
+            "23.12.0" -> {
                 srcDir.resolve("CMakeLists.txt").patch("FindCairo.patch")
                 srcDir.resolve("cmake/modules/CheckFileOffsetBits.cmake").patch("CheckFileOffsetBits.patch")
                 srcDir.patch("ExportPrivatesForPdf2htmlEX.patch")
@@ -135,7 +122,7 @@ tasks.prefab {
 
 tasks.register<CMakePortTask>("buildPort") {
     when (portVersion) {
-        "0.81.0", "0.89.0", "21.02.0" -> {
+        "0.81.0", "0.89.0" -> {
             cmake {
                 arg("-DENABLE_UNSTABLE_API_ABI_HEADERS=ON")
             }
@@ -148,7 +135,7 @@ tasks.register<CMakePortTask>("buildPort") {
                 }
             }
         }
-        "23.10.0", "23.12.0" -> {
+        "23.12.0" -> {
             cmake {
                 args(
                     "-DENABLE_UNSTABLE_API_ABI_HEADERS=ON",
@@ -280,8 +267,6 @@ publishing {
                     // Developer list obtained from:
                     // https://gitlab.freedesktop.org/poppler/poppler/-/raw/poppler-0.81.0/AUTHORS
                     // https://gitlab.freedesktop.org/poppler/poppler/-/raw/poppler-0.89.0/AUTHORS
-                    // https://gitlab.freedesktop.org/poppler/poppler/-/raw/poppler-21.02.0/AUTHORS
-                    // https://gitlab.freedesktop.org/poppler/poppler/-/raw/poppler-23.10.0/AUTHORS
                     // https://gitlab.freedesktop.org/poppler/poppler/-/raw/poppler-23.12.0/AUTHORS
                     // https://gitlab.freedesktop.org/poppler/poppler-data/-/blob/POPPLER_DATA_0_4_12/README
                     developer {
