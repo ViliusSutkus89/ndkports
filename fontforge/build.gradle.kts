@@ -9,15 +9,15 @@ group = rootProject.group
 // Hardcode a list of available versions
 val portVersion = when(project.findProperty("packageVersion")) {
     "20170731" -> {
-        version = "20170731-beta-8"
+        version = "20170731-beta-9"
         "20170731"
     }
     "20200314" -> {
-        version = "20200314-beta-13"
+        version = "20200314-beta-14"
         "20200314"
     }
     else /* "20230101" */ -> {
-        version = "20230101-beta-13"
+        version = "20230101-beta-14"
         "20230101"
     }
 }
@@ -47,7 +47,7 @@ dependencies {
     implementation("com.viliussutkus89.ndk.thirdparty:libuninameslist${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:20230916-beta-3")
     implementation("com.viliussutkus89.ndk.thirdparty:libxml2${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:2.12.3-beta-2")
     implementation("com.viliussutkus89.ndk.thirdparty:spiro${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:20221101-beta-3")
-    implementation("com.viliussutkus89.ndk.thirdparty:pango${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:1.51.0-beta-7")
+    implementation("com.viliussutkus89.ndk.thirdparty:pango${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:1.51.0-beta-8")
 
     if (portVersion != "20170731") {
         // libfontforge checks for TIFFRewriteField , which was deprecated in libtiff-4
@@ -295,7 +295,7 @@ when (portVersion) {
                         // Add Missing Requires:
                         .replace(
                             "Requires:",
-                            "Requires: freetype2 intl gio-2.0 libxml-2.0 pango"
+                            "Requires: freetype2 intl gio-2.0 libxml-2.0 pangocairo"
                         )
                         // Pull dependencies as Requires:, instead of Libs:
                         .replace("-ljpeg", "")
@@ -310,7 +310,7 @@ when (portVersion) {
                         // Add Missing Requires:
                         .replace(
                             "Requires:",
-                            "Requires: freetype2 intl gio-2.0 libxml-2.0 pango"
+                            "Requires: freetype2 intl gio-2.0 libxml-2.0 pangocairo"
                         )
                         // Pull dependencies as Requires:, instead of Libs:
                         .replace("-ljpeg", "")
@@ -455,7 +455,7 @@ tasks.prefabPackage {
                         "//proxy-libintl:intl",
                         "//glib2:gio-2.0",
                         "//libxml2:xml2",
-                        "//pango:pango-1.0",
+                        "//pango:pangocairo-1.0",
                         "//cairo:cairo",
                     ))
                 }
@@ -478,7 +478,7 @@ tasks.prefabPackage {
                         "//proxy-libintl:intl",
                         "//glib2:gio-2.0",
                         "//libxml2:xml2",
-                        "//pango:pango-1.0",
+                        "//pango:pangocairo-1.0",
                         "//cairo:cairo",
                     ))
                 }
@@ -511,7 +511,7 @@ tasks.prefabPackage {
                         "//proxy-libintl:intl",
                         "//glib2:gio-2.0",
                         "//libxml2:xml2",
-                        "//pango:pango-1.0",
+                        "//pango:pangocairo-1.0",
                         "//cairo:cairo",
                         "//libtiff:tiff",
                     ))
@@ -533,7 +533,7 @@ tasks.prefabPackage {
                         "//proxy-libintl:intl",
                         "//glib2:gio-2.0",
                         "//libxml2:xml2",
-                        "//pango:pango-1.0",
+                        "//pango:pangocairo-1.0",
                         "//cairo:cairo",
                         "//libtiff:tiff",
                     ))

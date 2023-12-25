@@ -6,7 +6,7 @@ import org.gradle.jvm.tasks.Jar
 group = rootProject.group
 
 val portVersion = "1.51.0"
-version = "1.51.0-beta-7"
+version = "1.51.0-beta-8"
 
 plugins {
     id("maven-publish")
@@ -108,8 +108,8 @@ tasks.prefabPackage {
             static.set(project.findProperty("libraryType") == "static")
             dependencies.set(listOf(
                 "m",
-                ":pango",
-                ":pangoft2",
+                ":pango-1.0",
+                ":pangoft2-1.0",
                 "//glib2:glib-2.0",
                 "//glib2:gobject-2.0",
                 "//glib2:gio-2.0",
@@ -124,7 +124,7 @@ tasks.prefabPackage {
             static.set(project.findProperty("libraryType") == "static")
             dependencies.set(listOf(
                 "m",
-                ":pango",
+                ":pango-1.0",
                 "//glib2:glib-2.0",
                 "//glib2:gobject-2.0",
                 "//glib2:gio-2.0",
