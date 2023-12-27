@@ -1,6 +1,6 @@
 --- pdf2htmlEX/CMakeLists.txt	2023-11-15 02:31:51.534000000 +0200
 +++ pdf2htmlEX/CMakeLists.txt	2023-11-15 02:31:58.159000000 +0200
-@@ -36,15 +36,6 @@
+@@ -37,15 +37,6 @@
  set(PDF2HTMLEX_LIBS ${PDF2HTMLEX_LIBS} PkgConfig::FONTFORGE)
  include_directories(${FONTFORGE_INCLUDEDIR}/private)
 

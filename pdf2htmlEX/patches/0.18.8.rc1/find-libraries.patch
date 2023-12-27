@@ -1,12 +1,12 @@
 --- pdf2htmlEX/CMakeLists.txt	2023-11-14 03:32:25.260000000 +0200
 +++ pdf2htmlEX/CMakeLists.txt	2023-11-15 02:28:10.440000000 +0200
 @@ -23,90 +23,23 @@
-
+ 
  find_package(PkgConfig)
-
+ 
 -
--# SINCE we have a very intimate relationship with a particular version of
--# poppler... we explicitly describe the poppler include and library
+-# SINCE we have a very intimate relationship with a particular version of 
+-# poppler... we explicitly describe the poppler include and library 
 -# paths.
 -#
 -include_directories(
@@ -16,8 +16,8 @@
 -  ../poppler
 -)
 -#
--# The following order is critical as the glib functions use functions
--# located in the main poppler library
+-# The following order is critical as the glib functions use functions 
+-# located in the main poppler library 
 -#
 -set(POPPLER_LIBRARIES ${POPPLER_LIBRARIES}
 -  ${CMAKE_SOURCE_DIR}/../poppler/build/glib/libpoppler-glib.a
@@ -27,7 +27,7 @@
 +pkg_search_module(POPPLER-GLIB REQUIRED IMPORTED_TARGET poppler-glib=0.89.0)
 +pkg_search_module(POPPLER REQUIRED IMPORTED_TARGET poppler=0.89.0)
 +set(PDF2HTMLEX_LIBS ${PDF2HTMLEX_LIBS} PkgConfig::POPPLER-GLIB PkgConfig::POPPLER)
-
+ 
  if(ENABLE_SVG)
 -    pkg_check_modules(CAIRO REQUIRED cairo>=1.10.0)
 -    message("-- Trying to locate cairo-svg...")
@@ -53,9 +53,9 @@
 +    set(PDF2HTMLEX_LIBS ${PDF2HTMLEX_LIBS} PkgConfig::CAIRO_SVG)
 +
 +    set(ENABLE_SVG 1)
-
--# SINCE we have a very intimate relationship with a particular version of
--# fontforge... we explicitly describe the fontforge include and library
+ 
+-# SINCE we have a very intimate relationship with a particular version of 
+-# fontforge... we explicitly describe the fontforge include and library 
 -# paths.
 -#
 -include_directories(
@@ -73,14 +73,14 @@
 -
 -# If we are using Alpine Linux then we need to add -lintl
 -#
--if (EXISTS /usr/lib/libintl.so )
+-if (EXISTS /usr/lib/libintl.so ) 
 -  set(LIB_INTL_LIBRARIES -lintl )
 -else ()
 -  set(LIB_INTL_LIBRARIES "" )
 +    pkg_search_module(FREETYPE REQUIRED IMPORTED_TARGET freetype2)
 +    set(PDF2HTMLEX_LIBS ${PDF2HTMLEX_LIBS} PkgConfig::FREETYPE)
  endif()
-
+ 
 -set(PDF2HTMLEX_LIBS ${PDF2HTMLEX_LIBS}
 -  ${POPPLER_LIBRARIES}
 -  ${FONTFORGE_LIBRARIES}
@@ -100,6 +100,6 @@
 +pkg_search_module(FONTFORGE REQUIRED IMPORTED_TARGET libfontforge=20200314)
 +set(PDF2HTMLEX_LIBS ${PDF2HTMLEX_LIBS} PkgConfig::FONTFORGE)
 +include_directories(${FONTFORGE_INCLUDEDIR}/private)
-
+ 
  # debug build flags (overwrite default cmake debug flags)
  set(CMAKE_C_FLAGS_DEBUG "-ggdb -pg")

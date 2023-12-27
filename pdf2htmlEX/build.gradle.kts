@@ -70,8 +70,8 @@ fun File.patch(patch: String): File {
 
 fun File.patch(patch: File): File {
     val pb = ProcessBuilder(
-        if (isFile) listOf("patch", "--ignore-whitespace", "-p0", absolutePath)
-        else listOf("patch", "--ignore-whitespace", "-p0")
+        if (isFile) listOf("patch", "-p0", absolutePath)
+        else listOf("patch", "-p0")
     )
 
     if (isDirectory)
