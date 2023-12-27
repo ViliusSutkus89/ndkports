@@ -8,16 +8,16 @@ group = rootProject.group
 // Hardcode a list of available versions
 val portVersion = when(project.findProperty("packageVersion")) {
     "0.18.7-poppler-0.81.0" -> {
-        version = "0.18.7-poppler-0.81.0-beta-8"
+        version = "0.18.7-poppler-0.81.0-beta-9"
         "0.18.7-poppler-0.81.0"
     }
     "0.18.8.rc1" -> {
-        version = "0.18.8.rc1-beta-8"
+        version = "0.18.8.rc1-beta-9"
         "0.18.8.rc1"
     }
     // https://github.com/pdf2htmlEX/pdf2htmlEX/pull/154 Hoping it will be named rc2
     else /* "0.18.8.rc2" */ -> {
-        version = "0.18.8.rc2-beta-7"
+        version = "0.18.8.rc2-beta-8"
         "0.18.8.rc2"
     }
 }
@@ -36,15 +36,15 @@ dependencies {
 
     when (portVersion) {
         "0.18.7-poppler-0.81.0" -> {
-            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:20170731-beta-9")
+            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:20170731-beta-10")
             implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:0.81.0-beta-6")
         }
         "0.18.8.rc1" -> {
-            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:20200314-beta-14")
+            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:20200314-beta-15")
             implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:0.89.0-beta-7")
         }
         "0.18.8.rc2" -> {
-            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:20230101-beta-14")
+            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:20230101-beta-15")
             implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:23.12.0-beta-5")
         }
     }
