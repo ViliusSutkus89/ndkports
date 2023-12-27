@@ -1,0 +1,16 @@
+name: libgsf
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'buildSrc/**'
+      - 'libgsf/**'
+      - '.github/workflows/build.yml'
+      - '.github/workflows/libgsf.yml'
+
+jobs:
+  build:
+    name: libgsf
+    uses: ./.github/workflows/build.yml
+    with:
+      package: libgsf
