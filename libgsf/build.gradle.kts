@@ -55,6 +55,7 @@ tasks.prefabPackage {
             static.set(project.findProperty("libraryType") == "static")
             dependencies.set(listOf(
                 "//glib2:glib-2.0",
+                "//glib2:gobject-2.0",
                 "//libxml2:xml2",
             ))
         }
