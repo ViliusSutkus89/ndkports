@@ -17,7 +17,7 @@ val portVersion = when(project.findProperty("packageVersion")) {
     }
     // https://github.com/pdf2htmlEX/pdf2htmlEX/pull/154 Hoping it will be named rc2
     else /* "0.18.8.rc2" */ -> {
-        version = "0.18.8.rc2-beta-6"
+        version = "0.18.8.rc2-beta-7"
         "0.18.8.rc2"
     }
 }
@@ -120,6 +120,7 @@ tasks.extractSrc {
                     .patch("cflags.patch")
                     .patch("missing-tests.patch")
                 srcDir.patch("make-a-library.patch")
+                srcDir.patch("dump-image.patch")
                 srcDir.patch("mismatched-tags.patch")
             }
         }
