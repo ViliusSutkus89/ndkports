@@ -1,15 +1,51 @@
 --- pdf2htmlEX/src/BackgroundRenderer/SplashBackgroundRenderer.cc	2020-08-19 23:43:25.000000000 +0300
 +++ pdf2htmlEX/src/BackgroundRenderer/SplashBackgroundRenderer.cc	2023-12-27 04:19:36.091000000 +0200
-@@ -18,6 +18,8 @@
- #include "util/const.h"
+@@ -5,26 +5,17 @@
+  */
  
- #include "SplashBackgroundRenderer.h"
-+#include <splash/SplashBitmap.h>
+ #include <fstream>
+-#include <vector>
+-#include <memory>
+ 
+ #include <poppler-config.h>
+-#include <PDFDoc.h>
+-#include <goo/ImgWriter.h>
+-#include <goo/PNGWriter.h>
+-#include <goo/JpegWriter.h>
 +#include <splash/SplashErrorCodes.h>
+ 
+ #include "Base64Stream.h"
+-#include "util/const.h"
+-
+ #include "SplashBackgroundRenderer.h"
  
  namespace pdf2htmlEX {
  
-@@ -124,27 +126,39 @@
+ using std::string;
+ using std::ifstream;
+-using std::vector;
+-using std::unique_ptr;
+ 
+ const SplashColor SplashBackgroundRenderer::white = {255,255,255};
+ 
+@@ -35,6 +26,7 @@
+     , format(imgFormat)
+ {
+     bool supported = false;
++// ENABLE_LIBPNG and ENABLE_LIBJPEG are defines coming in from poppler-config.h
+ #ifdef ENABLE_LIBPNG
+     if (format.empty())
+         format = "png";
+@@ -47,7 +39,7 @@
+ #endif
+     if (!supported)
+     {
+-        throw string("Image format not supported: ") + format;
++        throw string("Image format not supported by Poppler: ") + format;
+     }
+ }
+ 
+@@ -124,27 +116,26 @@
  
  void SplashBackgroundRenderer::embed_image(int pageno)
  {
@@ -17,7 +53,7 @@
 -    int xmin, xmax, ymin, ymax;
 -// poppler-0.84.0 hack to recover from the removal of *ModRegion tracking 
 -//
--	auto * bitmap = getBitmap();
+ 	auto * bitmap = getBitmap();
 -	xmin = 0;
 -	xmax = bitmap->getWidth();
 -	ymin = 0;
@@ -25,7 +61,6 @@
 -//
 -// end of hack
 -	
-+	auto * bitmap = getBitmap();
      // dump the background image only when it is not empty
 -    if((xmin <= xmax) && (ymin <= ymax))
 +    if(bitmap->getWidth() >= 0 && bitmap->getHeight() >= 0)
@@ -35,36 +70,23 @@
              if(param.embed_image)
 -                html_renderer->tmp_files.add((char*)fn);
 +                html_renderer->tmp_files.add((const char *)fn);
++
++            SplashImageFileFormat splashImageFileFormat;
++            if(format == "png")
++                splashImageFileFormat = splashFormatPng;
++            else if(format == "jpg")
++                splashImageFileFormat = splashFormatJpeg;
++            else
++                throw string("Image format not supported: ") + format;
  
 -            dump_image((char*)fn, xmin, ymin, xmax, ymax);
-+            SplashImageFileFormat splashImageFileFormat;
-+            if(false) { }
-+#ifdef ENABLE_LIBPNG
-+            else if(format == "png")
-+            {
-+                splashImageFileFormat = splashFormatPng;
-+            }
-+#endif
-+#ifdef ENABLE_LIBJPEG
-+            else if(format == "jpg")
-+            {
-+                splashImageFileFormat = splashFormatJpeg;
-+            }
-+#endif
-+            else
-+            {
-+                throw string("Image format not supported: ") + format;
-+            }
-+
 +            SplashError e = bitmap->writeImgFile(splashImageFileFormat, (const char *)fn, param.actual_dpi, param.actual_dpi);
 +            if (e != splashOk)
-+            {
 +                throw string("Cannot write background image. SplashErrorCode: ") + std::to_string(e);
-+            }
          }
  
          double h_scale = html_renderer->text_zoom_factor() * DEFAULT_DPI / param.actual_dpi;
-@@ -154,10 +168,10 @@
+@@ -154,10 +145,10 @@
          auto & all_manager = html_renderer->all_manager;
          
          f_page << "<img class=\"" << CSS::BACKGROUND_IMAGE_CN 
@@ -79,7 +101,7 @@
              << "\" alt=\"\" src=\"";
  
          if(param.embed_image)
-@@ -182,68 +196,4 @@
+@@ -182,68 +173,4 @@
      }
  }
  
