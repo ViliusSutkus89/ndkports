@@ -120,6 +120,7 @@ tasks.extractSrc {
                     .patch("cflags.patch")
                     .patch("missing-tests.patch")
                 srcDir.patch("make-a-library.patch")
+                srcDir.patch("mismatched-tags.patch")
             }
         }
     }

@@ -1,0 +1,35 @@
+From d8e418bb090e0a11698970107fe5741fc4b2c5f1 Mon Sep 17 00:00:00 2001
+From: Vilius Sutkus '89 <Vilius@ViliusSutkus89.com>
+Date: Wed, 27 Dec 2023 04:58:42 +0200
+Subject: Fix mismatched tags in forward declarations
+
+Param, HTMLRenderer and GuardedPointer are structs, not classes
+
+diff --git a/pdf2htmlEX/src/BackgroundRenderer/BackgroundRenderer.h b/pdf2htmlEX/src/BackgroundRenderer/BackgroundRenderer.h
+index 2927484..787785e 100644
+--- pdf2htmlEX/src/BackgroundRenderer/BackgroundRenderer.h
++++ pdf2htmlEX/src/BackgroundRenderer/BackgroundRenderer.h
+@@ -18,8 +18,8 @@ class OutputDev;
+ 
+ namespace pdf2htmlEX {
+ 
+-class Param;
+-class HTMLRenderer;
++struct Param;
++struct HTMLRenderer;
+ class BackgroundRenderer 
+ {
+ public:
+diff --git a/pdf2htmlEX/src/StringFormatter.h b/pdf2htmlEX/src/StringFormatter.h
+index dd3f3c1..67cd3b5 100644
+--- pdf2htmlEX/src/StringFormatter.h
++++ pdf2htmlEX/src/StringFormatter.h
+@@ -34,7 +34,7 @@ public:
+     GuardedPointer operator () (const char * format, ...);
+ 
+ private:
+-    friend class GuardedPointer;
++    friend struct GuardedPointer;
+     std::vector<char> buf;
+     int buf_cnt;
+ };

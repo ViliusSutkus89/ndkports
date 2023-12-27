@@ -753,7 +753,7 @@ new file mode 100644
 +
 +namespace pdf2htmlEX {
 +
-+  class Param;
++  struct Param;
 +
 +  class pdf2htmlEX {
 +  private:
