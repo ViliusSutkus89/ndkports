@@ -87,11 +87,13 @@ Available versions:
 
 #### [pdf2htmlEX](https://github.com/pdf2htmlEX/pdf2htmlEX)
 
-Available versions:
+Available pdf2htmlEX versions:
 
 - v0.18.8.rc2 (unofficial release, https://github.com/pdf2htmlEX/pdf2htmlEX/pull/154)
 - v0.18.8.rc1
 - v0.18.7-poppler-0.81.0
+
+pdf2htmlEX also has a Java wrapper - [pdf2htmlEX-Android](https://github.com/ViliusSutkus89/pdf2htmlEX-Android)
 
 [![pdf2htmlEX](https://github.com/ViliusSutkus89/ndkports/actions/workflows/pdf2htmlEX.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/pdf2htmlEX.yml)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/pdf2htmlEX-ndk25-static.svg?label=Maven%20Central%20pdf2htmlEX-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:pdf2htmlEX-ndk25-static)
