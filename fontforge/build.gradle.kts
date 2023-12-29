@@ -17,7 +17,7 @@ val portVersion = when(project.findProperty("packageVersion")) {
         "20200314"
     }
     else /* "20230101" */ -> {
-        version = "20230101-beta-15"
+        version = "20230101-beta-16"
         "20230101"
     }
 }
@@ -255,6 +255,8 @@ tasks.extractSrc {
                     // #endif /* __ANDROID_API__ >= 21 */
                     srcDir.patch("localeconv.patch")
                 }
+
+                srcDir.resolve("fontforge/nouiutil.c").patch("handle-iconv-failure.patch")
             }
         }
     }

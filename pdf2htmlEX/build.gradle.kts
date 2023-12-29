@@ -17,7 +17,7 @@ val portVersion = when(project.findProperty("packageVersion")) {
     }
     // https://github.com/pdf2htmlEX/pdf2htmlEX/pull/154 Hoping it will be named rc2
     else /* "0.18.8.rc2" */ -> {
-        version = "0.18.8.rc2-beta-8"
+        version = "0.18.8.rc2-beta-9"
         "0.18.8.rc2"
     }
 }
@@ -44,7 +44,7 @@ dependencies {
             implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:0.89.0-beta-7")
         }
         "0.18.8.rc2" -> {
-            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:20230101-beta-15")
+            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:20230101-beta-16")
             implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:23.12.0-beta-5")
         }
     }

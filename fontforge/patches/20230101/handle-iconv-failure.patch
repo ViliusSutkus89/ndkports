@@ -1,0 +1,40 @@
+--- fontforge/nouiutil.c	2023-01-01 07:25:39.000000000 +0200
++++ fontforge/nouiutil.c	2023-12-29 11:48:52.306000000 +0200
+@@ -42,10 +42,14 @@
+     fprintf(stderr, "Internal Error: " );
+     vsnprintf(buffer,sizeof(buffer),format,ap);
+     str = utf82def_copy(buffer);
+-    fprintf(stderr,"%s",str);
+-    if ( str[strlen(str)-1]!='\n' )
+-	putc('\n',stderr);
+-    free(str);
++    if (NULL != str) {
++        fprintf(stderr,"%s",str);
++        if ( str[strlen(str)-1]!='\n' )
++        putc('\n',stderr);
++        free(str);
++    } else {
++        fprintf(stderr, "utf82def_copy failure!\n");
++    }
+     va_end(ap);
+ }
+ 
+@@ -53,10 +57,14 @@
+     char buffer[400], *str;
+     vsnprintf(buffer,sizeof(buffer),format,ap);
+     str = utf82def_copy(buffer);
+-    fprintf(stderr,"%s",str);
+-    if ( str[strlen(str)-1]!='\n' )
+-	putc('\n',stderr);
+-    free(str);
++    if (NULL != str) {
++        fprintf(stderr,"%s",str);
++        if ( str[strlen(str)-1]!='\n' )
++        putc('\n',stderr);
++        free(str);
++    } else {
++        fprintf(stderr, "utf82def_copy failure!\n");
++    }
+ }
+ 
+ static void NOUI_LogError(const char *format,...) {
