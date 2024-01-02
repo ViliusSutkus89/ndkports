@@ -1,0 +1,16 @@
+name: libwmf
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'buildSrc/**'
+      - 'libwmf/**'
+      - '.github/workflows/build.yml'
+      - '.github/workflows/libwmf.yml'
+
+jobs:
+  build:
+    name: libwmf
+    uses: ./.github/workflows/build.yml
+    with:
+      package: libwmf

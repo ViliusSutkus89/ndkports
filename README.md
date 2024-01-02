@@ -266,3 +266,11 @@ pdf2htmlEX also has a Java wrapper - [pdf2htmlEX-Android](https://github.com/Vil
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libgsf-ndk25-shared.svg?label=Maven%20Central%20libgsf-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libgsf-ndk25-shared)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libgsf-ndk26-static.svg?label=Maven%20Central%20libgsf-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libgsf-ndk26-static)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libgsf-ndk26-shared.svg?label=Maven%20Central%20libgsf-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libgsf-ndk26-shared)
+
+#### [libwmf](https://github.com/caolanm/libwmf)
+
+[![libwmf](https://github.com/ViliusSutkus89/ndkports/actions/workflows/libwmf.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/libwmf.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libwmf-ndk25-static.svg?label=Maven%20Central%20libwmf-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libwmf-ndk25-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libwmf-ndk25-shared.svg?label=Maven%20Central%20libwmf-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libwmf-ndk25-shared)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libwmf-ndk26-static.svg?label=Maven%20Central%20libwmf-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libwmf-ndk26-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libwmf-ndk26-shared.svg?label=Maven%20Central%20libwmf-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libwmf-ndk26-shared)
