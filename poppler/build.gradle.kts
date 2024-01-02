@@ -5,21 +5,8 @@ import org.gradle.jvm.tasks.Jar
 
 group = rootProject.group
 
-// Hardcode a list of available versions
-val portVersion = when(project.findProperty("packageVersion")) {
-    "0.81.0" -> {
-        version = "0.81.0-beta-6"
-        "0.81.0"
-    }
-    "0.89.0" -> {
-        version = "0.89.0-beta-7"
-        "0.89.0"
-    }
-    else /* "23.12.0" */ -> {
-        version = "23.12.0-beta-5"
-        "23.12.0"
-    }
-}
+val portVersion = "23.12.0"
+version = "23.12.0-beta-5"
 
 plugins {
     id("maven-publish")
@@ -39,10 +26,6 @@ dependencies {
     implementation("com.viliussutkus89.ndk.thirdparty:glib2${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:2.75.0-beta-1")
     implementation("com.viliussutkus89.ndk.thirdparty:cairo${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:1.18.0-beta-6")
     implementation("com.viliussutkus89.ndk.thirdparty:lcms2${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:2.16-beta-2")
-    if (listOf("0.81.0", "0.89.0").contains(portVersion)) {
-        // 23.10.0 supports Android's native alternative of fontconfig
-        implementation("com.viliussutkus89.ndk.thirdparty:fontconfig${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:2.14.2-beta-5")
-    }
 }
 
 ndkPorts {
@@ -94,25 +77,9 @@ fun File.patch(patch: File) {
 tasks.extractSrc {
     doLast {
         val srcDir = outDir.get().asFile
-        when (portVersion) {
-            "0.81.0" -> {
-                srcDir.resolve("CMakeLists.txt").patch("fontconfig.patch")
-                srcDir.resolve("CMakeLists.txt").patch("FindCairo.patch")
-                srcDir.resolve("ConfigureChecks.cmake").patch("have_unistd_h.patch")
-                srcDir.patch("glib-boxed-type.patch")
-            }
-            "0.89.0" -> {
-                srcDir.resolve("CMakeLists.txt").patch("fontconfig.patch")
-                srcDir.resolve("CMakeLists.txt").patch("FindCairo.patch")
-                srcDir.patch("glib-boxed-type.patch")
-                srcDir.patch("ExportPrivatesForPdf2htmlEX.patch")
-            }
-            "23.12.0" -> {
-                srcDir.resolve("CMakeLists.txt").patch("FindCairo.patch")
-                srcDir.resolve("cmake/modules/CheckFileOffsetBits.cmake").patch("CheckFileOffsetBits.patch")
-                srcDir.patch("ExportPrivatesForPdf2htmlEX.patch")
-            }
-        }
+        srcDir.resolve("CMakeLists.txt").patch("FindCairo.patch")
+        srcDir.resolve("cmake/modules/CheckFileOffsetBits.cmake").patch("CheckFileOffsetBits.patch")
+        srcDir.patch("ExportPrivatesForPdf2htmlEX.patch")
     }
 }
 
@@ -121,39 +88,22 @@ tasks.prefab {
 }
 
 tasks.register<CMakePortTask>("buildPort") {
-    when (portVersion) {
-        "0.81.0", "0.89.0" -> {
-            cmake {
-                arg("-DENABLE_UNSTABLE_API_ABI_HEADERS=ON")
-            }
-            doLast {
-                com.android.ndkports.Abi.values().forEach { abi ->
-                    installDirectoryFor(abi)
-                        .resolve("lib/pkgconfig/poppler.pc").appendText(
-                            "Requires: freetype2 libpng16 libturbojpeg libtiff-4 libopenjp2 glib-2.0 cairo lcms2 fontconfig"
-                        )
-                }
-            }
-        }
-        "23.12.0" -> {
-            cmake {
-                args(
-                    "-DENABLE_UNSTABLE_API_ABI_HEADERS=ON",
-                    "-DENABLE_NSS3=OFF",
-                    "-DENABLE_GPGME=OFF",
-                    "-DENABLE_QT5=OFF",
-                    "-DENABLE_QT6=OFF",
-                    "-DENABLE_BOOST=OFF",
-                    "-DENABLE_LIBCURL=OFF",
-                )
-            }
-            doLast {
-                com.android.ndkports.Abi.values().forEach { abi ->
-                    val pkgconfigdir = installDirectoryFor(abi).resolve("lib/pkgconfig")
-                    pkgconfigdir.resolve("poppler.pc")
-                        .appendText("Requires: freetype2 libpng16 libturbojpeg libtiff-4 libopenjp2 glib-2.0 cairo lcms2\n")
-                }
-            }
+    cmake {
+        args(
+            "-DENABLE_UNSTABLE_API_ABI_HEADERS=ON",
+            "-DENABLE_NSS3=OFF",
+            "-DENABLE_GPGME=OFF",
+            "-DENABLE_QT5=OFF",
+            "-DENABLE_QT6=OFF",
+            "-DENABLE_BOOST=OFF",
+            "-DENABLE_LIBCURL=OFF",
+        )
+    }
+    doLast {
+        com.android.ndkports.Abi.values().forEach { abi ->
+            val pkgconfigdir = installDirectoryFor(abi).resolve("lib/pkgconfig")
+            pkgconfigdir.resolve("poppler.pc")
+                .appendText("Requires: freetype2 libpng16 libturbojpeg libtiff-4 libopenjp2 glib-2.0 cairo lcms2\n")
         }
     }
 }
@@ -164,7 +114,7 @@ tasks.prefabPackage {
 
     licensePath.set("COPYING")
 
-    dependencies.set(mutableMapOf(
+    dependencies.set(mapOf(
         "freetype" to "1",
         "libiconv" to "1",
         "libpng" to "1",
@@ -174,16 +124,12 @@ tasks.prefabPackage {
         "glib2" to "1",
         "cairo" to "1",
         "lcms2" to "1",
-    ).apply {
-        if (listOf("0.81.0", "0.89.0", "21.02.0").contains(portVersion)) {
-            put("fontconfig", "1")
-        }
-    })
+    ))
 
     modules {
         create("poppler") {
             static.set(project.findProperty("libraryType") == "static")
-            dependencies.set(mutableListOf(
+            dependencies.set(listOf(
                 "//freetype:freetype",
                 "//libpng:png16",
                 "//libjpeg-turbo:turbojpeg",
@@ -192,11 +138,7 @@ tasks.prefabPackage {
                 "//glib2:glib-2.0",
                 "//cairo:cairo",
                 "//lcms2:lcms2",
-            ).apply {
-                if (listOf("0.81.0", "0.89.0", "21.02.0").contains(portVersion)) {
-                    add("//fontconfig:fontconfig")
-                }
-            })
+            ))
         }
         create("poppler-cpp") {
             static.set(project.findProperty("libraryType") == "static")
@@ -265,8 +207,6 @@ publishing {
                 }
                 developers {
                     // Developer list obtained from:
-                    // https://gitlab.freedesktop.org/poppler/poppler/-/raw/poppler-0.81.0/AUTHORS
-                    // https://gitlab.freedesktop.org/poppler/poppler/-/raw/poppler-0.89.0/AUTHORS
                     // https://gitlab.freedesktop.org/poppler/poppler/-/raw/poppler-23.12.0/AUTHORS
                     // https://gitlab.freedesktop.org/poppler/poppler-data/-/blob/POPPLER_DATA_0_4_12/README
                     developer {

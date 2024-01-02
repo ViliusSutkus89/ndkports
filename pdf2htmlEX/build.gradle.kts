@@ -5,22 +5,9 @@ import org.gradle.jvm.tasks.Jar
 
 group = rootProject.group
 
-// Hardcode a list of available versions
-val portVersion = when(project.findProperty("packageVersion")) {
-    "0.18.7-poppler-0.81.0" -> {
-        version = "0.18.7-poppler-0.81.0-beta-9"
-        "0.18.7-poppler-0.81.0"
-    }
-    "0.18.8.rc1" -> {
-        version = "0.18.8.rc1-beta-9"
-        "0.18.8.rc1"
-    }
-    // https://github.com/pdf2htmlEX/pdf2htmlEX/pull/154 Hoping it will be named rc2
-    else /* "0.18.8.rc2" */ -> {
-        version = "0.18.8.rc2-beta-9"
-        "0.18.8.rc2"
-    }
-}
+// https://github.com/pdf2htmlEX/pdf2htmlEX/pull/154 Hoping it will be named rc2
+val portVersion = "0.18.8.rc2"
+version = "0.18.8.rc2-beta-9"
 
 plugins {
     id("maven-publish")
@@ -31,33 +18,16 @@ plugins {
 dependencies {
     val ndkVersionSuffix = rootProject.extra.get("ndkVersionSuffix")
     val dependencyLibraryTypeSuffix = rootProject.extra.get("dependencyLibraryTypeSuffix")
-    implementation("com.viliussutkus89.ndk.thirdparty:cairo${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:1.18.0-beta-6")
-    implementation("com.viliussutkus89.ndk.thirdparty:freetype${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:2.13.2-beta-7")
-
-    when (portVersion) {
-        "0.18.7-poppler-0.81.0" -> {
-            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:20170731-beta-10")
-            implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:0.81.0-beta-6")
-        }
-        "0.18.8.rc1" -> {
-            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:20200314-beta-15")
-            implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:0.89.0-beta-7")
-        }
-        "0.18.8.rc2" -> {
-            implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:20230101-beta-16")
-            implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:23.12.0-beta-5")
-        }
-    }
+    implementation("com.viliussutkus89.ndk.thirdparty:cairo${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:1.18.0-beta-7")
+    implementation("com.viliussutkus89.ndk.thirdparty:freetype${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:2.13.2-beta-8")
+    implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:20230101-beta-16")
+    implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:23.12.0-beta-5")
 }
 
 ndkPorts {
     ndkPath.set(File(project.findProperty("ndkPath") as String))
     minSdkVersion.set(rootProject.extra.get("minSdkSupportedByNdk").toString().toInt())
-    if (portVersion == "0.18.7-poppler-0.81.0") {
-        source.set(project.file("v${portVersion}.tar.gz"))
-    } else {
-        source.set(project.file("v0.18.8.rc1.tar.gz"))
-    }
+    source.set(project.file("v0.18.8.rc1.tar.gz"))
 }
 
 fun File.replace(oldValue: String, newValue: String, ignoreCase: Boolean = false) {
@@ -96,34 +66,14 @@ fun File.patch(patch: File): File {
 tasks.extractSrc {
     doLast {
         val srcDir = outDir.get().asFile
-        when (portVersion) {
-            "0.18.7-poppler-0.81.0" -> {
-                srcDir.resolve("CMakeLists.txt")
-                    .patch("find-libraries.patch")
-                    .patch("cflags.patch")
-                srcDir.patch("make-a-library.patch")
-            }
-            "0.18.8.rc1" -> {
-                srcDir.resolve("pdf2htmlEX/CMakeLists.txt")
-                    .patch("find-libraries.patch")
-                    .patch("cflags.patch")
-                    .patch("missing-tests.patch")
-                srcDir.patch("make-a-library.patch")
-
-                srcDir.resolve("pdf2htmlEX/src/util/ffw.c")
-                    .patch("ffw.patch")
-            }
-            "0.18.8.rc2" -> {
-                srcDir.patch("rc2-poppler-23.12.0-fontforge-20230101.patch")
-                srcDir.resolve("pdf2htmlEX/CMakeLists.txt")
-                    .patch("find-libraries.patch")
-                    .patch("cflags.patch")
-                    .patch("missing-tests.patch")
-                srcDir.patch("make-a-library.patch")
-                srcDir.patch("dump-image.patch")
-                srcDir.patch("mismatched-tags.patch")
-            }
-        }
+        srcDir.patch("rc2-poppler-23.12.0-fontforge-20230101.patch")
+        srcDir.resolve("pdf2htmlEX/CMakeLists.txt")
+            .patch("find-libraries.patch")
+            .patch("cflags.patch")
+            .patch("missing-tests.patch")
+        srcDir.patch("make-a-library.patch")
+        srcDir.patch("dump-image.patch")
+        srcDir.patch("mismatched-tags.patch")
     }
 }
 
@@ -132,9 +82,7 @@ tasks.prefab {
 }
 
 tasks.register<CMakePortTask>("buildPort") {
-    if (portVersion != "0.18.7-poppler-0.81.0") {
-        sourceSubDirectory.set("pdf2htmlEX")
-    }
+    sourceSubDirectory.set("pdf2htmlEX")
 
     cmake { }
 
@@ -154,9 +102,7 @@ tasks.register<CMakePortTask>("buildPort") {
 
 tasks.prefabPackage {
     version.set(CMakeCompatibleVersion.parse(when(portVersion) {
-        "0.18.7-poppler-0.81.0" -> "0.18.7.0810"
         // rc versions are 0
-        "0.18.8.rc1" -> "0.18.8.0"
         "0.18.8.rc2" -> "0.18.8.0"
         else -> portVersion
     }))

@@ -73,12 +73,6 @@ Usable version is 2.75.0
 
 #### [Poppler](https://poppler.freedesktop.org)
 
-Available versions:
-
-- 23.12.0
-- 0.89.0
-- 0.81.0
-
 [![poppler](https://github.com/ViliusSutkus89/ndkports/actions/workflows/poppler.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/poppler.yml)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/poppler-ndk25-static.svg?label=Maven%20Central%20poppler-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:poppler-ndk25-static)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/poppler-ndk25-shared.svg?label=Maven%20Central%20poppler-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:poppler-ndk25-shared)
@@ -87,11 +81,7 @@ Available versions:
 
 #### [pdf2htmlEX](https://github.com/pdf2htmlEX/pdf2htmlEX)
 
-Available pdf2htmlEX versions:
-
-- v0.18.8.rc2 (unofficial release, https://github.com/pdf2htmlEX/pdf2htmlEX/pull/154)
-- v0.18.8.rc1
-- v0.18.7-poppler-0.81.0
+pdf2htmlEX-0.18.8.rc2 version is based on PR https://github.com/pdf2htmlEX/pdf2htmlEX/pull/154 , not an official release,
 
 pdf2htmlEX also has a Java wrapper - [pdf2htmlEX-Android](https://github.com/ViliusSutkus89/pdf2htmlEX-Android)
 
@@ -254,12 +244,6 @@ pdf2htmlEX also has a Java wrapper - [pdf2htmlEX-Android](https://github.com/Vil
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/pango-ndk26-shared.svg?label=Maven%20Central%20pango-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:pango-ndk26-shared)
 
 #### [FontForge](https://fontforge.org)
-
-Available versions:
-
-- FontForge-20230101
-- FontForge-20200314
-- FontForge-20170731
 
 [![fontforge](https://github.com/ViliusSutkus89/ndkports/actions/workflows/fontforge.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/fontforge.yml)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/fontforge-ndk25-static.svg?label=Maven%20Central%20fontforge-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:fontforge-ndk25-static)

@@ -1,26 +1,12 @@
-import com.android.ndkports.AutoconfPortTask
-import com.android.ndkports.CMakePortTask
 import com.android.ndkports.CMakeCompatibleVersion
+import com.android.ndkports.CMakePortTask
 import com.android.ndkports.PrefabSysrootPlugin
 import org.gradle.jvm.tasks.Jar
 
 group = rootProject.group
 
-// Hardcode a list of available versions
-val portVersion = when(project.findProperty("packageVersion")) {
-    "20170731" -> {
-        version = "20170731-beta-10"
-        "20170731"
-    }
-    "20200314" -> {
-        version = "20200314-beta-15"
-        "20200314"
-    }
-    else /* "20230101" */ -> {
-        version = "20230101-beta-16"
-        "20230101"
-    }
-}
+val portVersion = "20230101"
+version = "20230101-beta-16"
 
 plugins {
     id("maven-publish")
@@ -30,9 +16,9 @@ plugins {
 
 val minSupportedSdk = rootProject.extra.get("minSdkSupportedByNdk").toString().toInt()
 
-// 20200314 and later requires complex math functions ( csqrt/csqrt/creal/cimag )
+// FontForge 20200314 and later requires complex math functions ( csqrt/csqrt/creal/cimag )
 // that are available only from API level 24 . Use OpenLibm instead
-val usingOpenLibm = portVersion != "20170731" && minSupportedSdk < 24
+val usingOpenLibm = minSupportedSdk < 24
 
 dependencies {
     val ndkVersionSuffix = rootProject.extra.get("ndkVersionSuffix")
@@ -48,12 +34,7 @@ dependencies {
     implementation("com.viliussutkus89.ndk.thirdparty:libxml2${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:2.12.3-beta-2")
     implementation("com.viliussutkus89.ndk.thirdparty:spiro${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:20221101-beta-3")
     implementation("com.viliussutkus89.ndk.thirdparty:pango${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:1.51.0-beta-8")
-
-    if (portVersion != "20170731") {
-        // libfontforge checks for TIFFRewriteField , which was deprecated in libtiff-4
-        // http://www.simplesystems.org/libtiff/v4.0.0.html
-        implementation("com.viliussutkus89.ndk.thirdparty:libtiff${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:4.6.0-beta-6")
-    }
+    implementation("com.viliussutkus89.ndk.thirdparty:libtiff${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:4.6.0-beta-6")
 
     if (usingOpenLibm) {
         implementation("com.viliussutkus89.ndk.thirdparty:openlibm${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:0.8.1-beta-3")
@@ -67,11 +48,7 @@ dependencies {
 ndkPorts {
     ndkPath.set(File(project.findProperty("ndkPath") as String))
     minSdkVersion.set(minSupportedSdk)
-    if (portVersion == "20170731") {
-        source.set(project.file("${name}-dist-${portVersion}.tar.xz"))
-    } else {
-        source.set(project.file("${name}-${portVersion}.tar.xz"))
-    }
+    source.set(project.file("${name}-${portVersion}.tar.xz"))
 }
 
 fun File.replace(oldValue: String, newValue: String, ignoreCase: Boolean = false): File {
@@ -111,154 +88,46 @@ tasks.extractSrc {
     doLast {
         val srcDir = outDir.get().asFile
 
-        when (portVersion) {
-            "20170731" -> {
-                // Use libtool from gradle dependencies
-                srcDir.resolve("libltdl/ltdl.h").delete()
+        srcDir.patch("pie.patch")
 
-                // pthread_cancel unavailable on Android
-                // @TODO: implement a proper workaround
-                srcDir.resolve("gutils/gio.c").patch("gutils-gio.no-pthread-cancel.patch")
+        srcDir.patch("FindGLib.patch")
 
-                // fontforgeexe/startnoui.c
-                srcDir.resolve("fontforgeexe/startnoui.c").patch("fontforgeexe-startnoui.FindOrMakeEncoding.patch")
+        // android-ndk-r20/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/pwd.h
+        // #if __ANDROID_API__ >= 26
+        // struct passwd* getpwent(void) __INTRODUCED_IN(26);
+        // void setpwent(void) __INTRODUCED_IN(26);
+        // void endpwent(void) __INTRODUCED_IN(26);
+        // #endif /* __ANDROID_API__ >= 26 */
+        srcDir.resolve("gutils/fsys.c").patch("gutils-fsys.patch")
 
-                // https://android.googlesource.com/platform/bionic/+/master/docs/32-bit-abi.md
-                srcDir.resolve("config.h.in").patch("file_offset_bits.patch")
+        srcDir.patch("InstallLibrary.patch")
 
-                // android-ndk-r20/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/pwd.h
-                // #if __ANDROID_API__ >= 26
-                // struct passwd* getpwent(void) __INTRODUCED_IN(26);
-                // void setpwent(void) __INTRODUCED_IN(26);
-                // void endpwent(void) __INTRODUCED_IN(26);
-                // #endif /* __ANDROID_API__ >= 26 */
-                srcDir.resolve("gutils/fsys.c").patch("gutils-fsys.patch")
-
-                // https://android.googlesource.com/platform/bionic/+/master/docs/status.md
-                // New libc functions in P (API level 28):
-                // endhostent/endnetent/endprotoent/getnetent/getprotoent/sethostent/setnetent/setprotoent (completing <netdb.h>)
-                srcDir.resolve("gutils/gutils.c").patch("gutils-gutils.patch")
-
-                // Leak some memory by not calling endhostent() and endprotoent()
-                // These are deprecated functions, not used in the current upstream version of fontforge
-                srcDir.resolve("fontforge/http.c").patch("fontforge-http.patch")
-
-                // Fix sent upstream:
-                // https://github.com/fontforge/fontforge/pull/3746
-                // Available in fontforge-20190801
-                //
-                // android-ndk-r20/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/langinfo.h:char*
-                // #if __ANDROID_API__ >= 26
-                // char* nl_langinfo(nl_item __item) __INTRODUCED_IN(26);
-                // char* nl_langinfo_l(nl_item __item, locale_t __l) __INTRODUCED_IN(26);
-                // #endif /* __ANDROID_API__ >= 26 */
-                srcDir.resolve("fontforge/noprefs.c").patch("fontforge-noprefs.NL_LANGINFO.patch")
-
-                if (minSupportedSdk < 21) {
-                    // fontforge uses newlocale and localeconv, which are not available on Android pre 21 (Lollipop)
-                    // locale_t is available, we should not redefine it while using the BAD_LOCALE_HACK in splinefont.h
-                    //
-                    // From /usr/include/locale.h:
-                    // #if __ANDROID_API__ >= 21
-                    // locale_t duplocale(locale_t __l) __INTRODUCED_IN(21);
-                    // void freelocale(locale_t __l) __INTRODUCED_IN(21);
-                    // locale_t newlocale(int __category_mask, const char* __locale_name, locale_t __base) __INTRODUCED_IN(21);
-                    // #endif /* __ANDROID_API__ >= 21 */
-                    // ...
-                    // #if __ANDROID_API__ >= 21
-                    // struct lconv* localeconv(void) __INTRODUCED_IN(21);
-                    // #endif /* __ANDROID_API__ >= 21 */
-                    srcDir.patch("localeconv.patch")
-                }
-
-                // rpl_localtime calls itself until stack exhaustion
-                srcDir.resolve("lib/localtime-buffer.c").patch("lib-localtime-buffer.patch")
-            }
-            "20200314" -> {
-                srcDir.resolve("inc/CMakeLists.txt").patch("include-iconv.patch")
-
-                srcDir.patch("pie.patch")
-
-                // android-ndk-r20/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/pwd.h
-                // #if __ANDROID_API__ >= 26
-                // struct passwd* getpwent(void) __INTRODUCED_IN(26);
-                // void setpwent(void) __INTRODUCED_IN(26);
-                // void endpwent(void) __INTRODUCED_IN(26);
-                // #endif /* __ANDROID_API__ >= 26 */
-                srcDir.resolve("gutils/fsys.c").patch("gutils-fsys.patch")
-
-                srcDir.patch("FindGLib.patch")
-
-                srcDir.patch("InstallLibrary.patch")
-
-                if (usingOpenLibm) {
-                    srcDir.resolve("fontforge/splinestroke.c").patch("splinestroke-complex-math.patch")
-                    projectDir.resolve("patches/$portVersion/FindMathLib.cmake").copyTo(
-                        target = srcDir.resolve("cmake/packages/FindMathLib.cmake"),
-                        overwrite = true
-                    )
-                }
-
-                if (minSupportedSdk < 21) {
-                    // fontforge uses newlocale and localeconv, which are not available on Android pre 21 (Lollipop)
-                    // locale_t is available, we should not redefine it while using the BAD_LOCALE_HACK in splinefont.h
-                    //
-                    // From /usr/include/locale.h:
-                    // #if __ANDROID_API__ >= 21
-                    // locale_t duplocale(locale_t __l) __INTRODUCED_IN(21);
-                    // void freelocale(locale_t __l) __INTRODUCED_IN(21);
-                    // locale_t newlocale(int __category_mask, const char* __locale_name, locale_t __base) __INTRODUCED_IN(21);
-                    // #endif /* __ANDROID_API__ >= 21 */
-                    // ...
-                    // #if __ANDROID_API__ >= 21
-                    // struct lconv* localeconv(void) __INTRODUCED_IN(21);
-                    // #endif /* __ANDROID_API__ >= 21 */
-                    srcDir.patch("localeconv.patch")
-                }
-            }
-            "20230101" -> {
-                srcDir.patch("pie.patch")
-
-                srcDir.patch("FindGLib.patch")
-
-                // android-ndk-r20/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/pwd.h
-                // #if __ANDROID_API__ >= 26
-                // struct passwd* getpwent(void) __INTRODUCED_IN(26);
-                // void setpwent(void) __INTRODUCED_IN(26);
-                // void endpwent(void) __INTRODUCED_IN(26);
-                // #endif /* __ANDROID_API__ >= 26 */
-                srcDir.resolve("gutils/fsys.c").patch("gutils-fsys.patch")
-
-                srcDir.patch("InstallLibrary.patch")
-
-                if (usingOpenLibm) {
-                    srcDir.resolve("fontforge/splinestroke.c").patch("splinestroke-complex-math.patch")
-                    projectDir.resolve("patches/$portVersion/FindMathLib.cmake").copyTo(
-                        target = srcDir.resolve("cmake/packages/FindMathLib.cmake"),
-                        overwrite = true
-                    )
-                }
-
-                if (minSupportedSdk < 21) {
-                    // fontforge uses newlocale and localeconv, which are not available on Android pre 21 (Lollipop)
-                    // locale_t is available, we should not redefine it while using the BAD_LOCALE_HACK in splinefont.h
-                    //
-                    // From /usr/include/locale.h:
-                    // #if __ANDROID_API__ >= 21
-                    // locale_t duplocale(locale_t __l) __INTRODUCED_IN(21);
-                    // void freelocale(locale_t __l) __INTRODUCED_IN(21);
-                    // locale_t newlocale(int __category_mask, const char* __locale_name, locale_t __base) __INTRODUCED_IN(21);
-                    // #endif /* __ANDROID_API__ >= 21 */
-                    // ...
-                    // #if __ANDROID_API__ >= 21
-                    // struct lconv* localeconv(void) __INTRODUCED_IN(21);
-                    // #endif /* __ANDROID_API__ >= 21 */
-                    srcDir.patch("localeconv.patch")
-                }
-
-                srcDir.resolve("fontforge/nouiutil.c").patch("handle-iconv-failure.patch")
-            }
+        if (usingOpenLibm) {
+            srcDir.resolve("fontforge/splinestroke.c").patch("splinestroke-complex-math.patch")
+            projectDir.resolve("patches/$portVersion/FindMathLib.cmake").copyTo(
+                target = srcDir.resolve("cmake/packages/FindMathLib.cmake"),
+                overwrite = true
+            )
         }
+
+        if (minSupportedSdk < 21) {
+            // fontforge uses newlocale and localeconv, which are not available on Android pre 21 (Lollipop)
+            // locale_t is available, we should not redefine it while using the BAD_LOCALE_HACK in splinefont.h
+            //
+            // From /usr/include/locale.h:
+            // #if __ANDROID_API__ >= 21
+            // locale_t duplocale(locale_t __l) __INTRODUCED_IN(21);
+            // void freelocale(locale_t __l) __INTRODUCED_IN(21);
+            // locale_t newlocale(int __category_mask, const char* __locale_name, locale_t __base) __INTRODUCED_IN(21);
+            // #endif /* __ANDROID_API__ >= 21 */
+            // ...
+            // #if __ANDROID_API__ >= 21
+            // struct lconv* localeconv(void) __INTRODUCED_IN(21);
+            // #endif /* __ANDROID_API__ >= 21 */
+            srcDir.patch("localeconv.patch")
+        }
+
+        srcDir.resolve("fontforge/nouiutil.c").patch("handle-iconv-failure.patch")
     }
 }
 
@@ -266,98 +135,24 @@ tasks.prefab {
     generator.set(PrefabSysrootPlugin::class.java)
 }
 
-when (portVersion) {
-    "20170731" -> {
-        tasks.register<AutoconfPortTask>("buildPort") {
-            val generatedDependencies = prefabGenerated.get().asFile
-            autoconf {
-                args(
-                    "--disable-python-scripting",
-                    "--disable-python-extension",
-                    "--without-included-ltdl",
-                )
-
-                generatedDependencies.resolve(toolchain.abi.triple).let {
-                    // libfontforge fails to pick up libpng on its own.
-                    // Vars generated by PKG_CONFIG_LIBDIR=${it.resolve("lib/pkgconfig")} pkg-config --libs --static libpng
-
-                    env["LIBPNG_CFLAGS"] = "-I${it.resolve("include/libpng16")}"
-                    env["LIBPNG_LIBS"] = "-L${it.resolve("lib")} -lpng16 -lz -lm -lz"
-
-                    // Needed to find libtool
-                    env["CPPFLAGS"] = "-I${it.resolve("include")}"
-                    env["LDFLAGS"] = "-L${it.resolve("lib")}"
-                }
-            }
-
-            doLast {
-                com.android.ndkports.Abi.values().forEach { abi ->
-                    val pkgConfigDir = installDirectoryFor(abi).resolve("lib/pkgconfig")
-                    pkgConfigDir.resolve("libfontforge.pc")
-                        // Add Missing Requires:
-                        .replace(
-                            "Requires:",
-                            "Requires: freetype2 intl gio-2.0 libxml-2.0 pangocairo"
-                        )
-                        // Pull dependencies as Requires:, instead of Libs:
-                        .replace("-ljpeg", "")
-                        .replace("-lpng16", "")
-                        .replace("-lspiro", "")
-                        .replace("-luninameslist", "")
-                        .replace(
-                            "Requires:",
-                            "Requires: libturbojpeg libpng16 libspiro libuninameslist"
-                        )
-                    pkgConfigDir.resolve("libfontforgeexe.pc")
-                        // Add Missing Requires:
-                        .replace(
-                            "Requires:",
-                            "Requires: freetype2 intl gio-2.0 libxml-2.0 pangocairo"
-                        )
-                        // Pull dependencies as Requires:, instead of Libs:
-                        .replace("-ljpeg", "")
-                        .replace("-lpng16", "")
-                        .replace("-lspiro", "")
-                        .replace("-luninameslist", "")
-                        .replace(
-                            "Requires:",
-                            "Requires: libturbojpeg libpng16 libspiro libuninameslist"
-                        )
-                }
-
-//                val dst = layout.buildDirectory.asFile.get().resolve("assets/fontforge/share").apply { mkdirs() }
-//                // @TODO: check if different ABI has matching share contents
-//                installDirectoryFor(com.android.ndkports.Abi.Arm).resolve("share").copyRecursively(dst) { file, exception ->
-//                    if (exception !is FileAlreadyExistsException) {
-//                        throw exception
-//                    }
-//                    if (!file.readBytes().contentEquals(exception.file.readBytes())) {
-//                        throw exception
-//                    }
-//                    OnErrorAction.SKIP
-//                }
-            }
-        }
+tasks.register<CMakePortTask>("buildPort") {
+    cmake {
+        args(
+            "-DENABLE_GUI=OFF",
+            "-DENABLE_PYTHON_SCRIPTING=OFF",
+            "-DENABLE_PYTHON_EXTENSION=OFF",
+        )
     }
-    "20200314" -> {
-        tasks.register<CMakePortTask>("buildPort") {
-            cmake {
-                args(
-                    "-DENABLE_GUI=OFF",
-                    "-DENABLE_PYTHON_SCRIPTING=OFF",
-                    "-DENABLE_PYTHON_EXTENSION=OFF",
-                )
-            }
-            doLast {
-                val pkgconfig = projectDir.resolve("patches/$portVersion/libfontforge.pc")
-                com.android.ndkports.Abi.values().forEach { abi ->
-                    pkgconfig.copyTo(
-                        target = installDirectoryFor(abi)
-                            .resolve("lib/pkgconfig").apply { mkdir() }
-                            .resolve("libfontforge.pc"),
-                        overwrite = true
-                    )
-                }
+    doLast {
+        val pkgconfig = projectDir.resolve("patches/$portVersion/libfontforge.pc")
+        com.android.ndkports.Abi.values().forEach { abi ->
+            pkgconfig.copyTo(
+                target = installDirectoryFor(abi)
+                    .resolve("lib/pkgconfig").apply { mkdir() }
+                    .resolve("libfontforge.pc"),
+                overwrite = true
+            )
+        }
 
 //                val dst = layout.buildDirectory.asFile.get().resolve("assets/fontforge/share").apply { mkdirs() }
 //                // @TODO: check if different ABI has matching share contents
@@ -370,42 +165,6 @@ when (portVersion) {
 //                    }
 //                    OnErrorAction.SKIP
 //                }
-            }
-        }
-    }
-    else -> /* "20230101" */ {
-        tasks.register<CMakePortTask>("buildPort") {
-            cmake {
-                args(
-                    "-DENABLE_GUI=OFF",
-                    "-DENABLE_PYTHON_SCRIPTING=OFF",
-                    "-DENABLE_PYTHON_EXTENSION=OFF",
-                )
-            }
-            doLast {
-                val pkgconfig = projectDir.resolve("patches/$portVersion/libfontforge.pc")
-                com.android.ndkports.Abi.values().forEach { abi ->
-                    pkgconfig.copyTo(
-                        target = installDirectoryFor(abi)
-                            .resolve("lib/pkgconfig").apply { mkdir() }
-                            .resolve("libfontforge.pc"),
-                        overwrite = true
-                    )
-                }
-
-//                val dst = layout.buildDirectory.asFile.get().resolve("assets/fontforge/share").apply { mkdirs() }
-//                // @TODO: check if different ABI has matching share contents
-//                installDirectoryFor(com.android.ndkports.Abi.Arm).resolve("share").copyRecursively(dst) { file, exception ->
-//                    if (exception !is FileAlreadyExistsException) {
-//                        throw exception
-//                    }
-//                    if (!file.readBytes().contentEquals(exception.file.readBytes())) {
-//                        throw exception
-//                    }
-//                    OnErrorAction.SKIP
-//                }
-            }
-        }
     }
 }
 
@@ -426,10 +185,8 @@ tasks.prefabPackage {
         "libxml2" to "1",
         "spiro" to "1",
         "pango" to "1",
+        "libtiff" to "1",
     ).apply {
-        if (portVersion != "20170731") {
-            put("libtiff", "1")
-        }
         if (usingOpenLibm) {
             put("openlibm", "1")
         }
@@ -437,110 +194,25 @@ tasks.prefabPackage {
 
     modules {
         val isStatic = project.findProperty("libraryType") == "static"
-        when (portVersion) {
-            "20170731" -> {
-                create("fontforge") {
-                    static.set(isStatic)
-                    includesPerAbi.set(true)
-                    dependencies.set(listOf(
-                        ":gioftp",
-                        ":gutils",
-                        ":gunicode",
-                        "z",
-                        "m",
-                        "//libtool:ltdl",
-                        "//libjpeg-turbo:jpeg",
-                        "//libpng:png16",
-                        "//spiro:spiro",
-                        "//libuninameslist:uninameslist",
-                        "//freetype:freetype",
-                        "//proxy-libintl:intl",
-                        "//glib2:gio-2.0",
-                        "//libxml2:xml2",
-                        "//pango:pangocairo-1.0",
-                        "//cairo:cairo",
-                    ))
-                }
-                create("fontforgeexe") {
-                    static.set(isStatic)
-                    includesPerAbi.set(true)
-                    dependencies.set(listOf(
-                        ":fontforge",
-                        ":gioftp",
-                        ":gutils",
-                        ":gunicode",
-                        "z",
-                        "m",
-                        "//libtool:ltdl",
-                        "//libjpeg-turbo:jpeg",
-                        "//libpng:png16",
-                        "//spiro:spiro",
-                        "//libuninameslist:uninameslist",
-                        "//freetype:freetype",
-                        "//proxy-libintl:intl",
-                        "//glib2:gio-2.0",
-                        "//libxml2:xml2",
-                        "//pango:pangocairo-1.0",
-                        "//cairo:cairo",
-                    ))
-                }
-                create("gioftp") {
-                    static.set(isStatic)
-                    includesPerAbi.set(true)
-                }
-                create("gunicode") {
-                    static.set(isStatic)
-                    includesPerAbi.set(true)
-                }
-                create("gutils") {
-                    static.set(isStatic)
-                    includesPerAbi.set(true)
-                }
-            }
-            "20200314" -> {
-                create("fontforge") {
-                    static.set(isStatic)
-                    includesPerAbi.set(true)
-                    dependencies.set(listOf(
-                        "z",
-                        "//openlibm:openlibm",
-                        "//libtool:ltdl",
-                        "//libjpeg-turbo:jpeg",
-                        "//libpng:png16",
-                        "//spiro:spiro",
-                        "//libuninameslist:uninameslist",
-                        "//freetype:freetype",
-                        "//proxy-libintl:intl",
-                        "//glib2:gio-2.0",
-                        "//libxml2:xml2",
-                        "//pango:pangocairo-1.0",
-                        "//cairo:cairo",
-                        "//libtiff:tiff",
-                    ))
-                }
-            }
-            "20230101" -> {
-                create("fontforge") {
-                    static.set(isStatic)
-                    includesPerAbi.set(true)
-                    dependencies.set(listOf(
-                        "z",
-                        "//openlibm:openlibm",
-                        "//libtool:ltdl",
-                        "//libjpeg-turbo:jpeg",
-                        "//libpng:png16",
-                        "//spiro:spiro",
-                        "//libuninameslist:uninameslist",
-                        "//freetype:freetype",
-                        "//proxy-libintl:intl",
-                        "//glib2:gio-2.0",
-                        "//libxml2:xml2",
-                        "//pango:pangocairo-1.0",
-                        "//cairo:cairo",
-                        "//libtiff:tiff",
-                    ))
-                }
-            }
+        create("fontforge") {
+            static.set(isStatic)
+            includesPerAbi.set(true)
+            dependencies.set(listOf(
+                "z",
+                "//openlibm:openlibm",
+                "//libtool:ltdl",
+                "//libjpeg-turbo:jpeg",
+                "//libpng:png16",
+                "//spiro:spiro",
+                "//libuninameslist:uninameslist",
+                "//freetype:freetype",
+                "//proxy-libintl:intl",
+                "//glib2:gio-2.0",
+                "//libxml2:xml2",
+                "//pango:pangocairo-1.0",
+                "//cairo:cairo",
+                "//libtiff:tiff",
+            ))
         }
     }
 }
