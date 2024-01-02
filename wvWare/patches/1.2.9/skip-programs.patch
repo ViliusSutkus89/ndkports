@@ -1,0 +1,11 @@
+--- GNUmakefile.am
++++ GNUmakefile.am
+@@ -18,8 +18,6 @@ wvhdr_HEADERS = wv.h
+ 
+ bin_SCRIPTS = wvCleanLatex wvHtml wvDocBook wvAbw wvMime wvPS wvDVI wvLatex wvPDF wvText wvWml
+ 
+-bin_PROGRAMS = wvWare wvRTF wvConvert wvVersion wvSummary
+-
+ lib_LTLIBRARIES = libwv.la
+ 
+ GETOPT = @LIBOBJS@

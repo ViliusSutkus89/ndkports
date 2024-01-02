@@ -274,3 +274,13 @@ pdf2htmlEX also has a Java wrapper - [pdf2htmlEX-Android](https://github.com/Vil
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libwmf-ndk25-shared.svg?label=Maven%20Central%20libwmf-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libwmf-ndk25-shared)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libwmf-ndk26-static.svg?label=Maven%20Central%20libwmf-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libwmf-ndk26-static)
 [![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/libwmf-ndk26-shared.svg?label=Maven%20Central%20libwmf-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:libwmf-ndk26-shared)
+
+#### [wvWare](http://wvware.sourceforge.net)
+
+wvWare has a Java wrapper - [wvWare-Android](https://github.com/ViliusSutkus89/wvWare-Android)
+
+[![wvWare](https://github.com/ViliusSutkus89/ndkports/actions/workflows/wvWare.yml/badge.svg)](https://github.com/ViliusSutkus89/ndkports/actions/workflows/wvWare.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/wvWare-ndk25-static.svg?label=Maven%20Central%20wvWare-ndk25-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:wvWare-ndk25-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/wvWare-ndk25-shared.svg?label=Maven%20Central%20wvWare-ndk25-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:wvWare-ndk25-shared)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/wvWare-ndk26-static.svg?label=Maven%20Central%20wvWare-ndk26-static)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:wvWare-ndk26-static)
+[![Maven Central](https://img.shields.io/maven-central/v/com.viliussutkus89.ndk.thirdparty/wvWare-ndk26-shared.svg?label=Maven%20Central%20wvWare-ndk26-shared)](https://search.maven.org/search?q=g:com.viliussutkus89.ndk.thirdparty%20AND%20a:wvWare-ndk26-shared)
