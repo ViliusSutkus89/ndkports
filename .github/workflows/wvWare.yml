@@ -4,9 +4,9 @@ on:
   push:
     paths:
       - 'buildSrc/**'
-      - 'wvware/**'
+      - 'wvWare/**'
       - '.github/workflows/build.yml'
-      - '.github/workflows/wvware.yml'
+      - '.github/workflows/wvWare.yml'
 
 jobs:
   build:
