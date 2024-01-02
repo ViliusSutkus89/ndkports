@@ -6,7 +6,7 @@ import org.gradle.jvm.tasks.Jar
 group = rootProject.group
 
 val portVersion = "20230101"
-version = "20230101-beta-16"
+version = "20230101-beta-17"
 
 plugins {
     id("maven-publish")
@@ -23,17 +23,17 @@ val usingOpenLibm = minSupportedSdk < 24
 dependencies {
     val ndkVersionSuffix = rootProject.extra.get("ndkVersionSuffix")
     val dependencyLibraryTypeSuffix = rootProject.extra.get("dependencyLibraryTypeSuffix")
-    implementation("com.viliussutkus89.ndk.thirdparty:cairo${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:1.18.0-beta-6")
-    implementation("com.viliussutkus89.ndk.thirdparty:freetype${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:2.13.2-beta-7")
+    implementation("com.viliussutkus89.ndk.thirdparty:cairo${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:1.18.0-beta-7")
+    implementation("com.viliussutkus89.ndk.thirdparty:freetype${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:2.13.2-beta-8")
     implementation("com.viliussutkus89.ndk.thirdparty:proxy-libintl${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:0.4.1.2")
     implementation("com.viliussutkus89.ndk.thirdparty:glib2${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:2.75.0-beta-1")
     implementation("com.viliussutkus89.ndk.thirdparty:libjpeg-turbo${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:3.0.1-beta-3")
     implementation("com.viliussutkus89.ndk.thirdparty:libtool${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:2.4.6-beta-3")
-    implementation("com.viliussutkus89.ndk.thirdparty:libpng${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:1.6.40-beta-6")
+    implementation("com.viliussutkus89.ndk.thirdparty:libpng${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:1.6.40-beta-7")
     implementation("com.viliussutkus89.ndk.thirdparty:libuninameslist${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:20230916-beta-3")
     implementation("com.viliussutkus89.ndk.thirdparty:libxml2${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:2.12.3-beta-2")
     implementation("com.viliussutkus89.ndk.thirdparty:spiro${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:20221101-beta-3")
-    implementation("com.viliussutkus89.ndk.thirdparty:pango${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:1.51.0-beta-8")
+    implementation("com.viliussutkus89.ndk.thirdparty:pango${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:1.51.0-beta-9")
     implementation("com.viliussutkus89.ndk.thirdparty:libtiff${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:4.6.0-beta-6")
 
     if (usingOpenLibm) {

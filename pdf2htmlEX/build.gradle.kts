@@ -20,8 +20,8 @@ dependencies {
     val dependencyLibraryTypeSuffix = rootProject.extra.get("dependencyLibraryTypeSuffix")
     implementation("com.viliussutkus89.ndk.thirdparty:cairo${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:1.18.0-beta-7")
     implementation("com.viliussutkus89.ndk.thirdparty:freetype${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:2.13.2-beta-8")
-    implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:20230101-beta-16")
-    implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:23.12.0-beta-5")
+    implementation("com.viliussutkus89.ndk.thirdparty:fontforge${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:20230101-beta-17")
+    implementation("com.viliussutkus89.ndk.thirdparty:poppler${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:23.12.0-beta-6")
 }
 
 ndkPorts {

@@ -6,7 +6,7 @@ import org.gradle.jvm.tasks.Jar
 val portVersion = "2.14.2"
 
 group = rootProject.group
-version = "${portVersion}-beta-5"
+version = "${portVersion}-beta-6"
 
 plugins {
     id("maven-publish")
@@ -17,8 +17,8 @@ plugins {
 dependencies {
     val ndkVersionSuffix = rootProject.extra.get("ndkVersionSuffix")
     val dependencyLibraryTypeSuffix = rootProject.extra.get("dependencyLibraryTypeSuffix")
-    implementation("com.viliussutkus89.ndk.thirdparty:freetype${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:2.13.2-beta-7")
-    implementation("com.viliussutkus89.ndk.thirdparty:libpng${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:1.6.40-beta-6")
+    implementation("com.viliussutkus89.ndk.thirdparty:freetype${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:2.13.2-beta-8")
+    implementation("com.viliussutkus89.ndk.thirdparty:libpng${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:1.6.40-beta-7")
     implementation("com.viliussutkus89.ndk.thirdparty:libexpat${ndkVersionSuffix}${dependencyLibraryTypeSuffix}:2.5.0-beta-4")
 }
 
