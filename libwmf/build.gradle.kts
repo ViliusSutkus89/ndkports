@@ -1,4 +1,6 @@
-import com.android.ndkports.*
+import com.android.ndkports.AutoconfPortTask
+import com.android.ndkports.CMakeCompatibleVersion
+import com.android.ndkports.PrefabSysrootPlugin
 import org.gradle.jvm.tasks.Jar
 
 val portVersion = "0.2.13"
@@ -33,17 +35,7 @@ tasks.prefab {
 
 val buildTask = tasks.register<AutoconfPortTask>("buildPort") {
     val generatedDependencies = prefabGenerated.get().asFile
-
-    // libwmf can't find freetype
-    lateinit var freetypePkgConfig: Map<String, PkgConfig>
-    doFirst {
-        freetypePkgConfig = getPkgConfig(
-            packageName = "freetype2",
-            generatedDependenciesDir = generatedDependencies,
-            isStatic = project.findProperty("libraryType") == "static"
-        )
-    }
-
+    val isStatic = project.findProperty("libraryType") == "static"
     autoconf {
         val generated = generatedDependencies.resolve(toolchain.abi.triple)
         args(
@@ -52,10 +44,9 @@ val buildTask = tasks.register<AutoconfPortTask>("buildPort") {
             "--with-png=$generated",
             "--with-jpeg=$generated",
         )
-        freetypePkgConfig[toolchain.abi.triple]?.let {
-            env["CFLAGS"] = it.cflags
-            env["LDFLAGS"] = it.libs
-        }
+        env["ac_cv_path_FREETYPE_CONFIG"] = "pkg-config freetype2"
+        if (isStatic)
+            env["ac_cv_path_FREETYPE_CONFIG"] += " --static"
     }
 }
 
