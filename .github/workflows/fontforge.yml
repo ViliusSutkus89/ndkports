@@ -15,19 +15,3 @@ jobs:
       package: fontforge
       version: '20230101'
       apt_packages: gettext
-
-  build-fontforge-20200314:
-    name: fontforge 20200314
-    uses: ./.github/workflows/build.yml
-    with:
-      package: fontforge
-      version: '20200314'
-      apt_packages: gettext
-
-  build-fontforge-20170731:
-    name: fontforge 20170731
-    uses: ./.github/workflows/build.yml
-    with:
-      package: fontforge
-      version: '20170731'
-      apt_packages: gettext
