@@ -6,7 +6,7 @@ import org.gradle.jvm.tasks.Jar
 val portVersion = "1.2.9"
 
 group = rootProject.group
-version = "${portVersion}-beta-1"
+version = "${portVersion}-beta-2"
 
 plugins {
     id("maven-publish")
@@ -112,6 +112,17 @@ val buildTask = tasks.register<AutoconfPortTask>("buildPort") {
                 pc.replace("-lpng", "")
                 pc.replace("Requires:", "Requires: libpng16")
             }
+        }
+
+        val dst = layout.buildDirectory.asFile.get().resolve("assets/wv/share/wv").apply { mkdirs() }
+        installDirectoryFor(com.android.ndkports.Abi.Arm).resolve("share/wv").copyRecursively(dst) { file, exception ->
+            if (exception !is FileAlreadyExistsException) {
+                throw exception
+            }
+            if (!file.readBytes().contentEquals(exception.file.readBytes())) {
+                throw exception
+            }
+            OnErrorAction.SKIP
         }
     }
 }
